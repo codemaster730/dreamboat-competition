@@ -1,7 +1,7 @@
 {
-  "name": "mern-auth",
+  "name": "botb-clone",
   "version": "1.0.0",
-  "description": "Mern Auth Example",
+  "description": "Botb Clone Project",
   "main": "server.js",
   "scripts": {
     "client-install": "npm install --prefix client",
