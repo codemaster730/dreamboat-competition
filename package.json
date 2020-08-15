@@ -1,7 +1,7 @@
 {
-  "name": "botb-clone",
+  "name": "dream-boat",
   "version": "1.0.0",
-  "description": "Botb Clone Project",
+  "description": "DreamBoat",
   "main": "server.js",
   "scripts": {
     "client-install": "npm install --prefix client",

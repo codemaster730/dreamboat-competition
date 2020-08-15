@@ -5,13 +5,36 @@ import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
 import classnames from "classnames";
 
+// reactstrap components
+import {
+  Button,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Form,
+  Input,
+  InputGroupAddon,
+  InputGroupText,
+  InputGroup,
+  Container,
+  Col,
+  Row,
+} from "reactstrap";
+
+// core components
+import DropdownScrollNavbar from "components/shared/DropdownScrollNavbar.js";
+import Footer from "components/shared/Footer.js";
+
 class Login extends Component {
   constructor() {
     super();
     this.state = {
       email: "",
       password: "",
-      errors: {}
+      errors: {},
+      firstFocus: false,
+      lastFocus: false,
     };
   }
 
@@ -32,6 +55,16 @@ class Login extends Component {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/home");
     }
+    document.body.classList.add("login-page");
+    document.body.classList.add("sidebar-collapse");
+    document.documentElement.classList.remove("nav-open");
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0;
+  }
+  
+  componentWillUnmount() {
+    document.body.classList.remove("login-page");
+    document.body.classList.remove("sidebar-collapse");
   }
 
   onChange = e => {
@@ -51,74 +84,120 @@ class Login extends Component {
   render() {
     const { errors } = this.state;
     return (
-      <div className="container">
-        <div style={{ marginTop: "4rem" }} className="row">
-          <div className="col s8 offset-s2">
-            <Link to="/" className="btn-flat waves-effect">
-              <i className="material-icons left">keyboard_backspace</i> Back to
-              home
-            </Link>
-            <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-              <h4>
-                <b>Login</b> below
-              </h4>
-              <p className="grey-text text-darken-1">
-                Don't have an account? <Link to="/register">Register</Link>
-              </p>
-            </div>
-            <form noValidate onSubmit={this.onSubmit}>
-              <div className="input-field col s12">
-                <input
-                  onChange={this.onChange}
-                  value={this.state.email}
-                  error={errors.email}
-                  id="email"
-                  type="email"
-                  className={classnames("", {
-                    invalid: errors.email || errors.emailnotfound
-                  })}
-                />
-                <label htmlFor="email">Email</label>
-                <span className="red-text">
-                  {errors.email}
-                  {errors.emailnotfound}
-                </span>
-              </div>
-              <div className="input-field col s12">
-                <input
-                  onChange={this.onChange}
-                  value={this.state.password}
-                  error={errors.password}
-                  id="password"
-                  type="password"
-                  className={classnames("", {
-                    invalid: errors.password || errors.passwordincorrect
-                  })}
-                />
-                <label htmlFor="password">Password</label>
-                <span className="red-text">
-                  {errors.password}
-                  {errors.passwordincorrect}
-                </span>
-              </div>
-              <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-                <button
-                  style={{
-                    width: "150px",
-                    borderRadius: "3px",
-                    letterSpacing: "1.5px",
-                    marginTop: "1rem"
-                  }}
-                  type="submit"
-                  className="btn btn-large waves-effect waves-light hoverable blue accent-3"
-                >
-                  Login
-                </button>
-              </div>
-            </form>
+      <>
+        <DropdownScrollNavbar />
+        <div className="page-header header-filter" filter-color="blue">
+          <div
+            className="page-header-image"
+            style={{
+              backgroundImage: "url(" + require("assets/img/login.jpg") + ")",
+            }}
+          ></div>
+          <div className="content">
+            <Container>
+              <Row>
+                <Col className="ml-auto mr-auto" md="5">
+                  <Card className="card-login card-plain">
+                    <Form noValidate action="" className="form" method="" onSubmit={this.onSubmit}>
+                      <CardHeader className="text-center">
+                      <div className="logo-container">
+                        <img
+                          alt="..."
+                          src={require("assets/img/now-logo.png")}
+                        ></img>
+                      </div>
+                    </CardHeader>
+                      <CardBody>
+                      <InputGroup
+                        className={
+                          "no-border input-lg" + 
+                          (this.state.firstFocus ? " input-group-focus" : "")
+                        }
+                      >
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="now-ui-icons users_circle-08"></i>
+                          </InputGroupText>
+                        </InputGroupAddon>
+
+                        <Input
+                          onChange={this.onChange}
+                          value={this.state.email}
+                          error={errors.email}
+                          placeholder="Email"
+                          id="email"
+                          type="email"
+                          onFocus={() => this.setState({firstFocus: true})}
+                          onBlur={() => this.setState({firstFocus: false})}
+                        ></Input>
+                      </InputGroup>
+                      <span className="red-text">
+                        {errors.email}
+                        {errors.emailnotfound}
+                      </span>
+                      <InputGroup
+                        className={
+                          "no-border input-lg" +
+                          (this.state.lastFocus ? " input-group-focus" : "")
+                        }
+                      >
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="now-ui-icons text_caps-small"></i>
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input
+                          onChange={this.onChange}
+                          value={this.state.password}
+                          error={errors.password}
+                          id="password"
+                          type="password"
+                          placeholder="Password"
+                          onFocus={() => this.setState({lastFocus: true})}
+                          onBlur={() => this.setState({lastFocus: false})}
+                        ></Input>
+                      </InputGroup>
+                      <span className="red-text">
+                        {errors.password}
+                        {errors.passwordincorrect}
+                      </span>
+                    </CardBody>
+                      <CardFooter className="text-center">
+                      <Button
+                        block
+                        className="btn-round"
+                        color="info"
+                        type="submit"
+                        size="lg"
+                      >
+                        LOGIN
+                      </Button>
+                    </CardFooter>
+                      <div className="pull-left">
+                        <h6>
+                        <Link className="link footer-link" to="/register">CREATE ACCOUNT</Link>
+                        </h6>
+                      </div>
+                      <div className="pull-right">
+                      <h6>
+                        <a
+                          className="link footer-link"
+                          href="#pablo"
+                          onClick={(e) => e.preventDefault()}
+                        >
+                          Need Help?
+                        </a>
+                      </h6>
+                    </div>
+                    </Form>
+                  </Card>
+                </Col>
+              </Row>
+            </Container>
           </div>
+          <Footer />
         </div>
-      </div>
+      </>
     );
   }
 }

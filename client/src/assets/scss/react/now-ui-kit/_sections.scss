@@ -1,0 +1,32 @@
+[filter-color="blue"],.clear-filter[filter-color="blue"] {
+  @include linear-gradient(rgba($black-color,.20), rgba(3, 161, 224, 0.6));
+}
+[data-background-color="blue"]{
+    background-color: $info-color;
+}
+.section-nucleo-icons .icons-container i:nth-child(6) {
+  color: $info-color;
+}
+.page-header{
+  &.page-header-small{
+    min-height: 60vh;
+    max-height: 640px;
+  }
+  > .content {
+    margin: 80px 0;
+  }
+}
+.signup-page .page-header {
+  display: flex;
+  align-items: center;
+}
+.login-page .page-header > .content, .signup-page .page-header > .content {
+  width: 100%;
+}
+.signup-page .card-signup {
+  margin-bottom: 0;
+}
+.login-page .page-header {
+  display: flex;
+  align-items: center;
+}

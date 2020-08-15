@@ -1,4 +1,4 @@
-# botb-clone
+# dream-boat
 
 Full-stack MERN app with authentication using passport and JWTs.
 

@@ -8,7 +8,7 @@ class Landing extends Component {
         <div className="row">
           <div className="col s12 center-align">
             <h4>
-              <b>Build</b> a Botb clone app with the{" "}
+              <b>Build</b> a DreamBoat app with the{" "}
               <span style={{ fontFamily: "monospace" }}>MERN</span> stack from
               scratch
             </h4>

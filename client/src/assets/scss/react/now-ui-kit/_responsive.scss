@@ -1,0 +1,34 @@
+@media screen and (max-width: 991px){
+  .sidebar-collapse .navbar-collapse:before {
+    background: $info-color;
+    background: linear-gradient($info-color,$black-color 80%);
+  }
+  .navbar-nav .dropdown-menu {
+    position: static !important;
+  }
+}
+
+@media screen and (max-width: 768px){
+  .nav-tabs {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .login-page .page-header .content{
+    top: 30%;
+  }
+  .signup-page .page-header {
+    flex-direction: column;
+  }
+  .login-page .page-header{
+    flex-direction: column;
+    justify-content: space-between;
+    & > .content {
+      margin-top: 130px;
+    }
+  }
+}
+@media screen and (min-width: 768px){
+  .page-header footer {
+    position: absolute;
+  }
+}

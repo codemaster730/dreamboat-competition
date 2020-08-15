@@ -1,0 +1,37 @@
+@keyframes Floatingy {
+  from {
+    -webkit-transform: translate(0, 0px);
+  }
+  65% {
+    -webkit-transform: translate(50px, 0);
+  }
+  to {
+    -webkit-transform: translate(0, 0px);
+  }
+}
+
+@keyframes Floatingx {
+  from {
+    -webkit-transform: translate(50px, 0px);
+  }
+  65% {
+    -webkit-transform: translate(0, 0);
+  }
+  to {
+    -webkit-transform: translate(50px, 0px);
+  }
+}
+.presentation-page .page-header, .index-page .page-header {
+  background: #83c1d8;
+}
+.presentation-page .rellax-text-container .h1-seo, .index-page .rellax-text-container .h1-seo{
+  background: #eaf3ff;
+    background: -moz-linear-gradient(top, #FFFFFF 35%, #75a6c3 100%);
+    background: -webkit-linear-gradient(top, #FFFFFF 35%, #75a6c3 100%);
+    background: linear-gradient(to bottom, #FFFFFF 35%, #75a6c3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.presentation-page [data-background-color="dark-blue"], .index-page [data-background-color="dark-blue"] {
+    background: #031425;
+}

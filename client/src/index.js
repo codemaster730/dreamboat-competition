@@ -4,6 +4,13 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+// styles
+import "assets/css/bootstrap.min.css";
+import "assets/scss/now-ui-kit.scss?v=1.4.0";
+import "assets/demo/demo.css?v=1.4.0";
+import "assets/demo/react-demo.css?v=1.4.0";
+import "assets/demo/nucleo-icons-page-styles.css?v=1.4.0";
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
