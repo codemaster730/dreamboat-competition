@@ -3,41 +3,46 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
 
+// core components
+import DropdownScrollNavbar from "components/shared/DropdownScrollNavbar.js";
+import HomePageHeader from "components/home/HomePageHeader.js";
+import FooterDefault from "components/shared/FooterDefault.js";
+import HomePageFeature from "components/home/HomePageFeature.js";
+import HomePageWinner from "components/home/HomePageWinner.js";
+
 class Home extends Component {
   onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
   };
 
-  render() {
-    const { user } = this.props.auth;
+  componentDidMount() {
 
+    document.body.classList.add("landing-page");
+    document.body.classList.add("sidebar-collapse");
+    document.documentElement.classList.remove("nav-open");
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0;
+
+  }
+
+  componentWillUnmount() {
+    document.body.classList.remove("landing-page");
+    document.body.classList.remove("sidebar-collapse");
+  }
+
+  render() {
+    // const { user } = this.props.auth;
     return (
-      <div style={{ height: "75vh" }} className="container valign-wrapper">
-        <div className="row">
-          <div className="col s12 center-align">
-            <h4>
-              <b>Hey there,</b> {user.name.split(" ")[0]}
-              <p className="flow-text grey-text text-darken-1">
-                You are logged into a full-stack{" "}
-                <span style={{ fontFamily: "monospace" }}>MERN</span> app 👏
-              </p>
-            </h4>
-            <button
-              style={{
-                width: "150px",
-                borderRadius: "3px",
-                letterSpacing: "1.5px",
-                marginTop: "1rem"
-              }}
-              onClick={this.onLogoutClick}
-              className="btn btn-large waves-effect waves-light hoverable blue accent-3"
-            >
-              Logout
-            </button>
-          </div>
+      <>
+        <DropdownScrollNavbar />
+        <div className="wrapper">
+          <HomePageHeader />
+          <HomePageFeature />
+          <HomePageWinner />
+          <FooterDefault />
         </div>
-      </div>
+      </>
     );
   }
 }

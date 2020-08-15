@@ -90,17 +90,17 @@ function DropdownScrollNavbar() {
                   <p>Competitions</p>
                 </DropdownToggle>
                 <DropdownMenu aria-labelledby="navbarDropdownMenuLink1" right>
-                  <DropdownItem to="/index" tag={Link}>
+                  <DropdownItem to="/" tag={Link} target="_self">
                     <i className="now-ui-icons design_image"></i>
                     Weekly Dream Boat
                   </DropdownItem>
-                  <DropdownItem to="/index" tag={Link}>
+                  <DropdownItem to="/" tag={Link} target="_self">
                     <i className="now-ui-icons business_chart-pie-36"></i>
                     Weekly Lifestyle
                   </DropdownItem>
                   <DropdownItem
                     href="#"
-                    target="_blank"
+                    target="_self"
                   >
                     <i className="now-ui-icons design_bullet-list-67"></i>
                     Midweek Boat

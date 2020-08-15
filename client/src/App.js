@@ -40,12 +40,12 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <div className="App">
-            <Route exact path="/" component={Landing} />
+            <Route exact path="/" component={Home} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
-            <Switch> 
+            {/* <Switch> 
               <PrivateRoute exact path="/home" component={Home} />
-            </Switch>
+            </Switch> */}
           </div>
         </Router>
       </Provider>

@@ -6,16 +6,16 @@ import { Container } from "reactstrap";
 
 // core components
 
-function Footer() {
+function FooterDefault() {
   return (
     <>
-      <footer className="footer">
+      <footer className="footer footer-default">
         <Container>
           <nav>
             <ul>
               <li>
                 <a
-                  href="#"
+                  href="https://www.creative-tim.com?ref=nuk-pro-react-footer-default"
                   target="_blank"
                 >
                   Creative Tim
@@ -23,7 +23,7 @@ function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="http://presentation.creative-tim.com?ref=nuk-pro-react-footer-default"
                   target="_blank"
                 >
                   About Us
@@ -31,7 +31,7 @@ function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="http://blog.creative-tim.com?ref=nuk-pro-react-footer-default"
                   target="_blank"
                 >
                   Blog
@@ -42,14 +42,14 @@ function Footer() {
           <div className="copyright" id="copyright">
             © {new Date().getFullYear()}, Designed by{" "}
             <a
-              href="#"
+              href="https://www.invisionapp.com?ref=creativetim"
               target="_blank"
             >
               Invision
             </a>
             . Coded by{" "}
             <a
-              href="#"
+              href="https://www.creative-tim.com?ref=nuk-pro-react-footer-default"
               target="_blank"
             >
               Creative Tim
@@ -62,4 +62,4 @@ function Footer() {
   );
 }
 
-export default Footer;
+export default FooterDefault;
