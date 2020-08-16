@@ -44,8 +44,9 @@ function HomePageWinner() {
                         <CardTitle tag="h3">Natalie Paisley</CardTitle>
                         <h6 className="category text-info">Credit Analyst</h6>
                         <p className="card-description">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Nunc in nisi vitae velit dapibus feugiat a eget mauris. 
+                          I was stunned when I won but couldn’t really show 
+                          how shocked I was in the video due to lack of sleep after a late shift! 
+                          Best of luck to everyone.
                         </p>
                         <CardFooter>
                         </CardFooter>
@@ -67,8 +68,9 @@ function HomePageWinner() {
                         <CardTitle tag="h4">Anthony Jackson</CardTitle>
                         <h6 className="category text-info">Desktop Publisher</h6>
                         <p className="card-description">
-                          Fusce quis mollis mauris. Morbi malesuada magna faucibus auctor lobortis. 
-                          Donec rutrum mollis molestie. Nullam faucibus tincidunt tempus.
+                          This has been life-changing for me. 
+                          I’ve been playing for a few months and when Christian knocked on my door I was totally shocked, 
+                          lost for words and couldn't really believe it.
                         </p>
                       </CardBody>
                     </Card>
@@ -88,8 +90,8 @@ function HomePageWinner() {
                         <CardTitle tag="h4">Bella Audrey</CardTitle>
                         <h6 className="category text-info">Economist</h6>
                         <p className="card-description">
-                          Aliquam efficitur, enim eget gravida auctor, nisl odio mattis 
-                          sapien, eu semper lacus sapien in ante. 
+                        I really want to say a big big thank you to the whole team at DREAMBOAT, 
+                        the company is mind-blowing and the people there are just lovely.
                         </p>
                         <CardFooter>
                         </CardFooter>
