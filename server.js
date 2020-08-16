@@ -40,7 +40,7 @@ app.use("/api/users", users);
 
 // Serve React
 app.use(express.static(path.join(__dirname, '../build')))
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../build'))
 });
 
