@@ -38,11 +38,11 @@ require("./config/passport")(passport);
 // Routes
 app.use("/api/users", users);
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+// Serve React
+app.use(express.static(path.join(__dirname, '../build')))
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../build'))
 });
-
-app.use(express.static(path.join(__dirname, "client", "build")));
 
 const port = process.env.PORT || 5000;
 
