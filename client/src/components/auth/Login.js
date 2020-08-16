@@ -39,7 +39,7 @@ class Login extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
-      this.props.history.push("/home"); // push user to home page when they login
+      this.props.history.push("/"); // push user to home page when they login
     }
 
     if (nextProps.errors) {
@@ -52,7 +52,7 @@ class Login extends Component {
   componentDidMount() {
     // If logged in and user navigates to Login page, should redirect them to home
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push("/home");
+      this.props.history.push("/");
     }
     document.body.classList.add("login-page");
     document.body.classList.add("sidebar-collapse");
