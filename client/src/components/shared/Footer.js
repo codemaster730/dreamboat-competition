@@ -18,7 +18,7 @@ function Footer() {
                   href="#"
                   target="_blank"
                 >
-                  Creative Tim
+                  TERMS OF PLAY
                 </a>
               </li>
               <li>
@@ -26,7 +26,7 @@ function Footer() {
                   href="#"
                   target="_blank"
                 >
-                  About Us
+                  PRIVACY POLICY
                 </a>
               </li>
               <li>
@@ -34,25 +34,26 @@ function Footer() {
                   href="#"
                   target="_blank"
                 >
-                  Blog
+                  COOKIE POLICY
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  target="_blank"
+                >
+                  CONTACT US
                 </a>
               </li>
             </ul>
           </nav>
           <div className="copyright" id="copyright">
-            © {new Date().getFullYear()}, Designed by{" "}
+            © {new Date().getFullYear()}, Published by{" "}
             <a
               href="#"
               target="_blank"
             >
-              Invision
-            </a>
-            . Coded by{" "}
-            <a
-              href="#"
-              target="_blank"
-            >
-              Creative Tim
+              MICHAEL D.
             </a>
             .
           </div>
