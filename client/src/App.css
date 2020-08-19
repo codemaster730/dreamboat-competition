@@ -106,7 +106,7 @@ li.nav-item .shopping_cart {
   bottom: 15px;
   left: 15px;
   transition: all 0.2s ease 0s;
-  font-size: 1em !important;
+  font-size: 0.8em !important;
 }
 
 .gallery-page .section-sections .ticket-price-info {
@@ -114,7 +114,7 @@ li.nav-item .shopping_cart {
   top: 15px;
   right: 15px;
   transition: all 0.2s ease 0s;
-  font-size: 1em !important;
+  font-size: 0.9em !important;
 }
 
 .gallery-page .section-sections .price-info {
@@ -122,7 +122,22 @@ li.nav-item .shopping_cart {
   bottom: 45px;
   left: 15px;
   transition: all 0.2s ease 0s;
-  font-size: 1em !important;
+  font-size: 0.8em !important;
+}
+
+/* Modal Dialog */
+.gallery-page .carousel-container {
+  height: 240px !important;
+}
+
+.gallery-page .carousel-container img {
+  width: 100%; 
+  height: 240px !important;
+  object-fit: cover;
+}
+
+.gallery-page .details {
+  margin: 15px 0px 0 0px !important;
 }
 
 @media screen and (max-width: 992px) {

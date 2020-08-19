@@ -26,7 +26,7 @@ class Boat extends Component {
           <div className="overlay-info" onClick={() => handleClickBoat(boat)}>
             <img
               alt="..."
-              src="/img/jacht01-back.jpg"
+              src={boat.images[0]}
             />
             <Badge className="category-info" color="info">{boat.manufacturer}-{boat.model}</Badge>
             <Badge className="ticket-price-info" color="primary">${boat.ticketPrice}</Badge>

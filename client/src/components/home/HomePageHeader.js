@@ -80,7 +80,6 @@ function HomePageHeader() {
                   className="mr-3"
                   color="info"
                   href="/boats"
-                  onClick={(e) => e.preventDefault()}
                   size="lg"
                 >
                   Enter Now
