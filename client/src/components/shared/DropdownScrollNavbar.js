@@ -23,14 +23,14 @@ function DropdownScrollNavbar() {
   React.useEffect(() => {
     const updateNavbarColor = () => {
       if (
-        document.documentElement.scrollTop > 499 ||
-        document.body.scrollTop > 499
+        document.documentElement.scrollTop > 199 ||
+        document.body.scrollTop > 199
       ) {
         setNavbarColor("");
         setBuyButtonColor("info");
       } else if (
-        document.documentElement.scrollTop < 500 ||
-        document.body.scrollTop < 500
+        document.documentElement.scrollTop < 200 ||
+        document.body.scrollTop < 200
       ) {
         setNavbarColor(" navbar-transparent");
         setBuyButtonColor("neutral");
@@ -90,7 +90,7 @@ function DropdownScrollNavbar() {
                   <p>Competitions</p>
                 </DropdownToggle>
                 <DropdownMenu aria-labelledby="navbarDropdownMenuLink1" right>
-                  <DropdownItem to="/" tag={Link} target="_self">
+                  <DropdownItem to="/boats" tag={Link} target="_self">
                     <i className="now-ui-icons design_image"></i>
                     Weekly Dream Boat
                   </DropdownItem>

@@ -79,7 +79,7 @@ function HomePageHeader() {
                 <Button
                   className="mr-3"
                   color="info"
-                  href="#pablo"
+                  href="/boats"
                   onClick={(e) => e.preventDefault()}
                   size="lg"
                 >
