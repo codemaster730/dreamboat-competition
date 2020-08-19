@@ -1,130 +1,61 @@
 import React, { Component } from "react";
-import { Badge, Container, Row, Col } from "reactstrap";
+import { Container, Row } from "reactstrap";
+import axios from "axios";
+
+import Boat from 'components/gallery/Boat.js';
 
 class GalleryBody extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      boats: []
+    }
+  }
 
+  loadBoatsData() {
+    axios
+      .get('/api/boats/boats')
+      .then((res) => {
+        if (res.data.success === true) {
+          this.setState({
+            boats: res.data.boats
+          });
+        } else {
+          console.log(res.data);
+        }
+      }).catch((err) => {
+        console.log(err);
+      });
+  }
 
   componentDidMount() {
-
+    this.loadBoatsData();
   }
 
   componentWillUnmount() {
 
   }
 
-  render() {
+  onClickBoat = (boat) => {
+    console.log(boat);
+  }
 
+  render() {
     return (
       <>
         <div className="section section-sections" data-background-color="white">
           <Container>
-            <div className="section-cols">
-              <Row>
-                <Col md="4">
-                  <div className="overlay-info">
-                    <img
-                      alt="..."
-                      src={require("assets/img/boats/1/332937_-_photo_0_1553618453_1553618454_img.jpg")}
-                    ></img>
-                    <Badge className="category-info" color="info">Trader - 575 Sunliner</Badge>
-                    <Badge className="ticket-price-info" color="primary">3.5$</Badge>
-                    {/* <Badge className="price-info" color="info">CASH: 35000$</Badge> */}
-                  </div>
-                </Col>
-                <Col md="4">
-                  <div className="overlay-info">
-                    <img
-                      alt="..."
-                      src={require("assets/img/boats/3/395300_-_photo_1_1572368229_img.jpg")}
-                    ></img>
-                    <Badge className="category-info" color="info">Trader - 575 Sunliner</Badge>
-                    <Badge className="ticket-price-info" color="primary">3.5$</Badge>
-                    {/* <Badge className="price-info" color="info">CASH: 35000$</Badge> */}
-                  </div>
-                </Col>
-                <Col md="4">
-                  <div className="overlay-info">
-                    <img
-                      alt="..."
-                      src={require("assets/img/boats/1/332937_-_photo_0_1553618453_1553618454_img.jpg")}
-                    ></img>
-                    <Badge className="category-info" color="info">Trader - 575 Sunliner</Badge>
-                    <Badge className="ticket-price-info" color="primary">3.5$</Badge>
-                    {/* <Badge className="price-info" color="info">CASH: 35000$</Badge> */}
-                  </div>
-                </Col>
-              </Row>
-              <Row>
-                <Col md="4">
-                  <div className="overlay-info">
-                    <img
-                      alt="..."
-                      src={require("assets/img/boats/1/332937_-_photo_0_1553618453_1553618454_img.jpg")}
-                    ></img>
-                    <Badge className="category-info" color="info">Trader - 575 Sunliner</Badge>
-                    <Badge className="ticket-price-info" color="warning">3.5$</Badge>
-                    <Badge className="price-info" color="info">CASH: 35000$</Badge>
-                  </div>
-                </Col>
-                <Col md="4">
-                  <div className="overlay-info">
-                    <img
-                      alt="..."
-                      src={require("assets/img/boats/1/332937_-_photo_0_1553618453_1553618454_img.jpg")}
-                    ></img>
-                    <Badge className="category-info" color="info">Trader - 575 Sunliner</Badge>
-                    <Badge className="ticket-price-info" color="warning">3.5$</Badge>
-                    <Badge className="price-info" color="info">CASH: 35000$</Badge>
-                  </div>
-                </Col>
-                <Col md="4">
-                  <div className="overlay-info">
-                    <img
-                      alt="..."
-                      src={require("assets/img/boats/1/332937_-_photo_0_1553618453_1553618454_img.jpg")}
-                    ></img>
-                    <Badge className="category-info" color="info">Trader - 575 Sunliner</Badge>
-                    <Badge className="ticket-price-info" color="warning">3.5$</Badge>
-                    <Badge className="price-info" color="info">CASH: 35000$</Badge>
-                  </div>
-                </Col>
-              </Row>
-              <Row>
-                <Col md="4">
-                  <div className="overlay-info">
-                    <img
-                      alt="..."
-                      src={require("assets/img/boats/1/332937_-_photo_0_1553618453_1553618454_img.jpg")}
-                    ></img>
-                    <Badge className="category-info" color="info">Trader - 575 Sunliner</Badge>
-                    <Badge className="ticket-price-info" color="warning">3.5$</Badge>
-                    {/* <Badge className="price-info" color="info">CASH: 35000$</Badge> */}
-                  </div>
-                </Col>
-                <Col md="4">
-                  <div className="overlay-info">
-                    <img
-                      alt="..."
-                      src={require("assets/img/boats/1/332937_-_photo_0_1553618453_1553618454_img.jpg")}
-                    ></img>
-                    <Badge className="category-info" color="info">Trader - 575 Sunliner</Badge>
-                    <Badge className="ticket-price-info" color="warning">3.5$</Badge>
-                    {/* <Badge className="price-info" color="info">CASH: 35000$</Badge> */}
-                  </div>
-                </Col>
-                <Col md="4">
-                  <div className="overlay-info">
-                    <img
-                      alt="..."
-                      src={require("assets/img/boats/1/332937_-_photo_0_1553618453_1553618454_img.jpg")}
-                    ></img>
-                    <Badge className="category-info" color="info">Trader - 575 Sunliner</Badge>
-                    <Badge className="ticket-price-info" color="warning">3.5$</Badge>
-                    {/* <Badge className="price-info" color="info">CASH: 35000$</Badge> */}
-                  </div>
-                </Col>
-              </Row>
-            </div>
+            { this.state.boats.length > 0 ?
+                <div className="section-cols">
+                  <Row>
+                    {this.state.boats.map(boat => (
+                      <Boat boat={boat} handleClickBoat={this.onClickBoat} />
+                    ))}
+                  </Row>
+                </div>
+              : 
+                <p className="text-primary">No Boats Found</p>
+            }
           </Container>
         </div>
       </>

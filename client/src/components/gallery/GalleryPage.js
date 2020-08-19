@@ -9,7 +9,7 @@ import FooterDefault from "components/shared/FooterDefault.js";
 import GalleryHeader from "components/gallery/GalleryHeader.js";
 import GalleryBody from "components/gallery/GalleryBody.js";
 
-class Gallery extends Component {
+class GalleryPage extends Component {
   onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
@@ -45,7 +45,7 @@ class Gallery extends Component {
   }
 }
 
-Gallery.propTypes = {
+GalleryPage.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
@@ -57,4 +57,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { logoutUser }
-)(Gallery);
+)(GalleryPage);

@@ -89,7 +89,7 @@ class Login extends Component {
           <div
             className="page-header-image"
             style={{
-              backgroundImage: "url(" + require("assets/img/login.jpg") + ")",
+              backgroundImage: "url(" + "/img/login.jpg" + ")"
             }}
           ></div>
           <div className="content">
@@ -102,7 +102,7 @@ class Login extends Component {
                       <div className="logo-container">
                         <img
                           alt="..."
-                          src={require("assets/img/now-logo.png")}
+                          src="/img/now-logo.png"
                         ></img>
                       </div>
                     </CardHeader>

@@ -15,7 +15,7 @@ function HomePageWinner() {
             <div
               className="team-5 section-image"
               style={{
-                backgroundImage: "url(" + require("assets/img/jacht02-back.jpg") + ")",
+                backgroundImage: "url(" + "/img/jacht02-back.jpg" + ")"
               }}
             >
               <Container>
@@ -36,7 +36,7 @@ function HomePageWinner() {
                           <img
                             alt="..."
                             className="img img-raised"
-                            src={require("assets/img/winner-profile3.jpg")}
+                            src="/img/winner-profile3.jpg"
                           ></img>
                         </a>
                       </div>
@@ -60,7 +60,7 @@ function HomePageWinner() {
                           <img
                             alt="..."
                             className="img img-raised"
-                            src={require("assets/img/winner-profile1.jpg")}
+                            src="/img/winner-profile1.jpg"
                           ></img>
                         </a>
                       </div>
@@ -82,7 +82,7 @@ function HomePageWinner() {
                           <img
                             alt="..."
                             className="img img-raised"
-                            src={require("assets/img/winner-profile4.jpg")}
+                            src="/img/winner-profile4.jpg"
                           ></img>
                         </a>
                       </div>

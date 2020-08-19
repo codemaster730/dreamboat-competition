@@ -7,13 +7,12 @@ const Boat = require("../../models/Boat");
 // @route GET api/bpats/boats
 // @desc All Boats List and return Boats
 // @access Public
-router.get("/boats/boats", (res) => {
-
+router.get("/boats", (req, res) => {
   Boat.find({}).then(boats => {
     if (!boats) {
       boats = [];
     }
-    res.json({
+    return res.json({
       success: true,
       boats: boats
     });
