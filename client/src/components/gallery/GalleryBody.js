@@ -8,7 +8,16 @@ import {
   ModalFooter,
   Button,
   Badge,
-  CardBody
+  Col,
+  Card,
+  CardHeader,
+  NavItem,
+  NavLink,
+  Nav,
+  CardBody,
+  TabContent,
+  TabPane,
+  ButtonGroup
 } from "reactstrap";
 
 import Boat from 'components/gallery/Boat.js';
@@ -20,7 +29,9 @@ class GalleryBody extends Component {
     this.state = {
       boats: [],
       boatInfoModal: false,
-      selectedBoat: {}
+      selectedBoat: {},
+      tabs: "1",
+      selectedTicketNumber: 1, 
     }
   }
 
@@ -53,6 +64,11 @@ class GalleryBody extends Component {
     this.setState({boatInfoModal: true, selectedBoat: boat});
   }
 
+  handleReduceTickets() {
+    if (this.state.selectedTicketNumber > 1)
+      this.setState({selectedTicketNumber: this.state.selectedTicketNumber -1});
+  }
+
   render() {
     return (
       <>
@@ -75,6 +91,7 @@ class GalleryBody extends Component {
             toggle={() => this.setState({boatInfoModal: false})}
           >
             <div className="modal-header justify-content-center">
+              <div className="title-boat">{this.state.selectedBoat.manufacturer}-{this.state.selectedBoat.model}</div>
               <button
                 aria-hidden={true}
                 className="close"
@@ -83,32 +100,76 @@ class GalleryBody extends Component {
               >
                 <i className="now-ui-icons ui-1_simple-remove"></i>
               </button>
-              <h4 className="title title-up">Detail Information</h4>
             </div>
             <div className="modal-body">
-              <Carousel boat={this.state.selectedBoat}/>
-              <Row className="details">
-                <Badge className="mr-1" color="info">Cateogory: {this.state.selectedBoat.category}</Badge>
-                <Badge className="mr-1" color="info">Manufacturer: {this.state.selectedBoat.manufacturer}</Badge>
-                <Badge className="mr-1" color="info">Model: {this.state.selectedBoat.model}</Badge>
-                <Badge className="mr-1" color="info">Ticket: {this.state.selectedBoat.ticketPrice}GBP</Badge>
-                <Badge className="mr-1" color="info">Price: {this.state.selectedBoat.price}GBP</Badge>
-                <Badge className="mr-1" color="info">Length: {this.state.selectedBoat.length}</Badge>
-                <Badge color="info">Width: {this.state.selectedBoat.width}</Badge>
+              <Row>
+                <Col md="6" xs="12">
+                  <Carousel boat={this.state.selectedBoat}/>
+                </Col>
+                <Col md="6" xs="12">
+                  <Card>
+                    <CardHeader>
+                      <Nav className="justify-content-center" role="tablist" tabs>
+                        <NavItem>
+                          <NavLink
+                            className={this.state.tabs === "1" ? "active" : ""}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              this.setState({tabs: "1"});
+                            }}
+                          >
+                            Details
+                          </NavLink>
+                        </NavItem>
+                        <NavItem>
+                          <NavLink
+                            className={this.state.tabs === "2" ? "active" : ""}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              this.setState({tabs:"2"});
+                            }}
+                          >
+                            Description
+                          </NavLink>
+                        </NavItem>
+                      </Nav>
+                    </CardHeader>
+                    <CardBody>
+                      <TabContent className="text-center" activeTab={"tabs" + this.state.tabs}>
+                        <TabPane tabId="tabs1">
+                          <Col className="details">
+                            <Row><div className="mr-1 col-6 detail-item"><Badge color="info">Category </Badge></div><div>{this.state.selectedBoat.category}</div></Row>
+                            <Row><div className="mr-1 col-6 detail-item"><Badge color="info">Manufacturer</Badge></div><div>{this.state.selectedBoat.manufacturer}</div></Row>
+                            <Row><div className="mr-1 col-6 detail-item"><Badge color="info">Model</Badge></div><div>{this.state.selectedBoat.model}</div></Row>
+                            <Row><div className="mr-1 col-6 detail-item"><Badge color="info">Ticket</Badge></div><div>£{this.state.selectedBoat.ticketPrice}</div></Row>
+                            <Row><div className="mr-1 col-6 detail-item"><Badge color="info">Price</Badge></div><div>£{this.state.selectedBoat.price}</div></Row>
+                            <Row><div className="mr-1 col-6 detail-item"><Badge color="info">Length</Badge></div><div>{this.state.selectedBoat.length}</div></Row>
+                            <Row><div className="mr-1 col-6 detail-item"><Badge color="info">Width</Badge></div><div>{this.state.selectedBoat.width}</div></Row>
+                          </Col>
+                        </TabPane>
+                        <TabPane tabId="tabs2">
+                          <p>{this.state.selectedBoat.description}</p>
+                        </TabPane>
+                      </TabContent>
+                    </CardBody>
+                  </Card>
+                </Col>
               </Row>
-              {/* <h6 class="category text-info"><i class="now-ui-icons location_bookmark"></i> Manufacturer: {this.state.selectedBoat.manufacturer}</h6>
-              <h6 class="category text-info"><i class="now-ui-icons design_bullet-list-67"></i> Model: {this.state.selectedBoat.model}</h6>
-              <h6 class="category text-info"><i class="now-ui-icons business_money-coins"></i> Ticket: {this.state.selectedBoat.ticketPrice}GBP</h6>
-              <h6 class="category text-info"><i class="now-ui-icons business_money-coins"></i> Price: {this.state.selectedBoat.price}GBP</h6>
-              <h6 class="category text-info"><i class="now-ui-icons design-2_ruler-pencil"></i> Length: {this.state.selectedBoat.length}</h6>
-              <h6 class="category text-info"><i class="now-ui-icons design-2_ruler-pencil"></i> Width: {this.state.selectedBoat.width}</h6> */}
             </div>
             <ModalFooter>
-              <Button color="primary" type="button">
-                Buy Ticket
-              </Button>
-              <Button color="primary" onClick={() => this.setState({boatInfoModal: false})}>
-                Close
+              <Row>
+                <ButtonGroup className="ml-2 mr-2">
+                  <Button id="delete" color="info" size="sm" onClick={() => this.handleReduceTickets()}>
+                    <i className="now-ui-icons ui-1_simple-delete"></i>
+                  </Button>
+                  <Button id="add" color="info" size="sm" onClick={() => this.setState({selectedTicketNumber: this.state.selectedTicketNumber + 1})}>
+                    <i className="now-ui-icons ui-1_simple-add"></i>
+                  </Button>
+                </ButtonGroup>
+                <div className="ticket-number">{this.state.selectedTicketNumber}</div>
+              </Row>
+              <Button className="btn-add-cart" color="primary" onClick={() => this.setState({boatInfoModal: false})}>
+                Add to Cart
               </Button>
             </ModalFooter>
           </Modal>

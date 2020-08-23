@@ -23,14 +23,14 @@ function DropdownScrollNavbar() {
   React.useEffect(() => {
     const updateNavbarColor = () => {
       if (
-        document.documentElement.scrollTop > 199 ||
-        document.body.scrollTop > 199
+        document.documentElement.scrollTop > 99 ||
+        document.body.scrollTop > 99
       ) {
         setNavbarColor("");
         setBuyButtonColor("info");
       } else if (
-        document.documentElement.scrollTop < 200 ||
-        document.body.scrollTop < 200
+        document.documentElement.scrollTop < 100 ||
+        document.body.scrollTop < 100
       ) {
         setNavbarColor(" navbar-transparent");
         setBuyButtonColor("neutral");
