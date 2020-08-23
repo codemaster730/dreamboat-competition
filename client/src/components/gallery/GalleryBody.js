@@ -17,7 +17,8 @@ import {
   CardBody,
   TabContent,
   TabPane,
-  ButtonGroup
+  ButtonGroup,
+  Table
 } from "reactstrap";
 
 import Boat from 'components/gallery/Boat.js';
@@ -29,9 +30,11 @@ class GalleryBody extends Component {
     this.state = {
       boats: [],
       boatInfoModal: false,
+      cartModal: false,
       selectedBoat: {},
       tabs: "1",
-      selectedTicketNumber: 1, 
+      selectedTicketNumber: 1,
+      tempCartItems: [] 
     }
   }
 
@@ -69,6 +72,63 @@ class GalleryBody extends Component {
       this.setState({selectedTicketNumber: this.state.selectedTicketNumber -1});
   }
 
+  addBoatToCart() {
+    this.setState({boatInfoModal: false, cartModal: true});
+    let cartItem = {
+      ...this.state.selectedBoat,
+      ticketNumber: this.state.selectedTicketNumber
+    };
+    this.state.tempCartItems.push(cartItem);
+    console.log(cartItem);
+  }
+
+  renderCartTableData() {
+    return this.state.tempCartItems.map((item) => {
+      const {id, images, manufacturer, model, ticketNumber} = item;
+      return (
+        <tr key={id}>
+          <td>
+            <div className="img-container">
+              <img
+                alt="..."
+                src={images[0]}
+              ></img>
+            </div>
+          </td>
+          <td className="td-name">
+            <a
+              href="#pablo"
+              onClick={(e) => e.preventDefault()}
+            >
+              {manufacturer}
+            </a>
+            <br></br>
+            <small>{model}</small>
+          </td>
+          <td className="td-number">
+            <div className="ticket-number">{ticketNumber}</div>  
+            <ButtonGroup>
+              <Button color="info" size="sm">
+                <i className="now-ui-icons ui-1_simple-delete"></i>
+              </Button>
+              <Button color="info" size="sm">
+                <i className="now-ui-icons ui-1_simple-add"></i>
+              </Button>
+            </ButtonGroup>
+          </td>
+          <td className="td-actions">
+            <Button
+              color="neutral"
+              type="button"
+            >
+              <i className="now-ui-icons ui-1_simple-remove"></i>
+            </Button>
+          </td>
+        </tr>
+      );
+    });
+  }
+
   render() {
     return (
       <>
@@ -87,6 +147,7 @@ class GalleryBody extends Component {
             }
           </Container>
           <Modal
+            className="boatModal"
             isOpen={this.state.boatInfoModal}
             toggle={() => this.setState({boatInfoModal: false})}
           >
@@ -168,8 +229,41 @@ class GalleryBody extends Component {
                 </ButtonGroup>
                 <div className="ticket-number">{this.state.selectedTicketNumber}</div>
               </Row>
-              <Button className="btn-add-cart" color="primary" onClick={() => this.setState({boatInfoModal: false})}>
+              <Button className="btn-add-cart" color="primary" onClick={() => this.addBoatToCart()}>
                 Add to Cart
+              </Button>
+            </ModalFooter>
+          </Modal>
+          <Modal
+            className="cartModal"
+            isOpen={this.state.cartModal}
+            toggle={() => this.setState({cartModal: false})}
+          >
+            <div className="modal-header justify-content-center">
+              <div className="title-boat">CART</div>
+              <button
+                aria-hidden={true}
+                className="close"
+                onClick={() => this.setState({cartModal: false})}
+                type="button"
+              >
+                <i className="now-ui-icons ui-1_simple-remove"></i>
+              </button>
+            </div>
+            <div className="modal-body">
+              <Row>
+                <Table className="table-shopping" responsive>
+                  <tbody>
+                    {
+                      this.renderCartTableData()
+                    }
+                  </tbody>
+                </Table>
+              </Row>
+            </div>
+            <ModalFooter>
+              <Button className="btn-add-cart" color="primary">
+                Proceed To Play
               </Button>
             </ModalFooter>
           </Modal>
