@@ -63,7 +63,6 @@ class GalleryBody extends Component {
   }
 
   onClickBoat = (boat) => {
-    console.log(boat);
     this.setState({boatInfoModal: true, selectedBoat: boat});
   }
 
@@ -79,7 +78,6 @@ class GalleryBody extends Component {
       ticketNumber: this.state.selectedTicketNumber
     };
     this.state.tempCartItems.push(cartItem);
-    console.log(cartItem);
   }
 
   renderCartTableData() {
@@ -105,23 +103,26 @@ class GalleryBody extends Component {
             <br></br>
             <small>{model}</small>
           </td>
+          <td class="td-number">{ticketNumber}
+            <div role="group" class="btn-group">
+              <button class="btn btn-info btn-sm">
+                <i class="now-ui-icons ui-1_simple-delete"></i>
+              </button>
+              <button class="btn btn-info btn-sm">
+                <i class="now-ui-icons ui-1_simple-add"></i>
+              </button>
+            </div>
+          </td>
           <td className="td-number">
-            <div className="ticket-number">{ticketNumber}</div>  
-            <ButtonGroup>
-              <Button color="info" size="sm">
-                <i className="now-ui-icons ui-1_simple-delete"></i>
-              </Button>
-              <Button color="info" size="sm">
-                <i className="now-ui-icons ui-1_simple-add"></i>
-              </Button>
-            </ButtonGroup>
+            <small>€</small>
+            549
           </td>
           <td className="td-actions">
             <Button
               color="neutral"
               type="button"
             >
-              <i className="now-ui-icons ui-1_simple-remove"></i>
+              <i className="now-ui-icons ui-1_simple-delete"></i>
             </Button>
           </td>
         </tr>
@@ -235,7 +236,7 @@ class GalleryBody extends Component {
             </ModalFooter>
           </Modal>
           <Modal
-            className="cartModal"
+            className="modal-cart"
             isOpen={this.state.cartModal}
             toggle={() => this.setState({cartModal: false})}
           >
@@ -252,7 +253,7 @@ class GalleryBody extends Component {
             </div>
             <div className="modal-body">
               <Row>
-                <Table className="table-shopping" responsive>
+                <Table className="table-cart" responsive>
                   <tbody>
                     {
                       this.renderCartTableData()

@@ -197,6 +197,67 @@ li.nav-item .shopping_cart {
   padding-bottom: 0 !important;
 }
 
+.gallery-page .table-cart .img-container {
+  width: 240px;
+  max-height: 160px;
+  overflow: hidden;
+  display: block;
+}
+
+.gallery-page .table-cart .img-container img{
+  width: 100%;
+}
+
+.gallery-page .table-cart .td-name {
+  font-weight: 400;
+  font-size: 1.5em;
+  min-width: 200px;
+}
+
+.gallery-page .table-cart > tbody > tr > td {
+  font-size: 1.2em;
+}
+
+.gallery-page .table-cart .td-name small {
+  color: #9A9A9A;
+  font-size: 0.75em;
+  font-weight: 300;
+}
+
+.gallery-page .table-cart .td-number {
+  text-align: right;
+  min-width: 145px;
+  font-weight: 300;
+  font-size: 1.5em;
+}
+
+.gallery-page .table-cart .td-name a {
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  color: #444;
+}
+
+.gallery-page .table-cart .td-number {
+  font-size: 1.5em !important;
+}
+
+.gallery-page .table-cart .td-number .btn-group{
+  margin-left: 15px !important;
+}
+
+.modal-cart .modal-body{
+  max-height: 500px !important;
+  overflow-y: scroll;
+}
+
+.modal-cart .modal-footer {
+  padding-top: 16px !important;
+}
+
+.modal-cart .modal-header {
+  height: 80px !important;
+}
+
 @media screen and (min-width: 992px) {
   .gallery-page .modal-dialog {
     max-width: 70% !important;
