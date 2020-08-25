@@ -71,13 +71,38 @@ class GalleryBody extends Component {
       this.setState({selectedTicketNumber: this.state.selectedTicketNumber -1});
   }
 
+  updateTicketsInCart(cartItemId, ticketNum, add) {
+    if (add) ticketNum = ticketNum + 1;
+    else {
+      if (ticketNum > 1) ticketNum = ticketNum - 1;
+    }
+    this.setState(state => {
+      const list = state.tempCartItems.map(item => {
+        if (item._id === cartItemId)
+          item.ticketNumber = ticketNum;
+        return item;
+      });
+      return {list}
+    })
+  }
+
+  removeBoatFromCart(itemId) {
+    this.setState(state => {
+      const list = state.tempCartItems.filter((item) => itemId !== item.id);
+      return {
+        list
+      };
+    });
+    console.log(this.state.tempCartItems);
+  }
+
   addBoatToCart() {
-    this.setState({boatInfoModal: false, cartModal: true});
     let cartItem = {
       ...this.state.selectedBoat,
       ticketNumber: this.state.selectedTicketNumber
     };
-    
+    this.setState({boatInfoModal: false, cartModal: true, selectedTicketNumber:1});
+
     if (this.state.tempCartItems.length > 0) {
       let isFound = false;
       this.state.tempCartItems.forEach(item => {
@@ -95,9 +120,9 @@ class GalleryBody extends Component {
 
   renderCartTableData() {
     return this.state.tempCartItems.map((item) => {
-      const {id, images, manufacturer, model, ticketNumber} = item;
+      const {_id, images, manufacturer, model, ticketNumber, ticketPrice} = item;
       return (
-        <tr key={id}>
+        <tr key={_id}>
           <td>
             <div className="img-container">
               <img
@@ -116,24 +141,25 @@ class GalleryBody extends Component {
             <br></br>
             <small>{model}</small>
           </td>
-          <td class="td-number">{ticketNumber}
-            <div role="group" class="btn-group">
-              <button class="btn btn-info btn-sm">
-                <i class="now-ui-icons ui-1_simple-delete"></i>
+          <td className="td-number">{ticketNumber}
+            <div role="group" className="btn-group">
+              <button className="btn btn-info btn-sm" onClick={() => this.updateTicketsInCart(_id, ticketNumber, false)}>
+                <i className="now-ui-icons ui-1_simple-delete"></i>
               </button>
-              <button class="btn btn-info btn-sm">
-                <i class="now-ui-icons ui-1_simple-add"></i>
+              <button className="btn btn-info btn-sm">
+                <i className="now-ui-icons ui-1_simple-add" onClick={() => this.updateTicketsInCart(_id, ticketNumber, true)}></i>
               </button>
             </div>
           </td>
           <td className="td-number">
-            <small>€</small>
-            549
+            <small>£</small>
+            {ticketNumber * ticketPrice}
           </td>
           <td className="td-actions">
             <Button
               color="neutral"
               type="button"
+              onClick={() => this.removeBoatFromCart(_id)}
             >
               <i className="now-ui-icons ui-1_simple-delete"></i>
             </Button>
@@ -163,14 +189,14 @@ class GalleryBody extends Component {
           <Modal
             className="boatModal"
             isOpen={this.state.boatInfoModal}
-            toggle={() => this.setState({boatInfoModal: false})}
+            toggle={() => this.setState({boatInfoModal: false, selectedTicketNumber: 1})}
           >
             <div className="modal-header justify-content-center">
               <div className="title-boat">{this.state.selectedBoat.manufacturer}-{this.state.selectedBoat.model}</div>
               <button
                 aria-hidden={true}
                 className="close"
-                onClick={() => this.setState({boatInfoModal: false})}
+                onClick={() => this.setState({boatInfoModal: false, selectedTicketNumber: 1})}
                 type="button"
               >
                 <i className="now-ui-icons ui-1_simple-remove"></i>
