@@ -34,7 +34,7 @@ class GalleryBody extends Component {
       selectedBoat: {},
       tabs: "1",
       selectedTicketNumber: 1,
-      tempCartItems: [] 
+      tempCartItems: []
     }
   }
 
@@ -77,7 +77,20 @@ class GalleryBody extends Component {
       ...this.state.selectedBoat,
       ticketNumber: this.state.selectedTicketNumber
     };
-    this.state.tempCartItems.push(cartItem);
+    
+    if (this.state.tempCartItems.length > 0) {
+      let isFound = false;
+      this.state.tempCartItems.forEach(item => {
+        if (item._id === cartItem._id) {
+          item.ticketNumber += cartItem.ticketNumber;  
+          isFound = true;        
+        } 
+      });
+      if (!isFound) 
+        this.state.tempCartItems.push(cartItem);
+    } else {
+      this.state.tempCartItems.push(cartItem);
+    }
   }
 
   renderCartTableData() {
