@@ -34,7 +34,8 @@ class GalleryBody extends Component {
       selectedBoat: {},
       tabs: "1",
       selectedTicketNumber: 1,
-      tempCartItems: []
+      tempCartItems: [],
+      isCartOpened: false
     }
   }
 
@@ -54,6 +55,15 @@ class GalleryBody extends Component {
       });
   }
 
+  componentWillReceiveProps(nextProps) {
+
+    if (nextProps.isCartOpened) {
+      this.setState({
+        isCartOpened: nextProps.isCartOpened
+      });
+    }
+  }
+
   componentDidMount() {
     this.loadBoatsData();
   }
@@ -65,6 +75,7 @@ class GalleryBody extends Component {
   onClickBoat = (boat) => {
     this.setState({boatInfoModal: true, selectedBoat: boat});
   }
+
 
   handleReduceTickets() {
     if (this.state.selectedTicketNumber > 1)
@@ -276,15 +287,15 @@ class GalleryBody extends Component {
           </Modal>
           <Modal
             className="modal-cart"
-            isOpen={this.state.cartModal}
-            toggle={() => this.setState({cartModal: false})}
+            isOpen={this.state.cartModal || this.state.isCartOpened}
+            toggle={() => this.setState({cartModal: false, isCartOpened: false})}
           >
             <div className="modal-header justify-content-center">
               <div className="title-boat">CART</div>
               <button
                 aria-hidden={true}
                 className="close"
-                onClick={() => this.setState({cartModal: false})}
+                onClick={() => this.setState({cartModal: false, isCartOpened: false})}
                 type="button"
               >
                 <i className="now-ui-icons ui-1_simple-remove"></i>

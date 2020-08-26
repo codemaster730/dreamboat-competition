@@ -16,7 +16,7 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 
-function DropdownScrollNavbar() {
+function DropdownScrollNavbar(props) {
   const [collapseOpen, setCollapseOpen] = React.useState(false);
   const [navbarColor, setNavbarColor] = React.useState(" navbar-transparent");
   const [buyButtonColor, setBuyButtonColor] = React.useState("neutral");
@@ -41,6 +41,7 @@ function DropdownScrollNavbar() {
       window.removeEventListener("scroll", updateNavbarColor);
     };
   });
+
   return (
     <>
       {collapseOpen ? (
@@ -196,9 +197,8 @@ function DropdownScrollNavbar() {
               <NavItem>
                 <Button
                   className="nav-link btn-default"
+                  onClick={() => props.onClickCart()}
                   color={buyButtonColor}
-                  href="#"
-                  target="_blank"
                 >
                   <i className="now-ui-icons shopping_box"></i>
                   <p className="shopping_cart">CART</p>

@@ -10,6 +10,12 @@ import GalleryHeader from "components/gallery/GalleryHeader.js";
 import GalleryBody from "components/gallery/GalleryBody.js";
 
 class GalleryPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isCartOpened: false
+    }
+  }
   onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
@@ -30,14 +36,18 @@ class GalleryPage extends Component {
     document.body.classList.remove("sidebar-collapse");
   }
 
+  onClickCart = () => {
+    this.setState({isCartOpened: true});    
+  }
+
   render() {
     // const { user } = this.props.auth;
     return (
       <>
-        <DropdownScrollNavbar />
+        <DropdownScrollNavbar onClickCart={this.onClickCart}/>
         <div className="wrapper">
           <GalleryHeader />
-          <GalleryBody />
+          <GalleryBody isCartOpened={this.state.isCartOpened}/>
           <FooterDefault />
         </div>
       </>
