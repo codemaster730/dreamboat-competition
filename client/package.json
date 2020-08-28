@@ -9,6 +9,7 @@
     "moment": "2.26.0",
     "node-sass": "^4.14.1",
     "nouislider": "14.5.0",
+    "query-string": "^6.13.1",
     "react": "^16.6.3",
     "react-bootstrap-switch": "15.5.3",
     "react-datetime": "2.16.3",

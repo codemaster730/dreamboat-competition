@@ -34,12 +34,17 @@ class Login extends Component {
       errors: {},
       firstFocus: false,
       lastFocus: false,
+      redirectUrl: ''
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
-      this.props.history.push("/"); // push user to home page when they login
+      if (this.state.redirectUrl && this.state.redirectUrl !== '') {
+        this.props.history.push("/" + this.state.redirectUrl);
+      } else {
+        this.props.history.push("/"); // push user to home page when they login
+      }
     }
 
     if (nextProps.errors) {
@@ -50,6 +55,10 @@ class Login extends Component {
   }
 
   componentDidMount() {
+    const queryString = require('query-string');
+    const parsed = queryString.parse(this.props.location.search);
+    this.setState({redirectUrl: parsed.redirectUrl});
+    
     // If logged in and user navigates to Login page, should redirect them to home
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/");
@@ -89,7 +98,7 @@ class Login extends Component {
           <div
             className="page-header-image"
             style={{
-              backgroundImage: "url(" + "/img/login.jpg" + ")"
+              backgroundImage: "url(/img/login.jpg)"
             }}
           ></div>
           <div className="content">

@@ -16,6 +16,7 @@ class GalleryPage extends Component {
       isCartOpened: false
     }
   }
+
   onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
@@ -40,6 +41,17 @@ class GalleryPage extends Component {
     this.setState({isCartOpened: true});    
   }
 
+  onClickToPlay = (cartItems) => {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/spot-the-ball");
+    } else {
+      this.props.history.push({
+        pathname: '/login',
+        search: 'redirectUrl=spot-the-ball'
+      });
+    }
+  }
+
   render() {
     // const { user } = this.props.auth;
     return (
@@ -47,7 +59,7 @@ class GalleryPage extends Component {
         <DropdownScrollNavbar onClickCart={this.onClickCart}/>
         <div className="wrapper">
           <GalleryHeader />
-          <GalleryBody isCartOpened={this.state.isCartOpened}/>
+          <GalleryBody isCartOpened={this.state.isCartOpened} onClickToPlay={this.onClickToPlay}/>
           <FooterDefault />
         </div>
       </>
