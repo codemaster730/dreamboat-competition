@@ -27,7 +27,11 @@ router.post("/addItems", (req, res) => {
         .then(item => {
           total--;
           if (total === 0) {
-            return res.status(200).json({success: "Saved all items"});
+            CartItem.find({}).then(items => {
+              return res.status(200).json(items);
+            }).catch(err => {
+              console.log(err);
+            });
           }
         }).catch(err => {
           console.log(err);

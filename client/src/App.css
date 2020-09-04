@@ -282,3 +282,52 @@ li.nav-item .shopping_cart {
   }
 }
 
+/* Spot Ball */
+
+.spot-ball-page {
+  max-height: 30vh !important;
+  min-height: 30vh !important;
+
+}
+
+.spot-ball-page .title {
+  padding-top: 20px !important;
+
+}
+
+.spot-ball-page .game-container {
+  min-width: 1300px !important;
+}
+
+.spot-ball-page .tools-container {
+  display: inline-block;
+  margin-left: 20px;
+}
+
+.spot-ball-page #spotImageWrapper {
+  position: relative;
+  margin: 0 20px 20px 20px !important;  
+  cursor: none;
+  width: 736px;
+  height: 556px;
+}
+
+.spot-ball-page #spotImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  width: 736px;
+  height: 556px;
+}
+
+.spot-ball-page #spotSidebar {
+  width: 365px;
+  float: right;
+  height: 554px;
+  background-color: #ffffff;
+  color: #666666;
+  position: relative;
+  margin-bottom: 60px;
+}

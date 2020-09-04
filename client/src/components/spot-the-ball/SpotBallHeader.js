@@ -28,7 +28,7 @@ function SpotBallHeader() {
   });
   return (
     <>
-      <div className="gallery-page page-header page-header-small">
+      <div className="spot-ball-page page-header page-header-small">
         <div
           className="page-header-image"
           style={{
@@ -39,12 +39,12 @@ function SpotBallHeader() {
         <Container className="gallery-page-header">
           <Row>
             <Col className="text-center">
-              <h2 className="title">SPOT THE BALL - WIN YOUR DREAM BOATS</h2>
+              <h2 className="title">SPOT THE BALL</h2>
             </Col>
           </Row>
           <Row>
             <Col className="text-center">
-              <h3>YOU ARE ONE STEP AWAY FROM FROM WINNING BOAT</h3>
+              <h3>YOU ARE ONE STEP AWAY FROM FROM WINNING YOUR BOATS</h3>
             </Col>
           </Row>
         </Container>

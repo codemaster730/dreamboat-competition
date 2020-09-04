@@ -44,12 +44,15 @@ export const addItem = item => dispatch => {
     );
 };
 
-// POST Cart Item tp DB
+// POST Cart Item to DB
 export const addItems = items => dispatch => {
   axios
     .post("/api/carts/addItems", items)
     .then(res => {
-      console.log(res);
+      dispatch({
+        type: SAVE_ITEMS,
+        payload: res.data
+      })
     })
     .catch(err =>
       dispatch({

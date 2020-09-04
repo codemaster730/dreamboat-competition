@@ -105,7 +105,7 @@ class Register extends Component {
           <div
             className="page-header-image"
             style={{
-              backgroundImage: "url(" + "/img/login.jpg" + ")"
+              backgroundImage: "url(/img/login.jpg)"
             }}
           ></div>
           <div className="content">

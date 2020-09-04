@@ -41,7 +41,7 @@ function GalleryHeader() {
         <div
           className="page-header-image"
           style={{
-            backgroundImage: "url(" + "/img/jacht03-back.jpg" + ")"
+            backgroundImage: "url(/img/jacht03-back.jpg)"
           }}
           ref={pageHeader}
         ></div>
