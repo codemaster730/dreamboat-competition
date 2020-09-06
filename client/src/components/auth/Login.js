@@ -43,7 +43,7 @@ class Login extends Component {
       if (this.state.redirectUrl && this.state.redirectUrl !== '') {
         this.props.history.push("/" + this.state.redirectUrl);
       } else {
-        this.props.history.push("/"); // push user to home page when they login
+        this.props.history.push("/boats"); // push user to home page when they login
       }
     }
 
@@ -61,7 +61,7 @@ class Login extends Component {
     
     // If logged in and user navigates to Login page, should redirect them to home
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push("/");
+      this.props.history.push("/boats");
     }
     document.body.classList.add("login-page");
     document.body.classList.add("sidebar-collapse");

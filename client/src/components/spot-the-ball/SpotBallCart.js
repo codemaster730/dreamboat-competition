@@ -3,7 +3,9 @@ import React, { Component }  from 'react';
 // reactstrap components
 import {
   Button,
-  Table
+  CardBody,
+  Row,
+  Col
 } from "reactstrap";
 
 // core components
@@ -12,85 +14,98 @@ class SpotBallCart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cartItems: []
+
     }
   }
 
 
   componentDidMount() {
-    
+
   }
 
   componentWillUnmount() {
 
   }
 
-  renderCartTableData() {
-    return this.state.cartItems.map((item) => {
-      const {boatId, images, manufacturer, model, ticketNumber, ticketPrice} = item;
-      return (
-        <tr key={boatId}>
-          <td>
-            <div className="img-container">
-              <img
-                alt="..."
-                src={images[0]}
-              ></img>
-            </div>
-          </td>
-          <td className="td-name">
-            <a
-              href="#pablo"
-              onClick={(e) => e.preventDefault()}
-            >
-              {manufacturer}
-            </a>
-            <br></br>
-            <small>{model}</small>
-          </td>
-          <td className="td-number">{ticketNumber}
-            <div role="group" className="btn-group">
-              <button className="btn btn-info btn-sm" onClick={() => this.updateTicketsInCart(boatId, ticketNumber, false)}>
-                <i className="now-ui-icons ui-1_simple-delete"></i>
-              </button>
-              <button className="btn btn-info btn-sm">
-                <i className="now-ui-icons ui-1_simple-add" onClick={() => this.updateTicketsInCart(boatId, ticketNumber, true)}></i>
-              </button>
-            </div>
-          </td>
-          <td className="td-number">
-            <small>£</small>
-            {ticketNumber * ticketPrice}
-          </td>
-          <td className="td-actions">
-            <Button
-              color="neutral"
-              type="button"
-              onClick={() => this.removeBoatFromCart(boatId)}
-            >
-              <i className="now-ui-icons ui-1_simple-delete"></i>
-            </Button>
-          </td>
-        </tr>
-      );
-    });
+  componentWillReceiveProps() {
+
+  }
+
+  renderCartItems() {
+    if (this.props.cartItems.length > 0) {
+      let tickets = [];
+      this.props.cartItems.forEach((item) => {
+        let i = 0;
+        const ticketNum = item.ticketNumber;
+        while (i < ticketNum) {
+          tickets.push({...item, ticketNo: i + 1});
+          i++;
+        }
+      });
+      return tickets.map((item) => {
+        const {images, manufacturer, model, ticketNo} = item;
+        return (
+          <div className="cart-item">
+            <Row>
+              <Col xs="5">
+                <div className="card-image">
+                  <a
+                    href="#pablo"
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    <img
+                      alt="..."
+                      className="img"
+                      src={images[0]}
+                    ></img>
+                  </a>
+                </div>
+              </Col>
+              <Col xs="7" style={{padding: 0}}>
+                <CardBody style={{padding: '2px 15px 0 0'}}>
+                  <h6 className="play-count-label">{ticketNo + ' of ' + item.ticketNumber}</h6>
+                  <h6 className="card-title">{manufacturer}</h6>
+                  <h6 className="category text-info">{model}</h6>
+                </CardBody>
+              </Col>  
+            </Row>
+            <Row className="cart-actions">
+              <Button
+                className="btn-round play"
+                onClick={(e) => e.preventDefault()}
+              >
+                <i className="now-ui-icons loader_refresh spin"></i> In Play
+              </Button>
+              <Button
+                className="btn-round add"
+                onClick={(e) => e.preventDefault()}
+              >
+                <i className="now-ui-icons ui-1_simple-add"></i> Add
+              </Button>
+              <Button
+                className="btn-round remove"
+                onClick={(e) => e.preventDefault()}
+              >
+                <i className="now-ui-icons ui-1_simple-remove"></i> Remove
+              </Button>
+            </Row>
+          </div>
+        )
+      });
+    } else return []; 
   }
 
   render() {
-    console.log("Cart Items ->", this.state.cartItems);
     return (
       <>
-        <Table className="table-cart" responsive>
-          <tbody>
-            {
-              this.renderCartTableData()
-            }
-          </tbody>
-        </Table>
+        <div className="cart-container">
+          {
+            this.renderCartItems()
+          }
+        </div>
       </>
     );
   }
-
 }
 
 export default SpotBallCart

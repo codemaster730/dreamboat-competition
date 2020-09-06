@@ -29,7 +29,6 @@ class SpotBallMain extends Component {
   }
 
   componentDidMount() {
-
     document.body.classList.add("spot-ball-page");
     document.body.classList.add("sidebar-collapse");
     document.documentElement.classList.remove("nav-open");
@@ -38,10 +37,11 @@ class SpotBallMain extends Component {
 
     if (this.props.auth.isAuthenticated) {
       const cartItems = this.props.cart.cartItems;
-      if (cartItems.length > 0) {
-        console.log("DID_MOUNT_Cart Items : ", cartItems);
+      if (cartItems.length > 0) { 
         this.props.addItems(cartItems);
-        this.setState({cartItems: cartItems});
+        this.setState({cartItems: cartItems}, () => {
+          console.log("DID_MOUNT_Cart Items : ", this.state.cartItems);
+        });
       } else {
         this.props.history.push("/boats");
       }
@@ -83,7 +83,7 @@ class SpotBallMain extends Component {
                           e.preventDefault();
                           this.setState({selectedTool: "1"});
                         }}
-                      ><i class="now-ui-icons design-2_ruler-pencil"></i>
+                      ><i className="now-ui-icons design-2_ruler-pencil"></i>
                         Draw Lines
                       </NavLink>
                     </NavItem>
@@ -137,7 +137,7 @@ class SpotBallMain extends Component {
                 <div 
                   id="spotImage" 
                   style={{ 
-                    backgroundImage: "url(" + "/img/spot-the-ball/game/1.jpg" + ")",
+                    backgroundImage: "url(/img/spot-the-ball/game/1.jpg)",
                     opacity: '1'
                   }}>
                 </div>
@@ -152,7 +152,6 @@ class SpotBallMain extends Component {
       </>
     );
   }
-
 }
 
 SpotBallMain.propTypes = {

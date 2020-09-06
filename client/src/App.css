@@ -170,11 +170,16 @@ li.nav-item .shopping_cart {
   font-size: 1em !important;
 }
 
-.gallery-page .modal-dialog .ui-1_simple-delete, .ui-1_simple-add, .ticket-number {
+.gallery-page .modal-dialog .ui-1_simple-delete{
   font-size: 1.8em !important;
 }
 
-.gallery-page .modal-dialog .ticket-number {
+.gallery-page .modal-dialog .ui-1_simple-add{
+  font-size: 1.8em !important;
+}
+
+.gallery-page .modal-dialog .ticket-number{
+  font-size: 1.8em !important;
   color: #f96332;
 }
 
@@ -323,11 +328,47 @@ li.nav-item .shopping_cart {
 }
 
 .spot-ball-page #spotSidebar {
-  width: 365px;
+  width: 315px;
   float: right;
   height: 554px;
   background-color: #ffffff;
   color: #666666;
   position: relative;
+  overflow-x: hidden; 
+  overflow-y: scroll;
   margin-bottom: 60px;
+}
+
+.spot-ball-page .cart-actions button{
+  width: 90px !important;
+  padding: 5px 0px !important;
+  background-color: #2CA8FF;
+  margin-right: 8px !important;
+}
+
+.spot-ball-page .cart-actions {
+  padding-left: 12px !important;
+  margin-top: -6px !important;
+}
+
+.spot-ball-page .play-count-label{
+  color: #f96332;
+}
+
+.spot-ball-page .cart-item{
+  padding: 8px 8px 0 8px;
+  margin: 0 0 5px 0;
+  border: 1px solid #c5c5c5;
+}
+
+.spot-ball-page .card-title {
+  margin-bottom: 8px !important;
+}
+
+.spot-ball-page .cart-actions .remove{
+  background-color: #f96332;
+}
+
+.spot-ball-page .cart-actions .add{
+  background-color: #FFB236;
 }
