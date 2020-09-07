@@ -24,7 +24,8 @@
     "reactstrap": "8.4.1",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "rellax": "1.12.1"
+    "rellax": "1.12.1",
+    "d3": "^6.1.1"
   },
   "scripts": {
     "start": "cross-env NODE_PATH=./src react-scripts start",

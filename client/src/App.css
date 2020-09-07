@@ -312,7 +312,6 @@ li.nav-item .shopping_cart {
 .spot-ball-page #spotImageWrapper {
   position: relative;
   margin: 0 20px 20px 20px !important;  
-  cursor: none;
   width: 736px;
   height: 556px;
 }

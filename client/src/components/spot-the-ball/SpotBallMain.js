@@ -17,6 +17,7 @@ import DropdownScrollNavbar from "components/shared/DropdownScrollNavbar.js";
 import FooterDefault from "components/shared/FooterDefault.js";
 import SpotBallHeader from './SpotBallHeader';
 import SpotBallCart from './SpotBallCart';
+import SpotBallPlay from './SpotBallPlay';
 
 class SpotBallMain extends Component {
   constructor(props) {
@@ -134,13 +135,11 @@ class SpotBallMain extends Component {
                   </Nav>
               </div>
               <div id="spotImageWrapper">
-                <div 
-                  id="spotImage" 
-                  style={{ 
-                    backgroundImage: "url(/img/spot-the-ball/game/1.jpg)",
-                    opacity: '1'
-                  }}>
-                </div>
+                <div id="botbSpotGameWrapper" >
+                  <div id ='botbSpotImageWrapper'  >
+                 <SpotBallPlay />    
+                  </div>
+                </div>   
               </div>
               <div id="spotSidebar"> 
                 <SpotBallCart cartItems={this.state.cartItems}/>
