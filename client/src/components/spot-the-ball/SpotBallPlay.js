@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { addItems } from "../../actions/cartActions";
 import * as d3 from 'd3';
-import '../../App1.css';
+import '../spot-the-ball/SpotBall.css';
 
 class SpotBallPlay extends Component {
   constructor(props) {
@@ -21,11 +21,11 @@ class SpotBallPlay extends Component {
   }
 
   componentDidMount() {
-
+    this.props.onRef(this)
   }
 
   componentWillUnmount() {
-
+    this.props.onRef(undefined)
   }
 
   _onMouseMove_Z(e) {
@@ -38,7 +38,6 @@ class SpotBallPlay extends Component {
     const boundOutChk = (cur_x<0) || (cur_y<0) ;
     //moving zoom
     if(lengs >= 28 && !boundOutChk){
-      //alert(d3.select("#botbSpotLens").attr("width"));
       var movex = Math.round(this.state.move_x + offsX * (lengs - 28) / lengs);
       var movey = Math.round(this.state.move_y + offsY * (lengs - 28) / lengs);
       this.setState({ move_x: movex, move_y: movey});
@@ -55,22 +54,25 @@ class SpotBallPlay extends Component {
       var delt_x = cur_x - this.state.x;
       var delt_y = cur_y - this.state.y;
       
-      var last_x = this.state.x + 800*Math.sign(delt_x);
-      var last_y = this.state.y + 800*Math.abs(delt_y/delt_x)*Math.sign(delt_y);
-
-      d3.select("#ltest")
-            .attr("d", "M"+this.state.x+","+this.state.y+"L"+last_x+","+last_y)
-            .attr("stroke-width", 1)
-            .attr("fill", "none");
-      d3.select("#ltestz")
-            .attr("d", "M"+(this.state.x*4)+","+(this.state.y*4)+"L"+(last_x*4)+","+(last_y*4))
-            .attr("stroke-width", 1)
-            .attr("fill", "none");
+      if(!(delt_x===0 && delt_y===0)){
+        var delt_normal = delt_y/delt_x;
+        var last_x = this.state.x + Math.cos(Math.atan(delt_normal))*800 *Math.sign(delt_x);
+        var last_y = this.state.y + Math.sin(Math.atan(delt_normal))*800 *Math.sign(delt_x);
+        d3.select("#ltest")
+              .attr("d", "M"+this.state.x+","+this.state.y+"L"+last_x+","+last_y)
+              .attr("stroke-width", 1)
+              .attr("fill", "none");
+        d3.select("#ltestz")
+              .attr("d", "M"+(this.state.x*4)+","+(this.state.y*4)+"L"+(last_x*4)+","+(last_y*4))
+              .attr("stroke-width", 1)
+              .attr("fill", "none");
+      }
     }
     d3.select(".live_coordinates")
             .html("X:"+cur_x+"&nbsp;&nbsp;Y:"+cur_y);
             
   }
+
   _onMouseMove(e) {
     var cur_x = e.nativeEvent.offsetX;
     var cur_y = e.nativeEvent.offsetY;
@@ -127,25 +129,29 @@ class SpotBallPlay extends Component {
     var delt_x = cur_x - this.state.x;
     var delt_y = cur_y - this.state.y;
     
-    var last_x = this.state.x + 800*Math.sign(delt_x);
-    var last_y = this.state.y + 800*Math.abs(delt_y/delt_x)*Math.sign(delt_y);
     if(this.state.pen_chk){// create line
-      d3.select("#drawSVG").append("path")
-                          .attr("d", "M"+this.state.x+","+this.state.y+"L"+last_x+","+last_y)
-                          .attr("stroke", this.state.cur_color)
-                          .attr("stroke-width", 1)
-                          .attr("class","straight_line")
-                          .attr("fill", "none");
-      last_x *=4;
-      last_y *=4;
-      var org_x = 4* this.state.x;
-      var org_y = 4* this.state.y;
-      d3.select("#zoomSVG").append("path")
-                          .attr("d", "M"+org_x+","+org_y+"L"+last_x+","+last_y)
-                          .attr("stroke", this.state.cur_color)
-                          .attr("stroke-width", 1)
-                          .attr("class","straight_line")
-                          .attr("fill", "none");
+      if(!(delt_x===0 && delt_y===0)){
+        var delt_normal = delt_y/delt_x;
+        var last_x = this.state.x + Math.cos(Math.atan(delt_normal))*800 *Math.sign(delt_x);
+        var last_y = this.state.y + Math.sin(Math.atan(delt_normal))*800 *Math.sign(delt_x);
+        
+        d3.select("#drawSVG").append("path")
+                            .attr("d", "M"+this.state.x+","+this.state.y+"L"+last_x+","+last_y)
+                            .attr("stroke", this.state.cur_color)
+                            .attr("stroke-width", 1)
+                            .attr("class","straight_line")
+                            .attr("fill", "none");
+        last_x *=4;
+        last_y *=4;
+        var org_x = 4* this.state.x;
+        var org_y = 4* this.state.y;
+        d3.select("#zoomSVG").append("path")
+                            .attr("d", "M"+org_x+","+org_y+"L"+last_x+","+last_y)
+                            .attr("stroke", this.state.cur_color)
+                            .attr("stroke-width", 1)
+                            .attr("class","straight_line")
+                            .attr("fill", "none");
+      }
     }else{//create plus mark
       var plus_size = 10;
       d3.select("#drawSVG").append("path")
@@ -168,6 +174,35 @@ class SpotBallPlay extends Component {
     
   }
 
+  handlePenToggle = () => {
+    this.setState({pen_chk:false});
+  }
+
+  handleLineToggle = () => {
+    this.setState({pen_chk:true});
+  }
+
+  handleUndoEvent = () => {
+    d3.select("#drawSVG path.straight_line:last-child").remove();
+    d3.select("#zoomSVG path.straight_line:last-child").remove();
+    //d3.select("path.straight_line").remove();
+  }
+
+  handleClearEvent = () => {
+    d3.select("#drawSVG").selectAll(".straight_line").remove();
+    d3.select("#zoomSVG").selectAll(".straight_line").remove();
+  }
+
+  handleShowHideToggle = () => {
+    this.setState({show_chk:!this.state.show_chk});
+    if(this.state.show_chk){
+      d3.select("#drawSVG").selectAll(".straight_line").attr("display","block");
+      d3.select("#zoomSVG").selectAll(".straight_line").attr("display","block");
+    }else{
+      d3.select("#drawSVG").selectAll(".straight_line").attr("display","none");
+      d3.select("#zoomSVG").selectAll(".straight_line").attr("display","none");
+    }
+  } 
 
   render() {
     return (

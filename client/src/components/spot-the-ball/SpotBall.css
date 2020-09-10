@@ -1,3 +1,4 @@
+
 #botbSpotImage {
   background-size: 736px 556px;
   background-repeat: no-repeat;
@@ -31,6 +32,7 @@ path {
 }
 
 #botbSpotZoomWrapper {
+  background-image: url("/img/spot-the-ball/game/2(zoom).jfif");
   background-size: 2944px 2224px;
   background-repeat: no-repeat;
   height: 2224px;
@@ -39,7 +41,6 @@ path {
   top: -1588px;
   margin-left: 0px;
   margin-top: 0px;
-  background-image: url("/img/spot-the-ball/game/2(zoom).jfif");
 }
 #zoomSVG{
   height: 2224px;
@@ -55,13 +56,6 @@ path {
   display: block;
   left: 0px;
   top: 0px;
-}
-
-#botbSpotCursor {
-  left: 14px;
-  top: 13px;
-  margin-left: 0px;
-  margin-top: 0px;
 }
 
 .lensComponent {
@@ -82,20 +76,11 @@ path {
 #botbSpotImage.has_lines #botbSpotLens {
   z-index: 1000;
 }
+
 #botbSpotLens {
   overflow: hidden;
   border: 1.5px solid #ff8201;
   border-radius: 32px;
-}
-
-#botbSpotCursor {
-  width: 31px; 
-  height: 31px; 
-  z-index: 2000;
-  position: absolute;
-} 
-#botbSpotCursor.played {
-  z-index: 1 !important;
 }
 
 #botbSpotZoomWrapper {
@@ -103,45 +88,10 @@ path {
   overflow: hidden;
 }
 
-div.botbSpotMarker,
-div.botbSpotZoomMarker,
-div.botbSpotPrePurchaseMarker,
-div.botbSpotPrePurchaseZoomMarker {
-  background-repeat: no-repeat;
-  width: 19px;
-  height: 19px;
-  position: absolute;
-  z-index: 2;
-  display: block;
-}
-
-
-div.botbSpotMarker {
-  z-index: 100;
-}
-div.botbSpotZoomMarker,
-div.botbSpotPrePurchaseZoomMarker {
-  z-index: 4;
-}
-div.botbSpotZoomMarkerFocus,
-div.botbSpotMarkerFocus {
-  background-position: 0 -19px;
-  width: 19px;
-  height: 19px;
-  position: absolute;
-  display: block;
-}
-div.botbSpotZoomMarkerFocus {
-  z-index: 6;
-}
-div.botbSpotMarkerFocus {
-  z-index: 3;
-}
-
-
 #botbSpotImage > svg {
   z-index: 1002;
 }
+
 #drawing_zoom {
   position: absolute;
   top: 0;
@@ -161,11 +111,6 @@ div.botbSpotMarkerFocus {
   opacity: 1;
 }
 
-#botbSpotNormalImage {
-  opacity: 0;
-  width: 735px;
-  height: 556px;
-}
 #botbSpotGameWrapper {
   position: absolute;
   padding: 20px;
@@ -174,23 +119,4 @@ div.botbSpotMarkerFocus {
   width: calc(736px + (2 * 20px));
   height: -webkit-calc(556px + (2 * 20px));
   height: calc(556px + (2 * 20px));
-}
-
-
-
-#botbSpotImageWrapper .average-marker {
-  display: none;
-  position: absolute;
-  z-index: 100;
-}
-#botbSpotImageWrapper .average-marker.active {
-  display: block;
-}
-#botbSpotImageWrapper .average-marker-zoom {
-  display: none;
-  position: absolute;
-  z-index: 4;
-}
-#botbSpotImageWrapper .average-marker-zoom.active {
-  display: block;
 }

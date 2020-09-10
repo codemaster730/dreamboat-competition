@@ -83,6 +83,7 @@ class SpotBallMain extends Component {
                         onClick={(e) => {
                           e.preventDefault();
                           this.setState({selectedTool: "1"});
+                          this.spotBallPlayRef.handleLineToggle();
                         }}
                       ><i className="now-ui-icons design-2_ruler-pencil"></i>
                         Draw Lines
@@ -94,6 +95,8 @@ class SpotBallMain extends Component {
                         onClick={(e) => {
                           e.preventDefault();
                           this.setState({selectedTool: "2"});
+                          this.spotBallPlayRef.handlePenToggle();
+
                         }}
                       ><i class="now-ui-icons design-2_ruler-pencil"></i>
                         Points
@@ -105,6 +108,7 @@ class SpotBallMain extends Component {
                         onClick={(e) => {
                           e.preventDefault();
                           this.setState({selectedTool: "3"});
+                          this.spotBallPlayRef.handleUndoEvent();
                         }}
                       ><i class="now-ui-icons arrows-1_refresh-69"></i>
                         Undo
@@ -116,6 +120,7 @@ class SpotBallMain extends Component {
                         onClick={(e) => {
                           e.preventDefault();
                           this.setState({selectedTool: "4"});
+                          this.spotBallPlayRef.handleClearEvent();
                         }}
                       ><i class="now-ui-icons ui-1_simple-remove"></i>
                         Clear Lines
@@ -127,6 +132,7 @@ class SpotBallMain extends Component {
                         onClick={(e) => {
                           e.preventDefault();
                           this.setState({selectedTool: "5"});
+                          this.spotBallPlayRef.handleShowHideToggle();
                         }}
                       ><i class="now-ui-icons design-2_ruler-pencil"></i>
                         Show/Hide Lines
@@ -137,7 +143,7 @@ class SpotBallMain extends Component {
               <div id="spotImageWrapper">
                 <div id="botbSpotGameWrapper" >
                   <div id ='botbSpotImageWrapper'  >
-                 <SpotBallPlay />    
+                    <SpotBallPlay onRef={ref => (this.spotBallPlayRef = ref)}/>    
                   </div>
                 </div>   
               </div>
