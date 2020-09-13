@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const constants = require("../shared/constants");
+
 // Create Schema
 const CartItemSchema = new Schema({
     category: {
@@ -46,6 +48,12 @@ const CartItemSchema = new Schema({
       type: Number,
       required: true
     },
+    tickets: [
+      {
+        ticketId: Schema.Types.ObjectId,
+        status: {type: Number, default: constants['STATUS']['TOPLAY']}
+      }
+    ],
     boatId: {
       type: String,
       required: true
