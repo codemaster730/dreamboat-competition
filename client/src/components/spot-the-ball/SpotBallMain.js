@@ -141,8 +141,8 @@ class SpotBallMain extends Component {
                   </Nav>
               </div>
               <div id="spotImageWrapper">
-                <div id="botbSpotGameWrapper" >
-                  <div id ='botbSpotImageWrapper'  >
+                <div id="dreamboatSpotGameWrapper" >
+                  <div id ='dreamboatSpotImageWrapper'  >
                     <SpotBallPlay onRef={ref => (this.spotBallPlayRef = ref)}/>    
                   </div>
                 </div>   

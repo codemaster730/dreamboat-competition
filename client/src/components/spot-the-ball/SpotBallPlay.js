@@ -45,7 +45,7 @@ class SpotBallPlay extends Component {
             .attr("style","top:"+(movey-12)+"px;left:"+(movex-12)+"px;");
       d3.select(".live_coordinates")
             .attr("style","top:"+(movey-40)+"px;left:"+(movex-20)+"px;");
-      d3.select("#botbSpotZoomWrapper")
+      d3.select("#dreamboatSpotZoomWrapper")
             .attr("style","top:"+(-movey*4+32)+"px;left:"+(-movex*4+32)+"px;");
     }
 
@@ -88,7 +88,7 @@ class SpotBallPlay extends Component {
             .attr("style","top:"+(cur_y-12)+"px;left:"+(cur_x-12)+"px;");
     
     this.setState({ move_x: cur_x, move_y:cur_y});
-    d3.select("#botbSpotZoomWrapper")
+    d3.select("#dreamboatSpotZoomWrapper")
           .attr("style","top:"+(-cur_y*4+32)+"px;left:"+(-cur_x*4+32)+"px;");
   }
 
@@ -112,14 +112,14 @@ class SpotBallPlay extends Component {
                         .attr("fill", "none")
                         .attr("id","ltestz");
     }
-    d3.select("#botbSpotImage")
+    d3.select("#dreamboatSpotImage")
                 .attr("class","drawing_lines");
   }
 
   _onMouseUp(e) {
     d3.select("#ltest").remove();
     d3.select("#ltestz").remove(); 
-    d3.select("#botbSpotImage")
+    d3.select("#dreamboatSpotImage")
                 .attr("class","has_lines");
     this.setState({down_chk:false});
 
@@ -207,16 +207,16 @@ class SpotBallPlay extends Component {
   render() {
     return (
       <>
-        <div id="botbSpotImage" class="has_lines" style={{backgroundImage: "url(/img/spot-the-ball/game/2.jfif)"}}>
+        <div id="dreamboatSpotImage" class="has_lines" style={{backgroundImage: "url(/img/spot-the-ball/game/2.jfif)"}}>
           <svg id = "drawSVG" height="556" version="1.1" width="736"  onMouseMove={this._onMouseMove.bind(this)} >
           </svg>
-          <div id="botbSpotLens" class="lensComponent" onMouseDown={this._onMouseDown.bind(this)} onMouseUp={this._onMouseUp.bind(this)} onMouseMove={this._onMouseMove_Z.bind(this)}>
+          <div id="dreamboatSpotLens" class="lensComponent" onMouseDown={this._onMouseDown.bind(this)} onMouseUp={this._onMouseUp.bind(this)} onMouseMove={this._onMouseMove_Z.bind(this)}>
             <div id="markdiv">
               <svg id="markSVG" height="64" version="1.1" width="64">
                 <path d="M22,32L42,32L32,32L32,22L32,42" id="spotMarkee" stroke="grey" stroke-width="1" fill="none"></path>
               </svg>
             </div>
-            <div id="botbSpotZoomWrapper" style={{backgroundImage: "url(/img/spot-the-ball/game/2(zoom).jfif)"}}>
+            <div id="dreamboatSpotZoomWrapper" style={{backgroundImage: "url(/img/spot-the-ball/game/2(zoom).jfif)"}}>
               <svg id="zoomSVG" version="1.1">
               </svg>
             </div>

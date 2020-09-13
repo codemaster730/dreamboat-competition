@@ -1,5 +1,5 @@
 
-#botbSpotImage {
+#dreamboatSpotImage {
   background-size: 736px 556px;
   background-repeat: no-repeat;
   width: 736px;
@@ -31,7 +31,7 @@ path {
     -1px 1px 0 #333333;
 }
 
-#botbSpotZoomWrapper {
+#dreamboatSpotZoomWrapper {
   background-image: url("/img/spot-the-ball/game/2(zoom).jfif");
   background-size: 2944px 2224px;
   background-repeat: no-repeat;
@@ -47,7 +47,7 @@ path {
   width: 2944px;
 }
 
-#botbSpotLens {
+#dreamboatSpotLens {
   width: 64px;
   height: 64px;
   min-width: 64px;
@@ -73,22 +73,22 @@ path {
   overflow: hidden;
 }
 
-#botbSpotImage.has_lines #botbSpotLens {
+#dreamboatSpotImage.has_lines #dreamboatSpotLens {
   z-index: 1000;
 }
 
-#botbSpotLens {
+#dreamboatSpotLens {
   overflow: hidden;
   border: 1.5px solid #ff8201;
   border-radius: 32px;
 }
 
-#botbSpotZoomWrapper {
+#dreamboatSpotZoomWrapper {
   position: absolute;
   overflow: hidden;
 }
 
-#botbSpotImage > svg {
+#dreamboatSpotImage > svg {
   z-index: 1002;
 }
 
@@ -97,21 +97,21 @@ path {
   top: 0;
   left: 0;
 }
-#botbSpotImage.drawing_lines > svg {
+#dreamboatSpotImage.drawing_lines > svg {
   z-index: 102 !important;
 }
-#botbSpotImage.drawing_lines > svg path {
+#dreamboatSpotImage.drawing_lines > svg path {
   opacity: 0.2;
 }
-#botbSpotImage.drawing_lines > svg path:last-child {
+#dreamboatSpotImage.drawing_lines > svg path:last-child {
   opacity: 1;
 }
 
-#botbSpotImage.drawing_lines > svg path#ltest {
+#dreamboatSpotImage.drawing_lines > svg path#ltest {
   opacity: 1;
 }
 
-#botbSpotGameWrapper {
+#dreamboatSpotGameWrapper {
   position: absolute;
   padding: 20px;
   margin: -20px;
