@@ -1,5 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { logoutUser } from "../../actions/authActions";
+
 // reactstrap components
 import {
   Button,
@@ -41,6 +45,12 @@ function DropdownScrollNavbar(props) {
       window.removeEventListener("scroll", updateNavbarColor);
     };
   });
+
+  const onLogoutClick = (e) => {
+    e.preventDefault();
+    props.logoutUser();
+  };
+
 
   return (
     <>
@@ -174,16 +184,28 @@ function DropdownScrollNavbar(props) {
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
-              <NavItem>
-                <Button
-                  className="nav-link btn-default"
-                  color={buyButtonColor}
-                  href="/login"
-                  target="_self"
-                >
-                  <p className="shopping_cart">LOGIN</p>
-                </Button>
-              </NavItem>
+              {props.auth.isAuthenticated ?
+                <NavItem>
+                  <Button
+                    color={buyButtonColor}
+                    onClick={onLogoutClick}
+                    className="nav-link btn-default"
+                  >
+                    <p>LOGOUT</p>
+                  </Button>
+                </NavItem>
+                :
+                <NavItem>
+                  <Button
+                    className="nav-link btn-default"
+                    color={buyButtonColor}
+                    href="/login"
+                    target="_self"
+                  >
+                    <p>LOGIN</p>
+                  </Button>
+                </NavItem>
+              }
               <NavItem>
                 <Button
                   className="nav-link btn-default"
@@ -212,4 +234,16 @@ function DropdownScrollNavbar(props) {
   );
 }
 
-export default DropdownScrollNavbar;
+DropdownScrollNavbar.propTypes = {
+  logoutUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps,
+  { logoutUser }
+)(DropdownScrollNavbar);
