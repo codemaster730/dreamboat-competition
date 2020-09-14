@@ -218,11 +218,15 @@ function DropdownScrollNavbar(props) {
               </NavItem>
               <NavItem>
                 <Button
-                  className="nav-link btn-default"
-                  onClick={() => props.onClickCart()}
+                  className={props.totalTicketCount > 0 ? "nav-link btn-info" : "nav-link btn-default"}
                   color={buyButtonColor}
+                  onClick={() => props.onClickCart(true)}
                 >
-                  <i className="now-ui-icons shopping_box"></i>
+                  {props.totalTicketCount > 0 ? 
+                    <p className="ticket_count">({props.totalTicketCount})</p>
+                    : 
+                    <i className="now-ui-icons shopping_box"></i> 
+                  }
                   <p className="shopping_cart">CART</p>
                 </Button>
               </NavItem>

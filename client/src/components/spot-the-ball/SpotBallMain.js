@@ -1,7 +1,7 @@
 import React, { Component }  from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { addItems } from "../../actions/cartActions";
+import axios from "axios";
 
 // reactstrap components
 import {
@@ -25,7 +25,8 @@ class SpotBallMain extends Component {
     this.state = {
       isCartOpened: false,
       selectedTool: "1",
-      cartItems: []
+      cartItems: [],
+      totalTicketCount: 0
     }
   }
 
@@ -35,23 +36,8 @@ class SpotBallMain extends Component {
     document.documentElement.classList.remove("nav-open");
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
-
-    if (this.props.auth.isAuthenticated) {
-      const cartItems = this.props.cart.cartItems;
-      if (cartItems.length > 0) { 
-        this.props.addItems(cartItems);
-        this.setState({cartItems: cartItems}, () => {
-          console.log("DID_MOUNT_Cart Items : ", this.state.cartItems);
-        });
-      } else {
-        this.props.history.push("/boats");
-      }
-    } else {
-      this.props.history.push({
-        pathname: '/login',
-        search: 'returnUrl=spot-ball-play'
-      });
-    }
+    this.getCartTickets();
+    this.getTotalTicketCount();
   }
 
   componentWillUnmount() {
@@ -59,14 +45,34 @@ class SpotBallMain extends Component {
     document.body.classList.remove("sidebar-collapse");
   }
 
-  onClickCart = () => {
-    this.setState({isCartOpened: true});    
+  getTotalTicketCount = () => {
+    axios
+    .post('/api/carts/getCartTotal', {userId: this.props.auth.user.id})
+    .then((res) => {
+      this.setState({totalTicketCount: res.data.totalTicketCount});
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
+
+  getCartTickets() {
+    axios
+    .post('/api/carts/getCartTickets', {userId: this.props.auth.user.id})
+    .then((res) => {
+      this.setState({cartItems: res.data});
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
+
+  updateCartOpenStatus = (status) => {
+    this.setState({isCartOpened: status});    
   }
 
   render() {
     return (
       <>
-        <DropdownScrollNavbar onClickCart={this.onClickCart}/>
+        <DropdownScrollNavbar onClickCart={this.updateCartOpenStatus} totalTicketCount={this.state.totalTicketCount}/>
         <div className="wrapper">
           <SpotBallHeader />
           <Container className="game-container mt-4">
@@ -160,14 +166,11 @@ class SpotBallMain extends Component {
 }
 
 SpotBallMain.propTypes = {
-  auth: PropTypes.object.isRequired,
-  cart: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired
 };
 const mapStateToProps = state => ({
-  auth: state.auth,
-  cart: state.cart
+  auth: state.auth
 });
 export default connect(
-  mapStateToProps,
-  {addItems}
+  mapStateToProps
 )(SpotBallMain);

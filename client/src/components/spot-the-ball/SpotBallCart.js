@@ -36,7 +36,7 @@ class SpotBallCart extends Component {
       let tickets = [];
       this.props.cartItems.forEach((item) => {
         let i = 0;
-        const ticketNum = item.ticketNumber;
+        const ticketNum = item.ticketCount;
         while (i < ticketNum) {
           tickets.push({...item, ticketNo: i + 1});
           i++;
@@ -63,7 +63,7 @@ class SpotBallCart extends Component {
               </Col>
               <Col xs="7" style={{padding: 0}}>
                 <CardBody style={{padding: '2px 15px 0 0'}}>
-                  <h6 className="play-count-label">{ticketNo + ' of ' + item.ticketNumber}</h6>
+                  <h6 className="play-count-label">{ticketNo + ' of ' + item.ticketCount}</h6>
                   <h6 className="card-title">{manufacturer}</h6>
                   <h6 className="category text-info">{model}</h6>
                 </CardBody>

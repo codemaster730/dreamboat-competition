@@ -1,7 +1,4 @@
 import React, { Component }  from 'react';
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { addItems } from "../../actions/cartActions";
 import * as d3 from 'd3';
 import '../spot-the-ball/SpotBall.css';
 
@@ -230,15 +227,4 @@ class SpotBallPlay extends Component {
   }
 }
 
-SpotBallPlay.propTypes = {
-  auth: PropTypes.object.isRequired,
-  cart: PropTypes.object.isRequired
-};
-const mapStateToProps = state => ({
-  auth: state.auth,
-  cart: state.cart
-});
-export default connect(
-  mapStateToProps,
-  {addItems}
-)(SpotBallPlay);
+export default SpotBallPlay;

@@ -8,6 +8,10 @@ li.nav-item .shopping_cart {
   padding-left: 5px !important;
 }
 
+li.nav-item .ticket_count {
+  color: #2CA8FF;
+}
+
 .navbar .navbar-nav .nav-link:not(.btn) {
   font-size: 12px !important;
 }

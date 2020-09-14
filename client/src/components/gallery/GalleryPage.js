@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
+import axios from "axios";
 
 // core components
 import DropdownScrollNavbar from "components/shared/DropdownScrollNavbar.js";
@@ -13,7 +14,8 @@ class GalleryPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isCartOpened: false
+      isCartOpened: false,
+      totalTicketCount: 0
     }
   }
 
@@ -23,13 +25,12 @@ class GalleryPage extends Component {
   };
 
   componentDidMount() {
-
     document.body.classList.add("gallery-page");
     document.body.classList.add("sidebar-collapse");
     document.documentElement.classList.remove("nav-open");
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
-
+    this.getTotalTicketCount();
   }
 
   componentWillUnmount() {
@@ -37,11 +38,11 @@ class GalleryPage extends Component {
     document.body.classList.remove("sidebar-collapse");
   }
 
-  onClickCart = () => {
-    this.setState({isCartOpened: true});    
+  updateCartOpenStatus = (status) => {
+    this.setState({isCartOpened: status});    
   }
 
-  onClickToPlay = (cartItems) => {
+  onClickToPlay = () => {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/spot-the-ball");
     } else {
@@ -52,14 +53,29 @@ class GalleryPage extends Component {
     }
   }
 
+  redirectToLogin = () => {
+    this.props.history.push({
+      pathname: '/login'
+    });
+  }
+
+  getTotalTicketCount = () => {
+    axios
+    .post('/api/carts/getCartTotal', {userId: this.props.auth.user.id})
+    .then((res) => {
+      this.setState({totalTicketCount: res.data.totalTicketCount});
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
+
   render() {
-    // const { user } = this.props.auth;
     return (
       <>
-        <DropdownScrollNavbar onClickCart={this.onClickCart}/>
+        <DropdownScrollNavbar onClickCart={this.updateCartOpenStatus} totalTicketCount={this.state.totalTicketCount}/>
         <div className="wrapper">
           <GalleryHeader />
-          <GalleryBody isCartOpened={this.state.isCartOpened} onClickToPlay={this.onClickToPlay}/>
+          <GalleryBody isCartOpened={this.state.isCartOpened} onClickToPlay={this.onClickToPlay} redirectToLogin={this.redirectToLogin} getTotalTicketCount={this.getTotalTicketCount} updateCartOpenStatus={this.updateCartOpenStatus}/>
           <FooterDefault />
         </div>
       </>
