@@ -14,7 +14,7 @@ const BoatSchema = new Schema({
       type: String,
       required: true
     },
-    price: {
+    prizePrice: {
       type: Number,
       required: true
     },

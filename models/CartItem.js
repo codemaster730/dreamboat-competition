@@ -16,42 +16,33 @@ const CartItemSchema = new Schema({
       type: String,
       required: true
     },
-    price: {
+    prizePrice: {
       type: Number,
       required: true
+    },
+    thumnailUri: {
+      type: String,
+      required: false
     },
     currency: {
       type: String,
       required: true
     },
-    length: {
-      type: String,
-      required: false
-    },
-    width: {
-      type: String,
-      required: false
-    },
-    description: {
-      type: String,
+    ticketCount: {
+      type: Number,
       required: true
     },
     ticketPrice: {
       type: Number,
       required: true
     },
-    images: [{
-      type: String,
-      required: false
-    }],
-    ticketNumber: {
-      type: Number,
-      required: true
-    },
     tickets: [
       {
         ticketId: Schema.Types.ObjectId,
-        status: {type: Number, default: constants['STATUS']['TOPLAY']}
+        answer: {type: String},
+        answerImageUrl: {type: String},
+        coordX: {type: Number},
+        coordY: {type: Number}
       }
     ],
     boatId: {
