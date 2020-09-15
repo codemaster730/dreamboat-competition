@@ -43,7 +43,7 @@ class SpotBallCart extends Component {
         }
       });
       return tickets.map((item) => {
-        const {images, manufacturer, model, ticketNo} = item;
+        const {thumnailUri, manufacturer, model, ticketNo} = item;
         return (
           <div className="cart-item">
             <Row>
@@ -56,7 +56,7 @@ class SpotBallCart extends Component {
                     <img
                       alt="..."
                       className="img"
-                      src={images[0]}
+                      src={thumnailUri}
                     ></img>
                   </a>
                 </div>
