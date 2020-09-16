@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
-import axios from "axios";
 
 // core components
 import DropdownScrollNavbar from "components/shared/DropdownScrollNavbar.js";
@@ -14,8 +13,7 @@ class GalleryPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isCartOpened: false,
-      totalTicketCount: 0
+      cartOpen: false,
     }
   }
 
@@ -30,27 +28,11 @@ class GalleryPage extends Component {
     document.documentElement.classList.remove("nav-open");
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
-    this.getTotalTicketCount();
   }
 
   componentWillUnmount() {
     document.body.classList.remove("gallery-page");
     document.body.classList.remove("sidebar-collapse");
-  }
-
-  updateCartOpenStatus = (status) => {
-    this.setState({isCartOpened: status});    
-  }
-
-  onClickToPlay = () => {
-    if (this.props.auth.isAuthenticated) {
-      this.props.history.push("/spot-the-ball");
-    } else {
-      this.props.history.push({
-        pathname: '/login',
-        search: 'redirectUrl=spot-the-ball'
-      });
-    }
   }
 
   redirectToLogin = () => {
@@ -59,23 +41,17 @@ class GalleryPage extends Component {
     });
   }
 
-  getTotalTicketCount = () => {
-    axios
-    .post('/api/carts/getCartTotal', {userId: this.props.auth.user.id})
-    .then((res) => {
-      this.setState({totalTicketCount: res.data.totalTicketCount});
-    }).catch((err) => {
-      console.log(err);
-    });
-  }
+  updateCartOpenStatus = (cartOpen) => {
+    this.setState({cartOpen: cartOpen});
+  } 
 
   render() {
     return (
       <>
-        <DropdownScrollNavbar onClickCart={this.updateCartOpenStatus} totalTicketCount={this.state.totalTicketCount}/>
+        <DropdownScrollNavbar cartOpen={this.state.cartOpen} updateCartOpenStatus={this.updateCartOpenStatus}/>
         <div className="wrapper">
           <GalleryHeader />
-          <GalleryBody isCartOpened={this.state.isCartOpened} onClickToPlay={this.onClickToPlay} redirectToLogin={this.redirectToLogin} getTotalTicketCount={this.getTotalTicketCount} updateCartOpenStatus={this.updateCartOpenStatus}/>
+          <GalleryBody redirectToLogin={this.redirectToLogin} getTotalTicketCount={this.getTotalTicketCount} updateCartOpenStatus={this.updateCartOpenStatus}/>
           <FooterDefault />
         </div>
       </>

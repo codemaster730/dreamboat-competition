@@ -14,7 +14,7 @@ class SpotBallCart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      cartItems: [],
     }
   }
 
@@ -27,18 +27,19 @@ class SpotBallCart extends Component {
 
   }
 
-  componentWillReceiveProps() {
-
+  componentWillReceiveProps(nextProps) {
+    this.setState({cartItems: nextProps.cartItems})
   }
 
   renderCartItems() {
     if (this.props.cartItems.length > 0) {
       let tickets = [];
-      this.props.cartItems.forEach((item) => {
+      this.state.cartItems.forEach((item) => {
         let i = 0;
         const ticketNum = item.ticketCount;
         while (i < ticketNum) {
           tickets.push({...item, ticketNo: i + 1});
+  
           i++;
         }
       });

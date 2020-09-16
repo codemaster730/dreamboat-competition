@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
+import axios from "axios";
 
 // reactstrap components
 import {
@@ -20,10 +21,15 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 
+import CartModal from './CartModal.js';
+
 function DropdownScrollNavbar(props) {
   const [collapseOpen, setCollapseOpen] = React.useState(false);
   const [navbarColor, setNavbarColor] = React.useState(" navbar-transparent");
   const [buyButtonColor, setBuyButtonColor] = React.useState("neutral");
+  const [cartOpen, setCartOpen] = React.useState(false);
+  const [totalTicketCount, setTotalTicketCount] = React.useState(0);
+
   React.useEffect(() => {
     const updateNavbarColor = () => {
       if (
@@ -41,16 +47,32 @@ function DropdownScrollNavbar(props) {
       }
     };
     window.addEventListener("scroll", updateNavbarColor);
+    setCartOpen(props.cartOpen);
     return function cleanup() {
       window.removeEventListener("scroll", updateNavbarColor);
     };
-  });
+  }, [props]);
 
   const onLogoutClick = (e) => {
     e.preventDefault();
     props.logoutUser();
   };
 
+  const closeCart = () => {
+    setCartOpen(false);
+    console.log(props);
+    if (props.updateCartOpenStatus) props.updateCartOpenStatus(false);
+  }
+
+  const getTotalTicketCount = () => {
+    axios
+    .post('/api/carts/getCartTotal', {userId: props.auth.user.id})
+    .then((res) => {
+      setTotalTicketCount(res.data.totalTicketCount);
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
 
   return (
     <>
@@ -216,24 +238,29 @@ function DropdownScrollNavbar(props) {
                   <p className="shopping_cart">SIGNUP</p>
                 </Button>
               </NavItem>
-              <NavItem>
-                <Button
-                  className={props.totalTicketCount > 0 ? "nav-link btn-info" : "nav-link btn-default"}
-                  color={buyButtonColor}
-                  onClick={() => props.onClickCart(true)}
-                >
-                  {props.totalTicketCount > 0 ? 
-                    <p className="ticket_count">({props.totalTicketCount})</p>
-                    : 
-                    <i className="now-ui-icons shopping_box"></i> 
-                  }
-                  <p className="shopping_cart">CART</p>
-                </Button>
-              </NavItem>
+              {props.auth.isAuthenticated ?
+                <NavItem>
+                  <Button
+                    className={totalTicketCount > 0 ? "nav-link btn-info" : "nav-link btn-default"}
+                    color={buyButtonColor}
+                    onClick={() => setCartOpen(true)}
+                  >
+                    {totalTicketCount > 0 ? 
+                      <p className="ticket_count">({totalTicketCount})</p>
+                      : 
+                      <i className="now-ui-icons shopping_box"></i> 
+                    }
+                    <p className="shopping_cart">CART</p>
+                  </Button>
+                </NavItem>
+                :
+                <></>
+              }
             </Nav>
           </Collapse>
         </Container>
       </Navbar>
+      <CartModal cartOpen={cartOpen} closeCart={closeCart} getTotalTicketCount={getTotalTicketCount} />
     </>
   );
 }

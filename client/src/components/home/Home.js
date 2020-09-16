@@ -32,7 +32,7 @@ class Home extends Component {
   }
 
   render() {
-    // const { user } = this.props.auth;
+
     return (
       <>
         <DropdownScrollNavbar />

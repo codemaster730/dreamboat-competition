@@ -104,7 +104,7 @@ class SpotBallMain extends Component {
                           this.spotBallPlayRef.handlePenToggle();
 
                         }}
-                      ><i class="now-ui-icons design-2_ruler-pencil"></i>
+                      ><i className="now-ui-icons design-2_ruler-pencil"></i>
                         Points
                       </NavLink>
                     </NavItem>
@@ -116,7 +116,7 @@ class SpotBallMain extends Component {
                           this.setState({selectedTool: "3"});
                           this.spotBallPlayRef.handleUndoEvent();
                         }}
-                      ><i class="now-ui-icons arrows-1_refresh-69"></i>
+                      ><i className="now-ui-icons arrows-1_refresh-69"></i>
                         Undo
                       </NavLink>
                     </NavItem>
@@ -128,7 +128,7 @@ class SpotBallMain extends Component {
                           this.setState({selectedTool: "4"});
                           this.spotBallPlayRef.handleClearEvent();
                         }}
-                      ><i class="now-ui-icons ui-1_simple-remove"></i>
+                      ><i className="now-ui-icons ui-1_simple-remove"></i>
                         Clear Lines
                       </NavLink>
                     </NavItem>
@@ -140,7 +140,7 @@ class SpotBallMain extends Component {
                           this.setState({selectedTool: "5"});
                           this.spotBallPlayRef.handleShowHideToggle();
                         }}
-                      ><i class="now-ui-icons design-2_ruler-pencil"></i>
+                      ><i className="now-ui-icons design-2_ruler-pencil"></i>
                         Show/Hide Lines
                       </NavLink>
                     </NavItem>

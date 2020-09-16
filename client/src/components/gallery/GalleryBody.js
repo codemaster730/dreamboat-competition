@@ -21,8 +21,7 @@ import {
   CardBody,
   TabContent,
   TabPane,
-  ButtonGroup,
-  Table
+  ButtonGroup
 } from "reactstrap";
 
 import Boat from 'components/gallery/Boat.js';
@@ -38,7 +37,6 @@ class GalleryBody extends Component {
       tabs: "1",
       ticketsAdded: 1,
       cartItems: [],
-      cartModal: false,
       boatInfoModal: false
     }
   }
@@ -76,11 +74,7 @@ class GalleryBody extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.isCartOpened) {
-      this.setState({
-        isCartOpened: nextProps.isCartOpened
-      });
-    }
+
   }
 
   componentDidMount() {
@@ -100,48 +94,6 @@ class GalleryBody extends Component {
       this.setState({ticketsAdded: this.state.ticketsAdded -1});
   }
 
-  updateTicketsInCart(cartItemId, isRemove) {
-    if (isRemove) {
-      axios
-      .post("/api/carts/removeCartTicket", {cartItemId: cartItemId})
-      .then(res => {
-        toast(res.data.message);
-        this.getCartTickets();
-        this.props.getTotalTicketCount();
-      }).catch(err => {
-        console.log(err);
-      });
-    } else {
-      axios
-      .post("/api/carts/addCartTicket", {cartItemId: cartItemId})
-      .then(res => {
-        toast(res.data.message);
-        this.getCartTickets();
-        this.props.getTotalTicketCount();
-      }).catch(err => {
-        console.log(err);
-      });
-    }
-  }
-
-  removeCartItem(cartItemId) {
-    axios
-    .post("/api/carts/removeCartItem", {cartItemId: cartItemId})
-    .then(res => {
-      axios
-        .post('/api/carts/getCartTickets', {userId: this.props.auth.user.id})
-        .then((res) => {
-          toast(res.data.message);
-          this.setState({cartItems: res.data});
-          this.props.getTotalTicketCount();
-        }).catch((err) => {
-          console.log(err);
-        });
-    }).catch(err => {
-      console.log(err);
-    });
-  }
-
   addTicketsToCart() {
     let tempCartItem = {
       ticketsAdded: this.state.ticketsAdded,
@@ -153,9 +105,10 @@ class GalleryBody extends Component {
       .post("/api/carts/addCartTickets", tempCartItem)
       .then(res => {
         toast(res.data.message);
-        this.setState({boatInfoModal: false, cartModal: true, ticketsAdded:1});
+        this.setState({boatInfoModal: false, ticketsAdded:1});
         this.setState({cartItems: res.data.items});
-        this.props.getTotalTicketCount();
+        console.log("Cart Updated ->");
+        this.props.updateCartOpenStatus(true);
       })
       .catch(err => {
         console.log(err);
@@ -163,57 +116,6 @@ class GalleryBody extends Component {
     } else {
       this.props.redirectToLogin();
     }
-  }
-
-  renderCartTableData() {
-    return this.state.cartItems.map((item) => {
-      const {_id, thumnailUri, manufacturer, model, ticketCount, ticketPrice} = item;
-      return (
-        <tr key={_id}>
-          <td>
-            <div className="img-container">
-              <img
-                alt="..."
-                src={thumnailUri}
-              ></img>
-            </div>
-          </td>
-          <td className="td-name">
-            <a
-              href="#pablo"
-              onClick={(e) => e.preventDefault()}
-            >
-              {manufacturer}
-            </a>
-            <br></br>
-            <small>{model}</small>
-          </td>
-          <td className="td-number">{ticketCount}
-            <div role="group" className="btn-group">
-              <button className="btn btn-info btn-sm" onClick={() => this.updateTicketsInCart(_id, true)}>
-                <i className="now-ui-icons ui-1_simple-delete"></i>
-              </button>
-              <button className="btn btn-info btn-sm">
-                <i className="now-ui-icons ui-1_simple-add" onClick={() => this.updateTicketsInCart(_id, false)}></i>
-              </button>
-            </div>
-          </td>
-          <td className="td-number">
-            <small>£</small>
-            {ticketCount * ticketPrice}
-          </td>
-          <td className="td-actions">
-            <Button
-              color="neutral"
-              type="button"
-              onClick={() => this.removeCartItem(_id)}
-            >
-              <i className="now-ui-icons ui-1_simple-delete"></i>
-            </Button>
-          </td>
-        </tr>
-      );
-    });
   }
 
   render() {
@@ -319,42 +221,6 @@ class GalleryBody extends Component {
               </Row>
               <Button className="btn-add-cart" color="primary" onClick={() => this.addTicketsToCart()}>
                 Add to Cart
-              </Button>
-            </ModalFooter>
-          </Modal>
-          <Modal
-            className="modal-cart"
-            isOpen={this.state.cartModal || (this.props.isCartOpened && this.state.cartItems.length > 0)}
-            toggle={() => {this.props.updateCartOpenStatus(false); this.setState({cartModal: false})}}
-          >
-            <div className="modal-header justify-content-center">
-              <div className="title-boat">CART</div>
-              <button
-                aria-hidden={true}
-                className="close"
-                onClick={() => {this.props.updateCartOpenStatus(false); this.setState({cartModal: false})}}
-                type="button"
-              >
-                <i className="now-ui-icons ui-1_simple-remove"></i>
-              </button>
-            </div>
-            <div className="modal-body">
-              <Row>
-                <Table className="table-cart" responsive>
-                  <tbody>
-                    {
-                      this.renderCartTableData()
-                    }
-                  </tbody>
-                </Table>
-              </Row>
-            </div>
-            <ModalFooter>
-              <Button 
-                onClick={() => this.props.onClickToPlay()}
-                className="btn-add-cart" 
-                color="primary">
-                Proceed To Play
               </Button>
             </ModalFooter>
           </Modal>

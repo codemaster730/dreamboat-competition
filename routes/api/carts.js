@@ -85,7 +85,7 @@ router.post("/getCartTickets", (req, res) => {
 router.post("/addCartTicket", (req, res) => {
   CartItem.findById(req.body.cartItemId).then(cartItem => {
     if (cartItem) {
-      cartItem.tickets.push({answer: '', answerImageUrl: '', coordX: null, coordY: null});
+      cartItem.tickets.push(req.body.ticket);
       cartItem.ticketCount += 1;
       cartItem
       .save()
