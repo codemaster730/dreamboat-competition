@@ -73,11 +73,6 @@ li.nav-item .ticket_count {
   padding-top: 16px !important;
 }
 
-#modal-cart .modal-header {
-  height: 80px !important;
-}
-
-
 /* Register/ Login */
 
 .login-page .card-login {
@@ -211,15 +206,6 @@ li.nav-item .ticket_count {
   margin: 15px 0px 0 0px !important;
 }
 
-.gallery-page .modal-header {
-  height: 50px !important;
-}
-
-.gallery-page .modal-dialog {
-  max-width: 80% !important;
-  margin: 10rem auto;
-}
-
 .gallery-page .modal-dialog .ui-1_simple-remove{
   font-size: 30px !important;
 }
@@ -258,7 +244,7 @@ li.nav-item .ticket_count {
   margin-top: 20px !important;
 }
 
-.gallery-page .modal-dialog .title-boat {
+.modal-dialog .title {
   font-size: 1.6em !important;
   font-weight: 700;
   color: #f96332;

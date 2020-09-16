@@ -99,7 +99,7 @@ class GalleryBody extends Component {
       ticketsAdded: this.state.ticketsAdded,
       userId: this.props.auth.isAuthenticated ? this.props.auth.user.id : '',
       boatId: this.state.selectedBoat._id
-    };    
+    }; 
     if (this.props.auth.isAuthenticated) { // If logged in, call api and add tickets
       axios
       .post("/api/carts/addCartTickets", tempCartItem)
@@ -107,7 +107,6 @@ class GalleryBody extends Component {
         toast(res.data.message);
         this.setState({boatInfoModal: false, ticketsAdded:1});
         this.setState({cartItems: res.data.items});
-        console.log("Cart Updated ->");
         this.props.updateCartOpenStatus(true);
       })
       .catch(err => {
@@ -142,7 +141,7 @@ class GalleryBody extends Component {
             toggle={() => this.setState({boatInfoModal: false, ticketsAdded: 1})}
           >
             <div className="modal-header justify-content-center">
-              <div className="title-boat">{this.state.selectedBoat.manufacturer}-{this.state.selectedBoat.model}</div>
+              <div className="title">{this.state.selectedBoat.manufacturer}-{this.state.selectedBoat.model}</div>
               <button
                 aria-hidden={true}
                 className="close"

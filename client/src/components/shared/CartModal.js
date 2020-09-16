@@ -159,7 +159,7 @@ class CartModal extends Component {
           toggle={() => {this.props.closeCart();}}
         >
           <div className="modal-header justify-content-center">
-            <div className="title-boat">CART</div>
+            <div className="title">CART</div>
             <button
               aria-hidden={true}
               className="close"
