@@ -65,14 +65,10 @@ class SpotBallMain extends Component {
     });
   }
 
-  updateCartOpenStatus = (status) => {
-    this.setState({isCartOpened: status});    
-  }
-
   render() {
     return (
       <>
-        <DropdownScrollNavbar onClickCart={this.updateCartOpenStatus} totalTicketCount={this.state.totalTicketCount}/>
+        <DropdownScrollNavbar/>
         <div className="wrapper">
           <SpotBallHeader />
           <Container className="game-container mt-4">
