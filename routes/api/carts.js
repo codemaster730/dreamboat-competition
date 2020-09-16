@@ -7,6 +7,7 @@ const _ = require('lodash');
 const CartItem = require("../../models/CartItem");
 const Boat = require("../../models/Boat");
 const e = require("express");
+const { findIndex } = require("lodash");
 
 // @route POST api/carts/addTickets
 // @desc Add Cart Items
@@ -143,7 +144,7 @@ router.post("/updateCartTicket", (req, res) => {
   CartItem.findById(req.body.cartItemId).then(cartItem => {
     if (cartItem) {
       let tickets = cartItem.tickets;
-      const index = _.findIndex(tickets, {_id : req.body.ticket._id});
+      const index = tickets.findIndex((ticket) => ticket.id == req.body.ticket._id);
       tickets.splice(index, 1, req.body.ticket);
       cartItem.tickets = tickets;
       cartItem
