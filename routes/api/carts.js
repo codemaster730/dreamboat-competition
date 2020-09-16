@@ -1,9 +1,12 @@
 const express = require("express");
 const router = express.Router();
 
+const _ = require('lodash');
+
 // Load CartItem model
 const CartItem = require("../../models/CartItem");
 const Boat = require("../../models/Boat");
+const e = require("express");
 
 // @route POST api/carts/addTickets
 // @desc Add Cart Items
@@ -108,7 +111,14 @@ router.post("/addCartTicket", (req, res) => {
 router.post("/removeCartTicket", (req, res) => {
   CartItem.findById(req.body.cartItemId).then(cartItem => {
     if (cartItem) {
-      cartItem.tickets.pop();
+      if (req.body.ticketId) {
+        cartItem.tickets.pop();
+      } else {
+        let tickets = cartItem.tickets;
+        cartItem.tickets = _.remove(tickets, (ticket) => {
+          return ticket._id == req.body.ticketId;
+        });
+      }
       cartItem.ticketCount -= 1;
       cartItem
       .save()
@@ -116,6 +126,32 @@ router.post("/removeCartTicket", (req, res) => {
         return res.status(200).json({message: "Successfully removed a ticket"});
       }).catch((err) => {
         return res.status(500).json({message: "Error occured while removing a ticket."});
+      });
+    } else {
+      return res.status(404).send({
+        message: "Cart Item not found with id " + req.body.cartItemId
+      });
+    }
+  });
+});
+
+// @route POST api/carts/updateCartTicket
+// @desc Update a single ticket
+// @access Public
+
+router.post("/updateCartTicket", (req, res) => {
+  CartItem.findById(req.body.cartItemId).then(cartItem => {
+    if (cartItem) {
+      let tickets = cartItem.tickets;
+      const index = _.findIndex(tickets, {_id : req.body.ticket._id});
+      tickets.splice(index, 1, req.body.ticket);
+      cartItem.tickets = tickets;
+      cartItem
+      .save()
+      .then((item) => {
+        return res.status(200).json({message: "Successfully updated a ticket"});
+      }).catch((err) => {
+        return res.status(500).json({message: "Error occured while updating a ticket."});
       });
     } else {
       return res.status(404).send({
