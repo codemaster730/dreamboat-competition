@@ -25,6 +25,26 @@ class SpotBallPlay extends Component {
     this.props.onRef(undefined)
   }
 
+  //Get Ray's Positions from Segment's Positions  return - obj{x1,y1,x2,y2,isline}
+  _getRayPositions(pos1X, pos1Y, pos2X, pos2Y) {
+    const delt_x = pos2X - pos1X
+    const delt_y = pos2Y - pos1Y
+    var ret_val = {}
+    ret_val.x1 = pos1X
+    ret_val.y1 = pos1Y
+    if (!(delt_x === 0 && delt_y === 0)) {
+      const delt_normal = delt_y / delt_x
+      ret_val.x2 =
+        pos1X + Math.cos(Math.atan(delt_normal)) * 1000 * Math.sign(delt_x)
+      ret_val.y2 =
+        pos1Y + Math.sin(Math.atan(delt_normal)) * 1000 * Math.sign(delt_x)
+      ret_val.isline = true
+    } else {
+      ret_val.isline = false
+    }
+    return ret_val
+  }
+
   _onMouseMove_Z(e) {
     var cur_x = (e.nativeEvent.offsetX - 32)/4 + this.state.move_x;
     var cur_y = (e.nativeEvent.offsetY - 32)/4 + this.state.move_y;
@@ -32,11 +52,11 @@ class SpotBallPlay extends Component {
     var offsY = e.nativeEvent.offsetY - 32;
     var lengs = Math.sqrt(offsX*offsX + offsY*offsY);
     //const boundOutChk = (cur_x<0) || (cur_y<0) || (cur_x>d3.select("#botbSpotLens").attr("width")) || (cur_y>d3.select("#botbSpotLens").attr("height"));
-    const boundOutChk = (cur_x<0) || (cur_y<0) ;
+    const boundOutChk = (cur_x<0) || (cur_y<0) || (cur_x>736) || (cur_y>556);
     //moving zoom
-    if(lengs >= 28 && !boundOutChk){
-      var movex = Math.round(this.state.move_x + offsX * (lengs - 28) / lengs);
-      var movey = Math.round(this.state.move_y + offsY * (lengs - 28) / lengs);
+    if(lengs >= 20 && !boundOutChk){
+      var movex = Math.round(this.state.move_x + offsX * (lengs - 20) / lengs);
+      var movey = Math.round(this.state.move_y + offsY * (lengs - 20) / lengs);
       this.setState({ move_x: movex, move_y: movey});
       d3.select(".lensComponent")
             .attr("style","top:"+(movey-12)+"px;left:"+(movex-12)+"px;");
@@ -46,27 +66,21 @@ class SpotBallPlay extends Component {
             .attr("style","top:"+(-movey*4+32)+"px;left:"+(-movex*4+32)+"px;");
     }
 
-    
+    const pos = this._getRayPositions(this.state.x, this.state.y, cur_x, cur_y)
     if(this.state.down_chk && (this.state.pen_chk)){
-      var delt_x = cur_x - this.state.x;
-      var delt_y = cur_y - this.state.y;
-      
-      if(!(delt_x===0 && delt_y===0)){
-        var delt_normal = delt_y/delt_x;
-        var last_x = this.state.x + Math.cos(Math.atan(delt_normal))*800 *Math.sign(delt_x);
-        var last_y = this.state.y + Math.sin(Math.atan(delt_normal))*800 *Math.sign(delt_x);
+      if (pos.isline) {
         d3.select("#ltest")
-              .attr("d", "M"+this.state.x+","+this.state.y+"L"+last_x+","+last_y)
+              .attr("d","M" + pos.x1 + "," + pos.y1 + "L" + pos.x2 + "," + pos.y2)
               .attr("stroke-width", 1)
               .attr("fill", "none");
         d3.select("#ltestz")
-              .attr("d", "M"+(this.state.x*4)+","+(this.state.y*4)+"L"+(last_x*4)+","+(last_y*4))
+              .attr("d","M" +pos.x1 * 4 +"," +pos.y1 * 4 +"L" +pos.x2 * 4 +"," +pos.y2 * 4)
               .attr("stroke-width", 1)
               .attr("fill", "none");
-      }
+      }      
     }
     d3.select(".live_coordinates")
-            .html("X:"+cur_x+"&nbsp;&nbsp;Y:"+cur_y);
+            .html("X:"+(cur_x*4)+"&nbsp;&nbsp;Y:"+(cur_y*4));
             
   }
 
@@ -77,13 +91,20 @@ class SpotBallPlay extends Component {
       var mdelt_x = cur_x - this.state.move_x;
       var mdelt_y = cur_y - this.state.move_y;
       var lengs = Math.sqrt(mdelt_x*mdelt_x + mdelt_y*mdelt_y);
-      cur_x = Math.round(this.state.move_x + mdelt_x*(lengs - 32)/lengs );
-      cur_y = Math.round(this.state.move_y + mdelt_y*(lengs - 32)/lengs );
+      cur_x = Math.round(this.state.move_x + mdelt_x*(lengs - 20)/lengs );
+      cur_y = Math.round(this.state.move_y + mdelt_y*(lengs - 20)/lengs );
       d3.select(".live_coordinates")
             .attr("style","top:"+(cur_y-40)+"px;left:"+(cur_x-20)+"px;");
       d3.select(".lensComponent")
             .attr("style","top:"+(cur_y-12)+"px;left:"+(cur_x-12)+"px;");
-    
+    // to move drawing line
+    const pos = this._getRayPositions(this.state.x, this.state.y, cur_x, cur_y)
+    if (this.state.down_chk && this.state.pen_chk) {
+      if (pos.isline) {
+        d3.select("#ltest").attr("d","M" + pos.x1 + "," + pos.y1 + "L" + pos.x2 + "," + pos.y2)
+        d3.select("#ltestz").attr("d","M" +pos.x1 * 4 +"," +pos.y1 * 4 +"L" +pos.x2 * 4 +"," +pos.y2 * 4)
+      }
+    }
     this.setState({ move_x: cur_x, move_y:cur_y});
     d3.select("#dreamboatSpotZoomWrapper")
           .attr("style","top:"+(-cur_y*4+32)+"px;left:"+(-cur_x*4+32)+"px;");
@@ -127,28 +148,21 @@ class SpotBallPlay extends Component {
     var delt_y = cur_y - this.state.y;
     
     if(this.state.pen_chk){// create line
-      if(!(delt_x===0 && delt_y===0)){
-        var delt_normal = delt_y/delt_x;
-        var last_x = this.state.x + Math.cos(Math.atan(delt_normal))*800 *Math.sign(delt_x);
-        var last_y = this.state.y + Math.sin(Math.atan(delt_normal))*800 *Math.sign(delt_x);
-        
-        d3.select("#drawSVG").append("path")
-                            .attr("d", "M"+this.state.x+","+this.state.y+"L"+last_x+","+last_y)
+      const pos = this._getRayPositions(this.state.x, this.state.y, cur_x, cur_y)
+        if (pos.isline) {
+          d3.select("#drawSVG").append("path")
+                            .attr("d","M" + pos.x1 + "," + pos.y1 + "L" + pos.x2 + "," + pos.y2)
                             .attr("stroke", this.state.cur_color)
                             .attr("stroke-width", 1)
                             .attr("class","straight_line")
                             .attr("fill", "none");
-        last_x *=4;
-        last_y *=4;
-        var org_x = 4* this.state.x;
-        var org_y = 4* this.state.y;
-        d3.select("#zoomSVG").append("path")
-                            .attr("d", "M"+org_x+","+org_y+"L"+last_x+","+last_y)
+          d3.select("#zoomSVG").append("path")
+                            .attr("d","M" +pos.x1 * 4 +"," +pos.y1 * 4 +"L" +pos.x2 * 4 +"," +pos.y2 * 4)
                             .attr("stroke", this.state.cur_color)
                             .attr("stroke-width", 1)
                             .attr("class","straight_line")
                             .attr("fill", "none");
-      }
+        }      
     }else{//create plus mark
       var plus_size = 10;
       d3.select("#drawSVG").append("path")
@@ -158,15 +172,18 @@ class SpotBallPlay extends Component {
                           .attr("stroke-width", 1)
                           .attr("class","plus_mark")
                           .attr("fill", "none");
-    cur_x *= 4;
-    cur_y *= 4;
-    d3.select("#zoomSVG").append("path")
+      cur_x *= 4;
+      cur_y *= 4;
+      d3.select("#zoomSVG").append("path")
                           .attr("d", "M"+(cur_x-plus_size)+","+(cur_y)+"L"+(cur_x+plus_size)+","+(cur_y)+"L"+(cur_x)+","+(cur_y)+"L"+(cur_x)+","+(cur_y+plus_size)+"L"+(cur_x)+","+(cur_y-plus_size))
                           .attr("id","spotMarkX"+cur_x+"Y"+cur_y) //note: identify marks
                           .attr("stroke", "white")
                           .attr("stroke-width", 1)
                           .attr("class","plus_mark")
                           .attr("fill", "none");
+      //call SpotBallMain
+      let param={type:"setPos",posX:cur_x,posY:cur_y};
+      this.props.updateCartItems(param);
     }
     
   }
@@ -180,8 +197,8 @@ class SpotBallPlay extends Component {
   }
 
   handleUndoEvent = () => {
-    d3.select("#drawSVG path.straight_line:last-child").remove();
-    d3.select("#zoomSVG path.straight_line:last-child").remove();
+    d3.selectAll("#drawSVG path.straight_line").filter(":last-child").remove();
+    d3.selectAll("#zoomSVG path.straight_line").filter(":last-child").remove();
     //d3.select("path.straight_line").remove();
   }
 
@@ -219,7 +236,7 @@ class SpotBallPlay extends Component {
             </div>
           </div>
           <div class="live_coordinates">
-            X:{this.state.move_x}&nbsp;&nbsp;Y:{this.state.move_y}
+            X:{this.state.move_x*4}&nbsp;&nbsp;Y:{this.state.move_y*4}
           </div>
         </div>
       </>

@@ -2,6 +2,7 @@ import React, { Component }  from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import axios from "axios";
+import * as d3 from 'd3';
 
 // reactstrap components
 import {
@@ -65,6 +66,13 @@ class SpotBallMain extends Component {
     });
   }
 
+  updateCartItems = (params) =>{
+    //set position to cart-item
+    
+    if(params.type==="setPos"){
+      console.log("XXX"+params.posX);
+    }
+  }
   render() {
     return (
       <>
@@ -100,7 +108,7 @@ class SpotBallMain extends Component {
                           this.spotBallPlayRef.handlePenToggle();
 
                         }}
-                      ><i className="now-ui-icons design-2_ruler-pencil"></i>
+                      ><i class="now-ui-icons design-2_ruler-pencil"></i>
                         Points
                       </NavLink>
                     </NavItem>
@@ -112,7 +120,7 @@ class SpotBallMain extends Component {
                           this.setState({selectedTool: "3"});
                           this.spotBallPlayRef.handleUndoEvent();
                         }}
-                      ><i className="now-ui-icons arrows-1_refresh-69"></i>
+                      ><i class="now-ui-icons arrows-1_refresh-69"></i>
                         Undo
                       </NavLink>
                     </NavItem>
@@ -124,7 +132,7 @@ class SpotBallMain extends Component {
                           this.setState({selectedTool: "4"});
                           this.spotBallPlayRef.handleClearEvent();
                         }}
-                      ><i className="now-ui-icons ui-1_simple-remove"></i>
+                      ><i class="now-ui-icons ui-1_simple-remove"></i>
                         Clear Lines
                       </NavLink>
                     </NavItem>
@@ -136,7 +144,7 @@ class SpotBallMain extends Component {
                           this.setState({selectedTool: "5"});
                           this.spotBallPlayRef.handleShowHideToggle();
                         }}
-                      ><i className="now-ui-icons design-2_ruler-pencil"></i>
+                      ><i class="now-ui-icons design-2_ruler-pencil"></i>
                         Show/Hide Lines
                       </NavLink>
                     </NavItem>
@@ -145,12 +153,12 @@ class SpotBallMain extends Component {
               <div id="spotImageWrapper">
                 <div id="dreamboatSpotGameWrapper" >
                   <div id ='dreamboatSpotImageWrapper'  >
-                    <SpotBallPlay onRef={ref => (this.spotBallPlayRef = ref)}/>    
+                    <SpotBallPlay onRef={ref => (this.spotBallPlayRef = ref)} updateCartItems={this.updateCartItems}/>    
                   </div>
                 </div>   
               </div>
               <div id="spotSidebar"> 
-                <SpotBallCart cartItems={this.state.cartItems}/>
+                <SpotBallCart cartItems={this.state.cartItems} updateCartItems={this.updateCartItems} />
               </div>
             </Row>
           </Container>
