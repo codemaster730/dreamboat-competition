@@ -364,3 +364,7 @@ li.nav-item .ticket_count {
 .spot-ball-page .cart-actions .add{
   background-color: #FFB236;
 }
+
+div.cart-item.selected{
+  background-color:rgb(190, 190, 190);
+}

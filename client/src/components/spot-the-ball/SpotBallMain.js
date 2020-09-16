@@ -2,7 +2,6 @@ import React, { Component }  from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import axios from "axios";
-import * as d3 from 'd3';
 
 // reactstrap components
 import {
@@ -27,8 +26,11 @@ class SpotBallMain extends Component {
       isCartOpened: false,
       selectedTool: "1",
       cartItems: [],
-      totalTicketCount: 0
+      totalTicketCount: 0,
+      
     }
+    this.selected_tobj = {}; //ticket object
+    this.selected_cid = ''; //cartitem id
   }
 
   componentDidMount() {
@@ -57,6 +59,8 @@ class SpotBallMain extends Component {
   }
 
   getCartTickets() {
+    this.selected_tobj = {};
+    this.selected_cid = '';
     axios
     .post('/api/carts/getCartTickets', {userId: this.props.auth.user.id})
     .then((res) => {
@@ -66,11 +70,23 @@ class SpotBallMain extends Component {
     });
   }
 
-  updateCartItems = (params) =>{
-    //set position to cart-item
-    
+  updateCartItems = (params) =>{    
     if(params.type==="setPos"){
-      console.log("XXX"+params.posX);
+      
+      this.selected_tobj.coordX = params.posX;
+      this.selected_tobj.coordY = params.posY;
+      console.log("XXX"+this.selected_tobj.coordX+":"+this.selected_tobj._id+":"+this.selected_cid);
+      axios
+        .post('/api/carts/updateCartTicket', {cartItemId: this.selected_cid, ticket: this.selected_tobj})
+        .then((res) => {
+          this.getCartTickets();
+        }).catch((err) => {
+          console.log(err);
+        });
+    }else if(params.type==="selectTicket"){
+      this.selected_tobj = params.selected_tobj;
+      this.selected_cid = params.selected_cid;
+      console.log("sel"+this.selected_tobj._id+":"+this.selected_cid);
     }
   }
   render() {

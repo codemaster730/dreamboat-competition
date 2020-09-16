@@ -1,5 +1,5 @@
 import React, { Component }  from 'react';
-import * as d3 from 'd3';
+
 // reactstrap components
 import {
   Button,
@@ -14,71 +14,59 @@ class SpotBallCart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cartItems:{}
+      cartItems:{},
+      selected_tid: 0
     }
   }
 
+  selectFirstTicket(){
+    var set_chk = 1;
+    this.state.cartItems.forEach((item) => {
+      item.tickets.forEach((tItem)=>{
+        if((set_chk) && (tItem.coordX==null || tItem.coordY==null)){
+          set_chk = 0;
+          this.setState({selected_tid:tItem._id},()=>{
+            this.props.updateCartItems({type:"selectTicket", selected_tobj:tItem, selected_cid: item._id});
+          });
+        }
+      });
+    });
+  }
 
   componentDidMount() {
-    //
+    
   }
 
   componentDidUpdate(){
-    const _this = this;
-    var set_val_chk=1;
-    d3.selectAll(".cart-item").each(function(){
-      if(d3.select(this).select(".row h6.position").html()==="X: Y:" && set_val_chk){
-        d3.select(this).attr("style","background-color:grey");
-        d3.select(this).select("button.play span").html("In Play");
-        set_val_chk = 0;
-      }
-    });
-
-    d3.selectAll(".cart-item button.play")
-      .on("click", function(){
-        d3.selectAll(".cart-item").each(function(){
-          if(d3.select(this).select("button.play span").html()==="In Play"){
-            d3.select(this).attr("style","background-color:white");
-            d3.select(this).select("button.play span").html("To Play");
-          }
-        });
-        if(d3.select(this).select("span").html()==="Reply"){
-          d3.select(this).select("span").html("In Play");
-          let param={type:"setPos", posX:null, posY:null};      //set position to NULL
-          _this.props.updateCartItems(param);
-        }
-        d3.select(this).select("span").html("In Play");
-        d3.selectAll(".cart-item").each(function(){
-          if(d3.select(this).select("button.play span").html()==="In Play"){
-            d3.select(this).attr("style","background-color:grey");
-          }
-        });
-      })
+    
   }
   componentWillUnmount() {
 
   }
 
   componentWillReceiveProps(nextprops) {
-    this.setState({cartItems: nextprops.cartItems});
+    console.log("receive_props");
+    this.setState({cartItems: nextprops.cartItems}, () => {
+      this.selectFirstTicket();
+    });
   }
 
   renderCartItems() {
-    console.log("xxx"+this.state.cartItems.length);
     if (this.state.cartItems.length > 0) {
       let mtickets = [];
       this.state.cartItems.forEach((item) => {
         let i = 0;
         const ticketNum = item.ticketCount;
         while (i < ticketNum) {
-          mtickets.push({...item, ticketNo: i + 1});
+          const sel_chk = this.state.selected_tid===item.tickets[i]._id ? 1 : 0 ;
+          mtickets.push({...item, ticketNo: i + 1, sel_chk: sel_chk });
           i++;
         }
       });
       return mtickets.map((item) => {
-        const {thumnailUri, manufacturer, model, ticketNo, tickets, _id} = item;
+        const {thumnailUri, manufacturer, model, ticketNo, tickets, _id, sel_chk} = item;
         return (
-          <div className="cart-item" item_id={_id} ticket_id={tickets[ticketNo-1]._id}>
+          <div className={(sel_chk)?"cart-item selected":"cart-item" } >
             <Row>
               <Col xs="5">
                 <div className="card-image">
@@ -106,22 +94,27 @@ class SpotBallCart extends Component {
             <Row className="cart-actions">
               <Button
                 className="btn-round play"
-                onClick={(e) => e.preventDefault()}
+                onClick={(e)=>{
+                    this.props.updateCartItems({type:"selectTicket",selected_cid: _id, selected_tobj:tickets[ticketNo-1]});
+                    this.setState({selected_tid : tickets[ticketNo-1]._id});
+                  }}
               >
                 <i className="now-ui-icons loader_refresh spin"></i>
-                <span>{(tickets[ticketNo-1].coordX!=null) ? "Reply" : "To Play"}</span>
+                <span>{(tickets[ticketNo-1].coordX!==null) ? "Reply" : (sel_chk ? "In Play":"To Play")}</span>
               </Button>
               <Button
                 className="btn-round add"
-                t_id={tickets[ticketNo-1]._id}
-                onClick={(e) => e.preventDefault()}
+                onClick={(e)=>{
+                      this.props.updateCartItems({type:"addTicket",selected_cid: _id,selected_tobj:tickets[ticketNo-1]});
+                  }}
               >
                 <i className="now-ui-icons ui-1_simple-add"></i> Add
               </Button>
               <Button
                 className="btn-round remove"
-                t_id={tickets[ticketNo-1]._id}
-                onClick={(e) => e.preventDefault()}
+                onClick={(e)=>{
+                      this.props.updateCartItems({type:"removeTicket",selected_cid: _id,selected_tobj:tickets[ticketNo-1]});
+                  }}
               >
                 <i className="now-ui-icons ui-1_simple-remove"></i> Remove
               </Button>

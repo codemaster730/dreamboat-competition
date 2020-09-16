@@ -143,9 +143,6 @@ class SpotBallPlay extends Component {
 
     var cur_x = (e.nativeEvent.offsetX-32)/4 + this.state.move_x;
     var cur_y = (e.nativeEvent.offsetY-32)/4 + this.state.move_y;
-
-    var delt_x = cur_x - this.state.x;
-    var delt_y = cur_y - this.state.y;
     
     if(this.state.pen_chk){// create line
       const pos = this._getRayPositions(this.state.x, this.state.y, cur_x, cur_y)
@@ -169,7 +166,7 @@ class SpotBallPlay extends Component {
                           .attr("d", "M"+(cur_x-plus_size)+","+(cur_y)+"L"+(cur_x+plus_size)+","+(cur_y)+"L"+(cur_x)+","+(cur_y)+"L"+(cur_x)+","+(cur_y+plus_size)+"L"+(cur_x)+","+(cur_y-plus_size))
                           .attr("id","spotMarkX"+cur_x+"Y"+cur_y) //note: identify marks
                           .attr("stroke", "white")
-                          .attr("stroke-width", 1)
+                          .attr("stroke-width", 2)
                           .attr("class","plus_mark")
                           .attr("fill", "none");
       cur_x *= 4;
@@ -178,7 +175,7 @@ class SpotBallPlay extends Component {
                           .attr("d", "M"+(cur_x-plus_size)+","+(cur_y)+"L"+(cur_x+plus_size)+","+(cur_y)+"L"+(cur_x)+","+(cur_y)+"L"+(cur_x)+","+(cur_y+plus_size)+"L"+(cur_x)+","+(cur_y-plus_size))
                           .attr("id","spotMarkX"+cur_x+"Y"+cur_y) //note: identify marks
                           .attr("stroke", "white")
-                          .attr("stroke-width", 1)
+                          .attr("stroke-width", 2)
                           .attr("class","plus_mark")
                           .attr("fill", "none");
       //call SpotBallMain

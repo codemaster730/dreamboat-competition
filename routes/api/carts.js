@@ -149,6 +149,7 @@ router.post("/updateCartTicket", (req, res) => {
       cartItem
       .save()
       .then((item) => {
+        console.log("Successfully updated a ticket");
         return res.status(200).json({message: "Successfully updated a ticket"});
       }).catch((err) => {
         return res.status(500).json({message: "Error occured while updating a ticket."});
