@@ -60,7 +60,6 @@ function DropdownScrollNavbar(props) {
 
   const closeCart = () => {
     setCartOpen(false);
-    console.log(props);
     if (props.updateCartOpenStatus) props.updateCartOpenStatus(false);
   }
 
