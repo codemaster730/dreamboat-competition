@@ -28,6 +28,7 @@ function DropdownScrollNavbar(props) {
   const [navbarColor, setNavbarColor] = React.useState(" navbar-transparent");
   const [buyButtonColor, setBuyButtonColor] = React.useState("neutral");
   const [cartOpen, setCartOpen] = React.useState(false);
+  const [cartStatus, setCartStatus] = React.useState('');
   const [totalTicketCount, setTotalTicketCount] = React.useState(0);
 
   React.useEffect(() => {
@@ -49,6 +50,7 @@ function DropdownScrollNavbar(props) {
     };
     window.addEventListener("scroll", updateNavbarColor);
     setCartOpen(props.cartOpen);
+    setCartStatus(props.cartStatus);
     return function cleanup() {
       window.removeEventListener("scroll", updateNavbarColor);
     };
@@ -61,7 +63,7 @@ function DropdownScrollNavbar(props) {
 
   const closeCart = () => {
     setCartOpen(false);
-    if (props.updateCartOpenStatus) props.updateCartOpenStatus(false);
+    if (props.updateCartStatus) props.updateCartStatus('', false);
   }
 
   const getTotalTicketCount = () => {
@@ -260,7 +262,7 @@ function DropdownScrollNavbar(props) {
           </Collapse>
         </Container>
       </Navbar>
-      <CartModal cartOpen={cartOpen} closeCart={closeCart} getTotalTicketCount={getTotalTicketCount} />
+      <CartModal cartStatus={cartStatus} cartOpen={cartOpen} closeCart={closeCart} getTotalTicketCount={getTotalTicketCount} />
     </>
   );
 }

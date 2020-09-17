@@ -36,7 +36,6 @@ class GalleryBody extends Component {
       selectedBoat: {},
       tabs: "1",
       ticketsAdded: 1,
-      cartItems: [],
       boatInfoModal: false
     }
   }
@@ -56,21 +55,6 @@ class GalleryBody extends Component {
       }).catch((err) => {
         console.log(err);
       });
-
-    // Load Cart Items
-    if (this.props.auth.isAuthenticated) {
-      this.getCartTickets();
-    } 
-  }
-  
-  getCartTickets() {
-    axios
-    .post('/api/carts/getCartTickets', {userId: this.props.auth.user.id})
-    .then((res) => {
-      this.setState({cartItems: res.data});
-    }).catch((err) => {
-      console.log(err);
-    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -106,8 +90,7 @@ class GalleryBody extends Component {
       .then(res => {
         toast(res.data.message);
         this.setState({boatInfoModal: false, ticketsAdded:1});
-        this.setState({cartItems: res.data.items});
-        this.props.updateCartOpenStatus(true);
+        this.props.updateCartStatus('NeedUpdate', true);
       })
       .catch(err => {
         console.log(err);

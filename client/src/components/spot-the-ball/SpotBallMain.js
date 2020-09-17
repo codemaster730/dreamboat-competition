@@ -23,10 +23,10 @@ class SpotBallMain extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isCartOpened: false,
       selectedTool: "1",
       cartItems: [],
-      totalTicketCount: 0,
+      cartOpen: false,
+      cartStatus: '',
     }
     //this.navBarRef = React.createRef();
     this.selectedTickObj = {}; //ticket object
@@ -41,7 +41,6 @@ class SpotBallMain extends Component {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
     this.getCartTickets();
-    this.getTotalTicketCount();
   }
 
   componentWillUnmount() {
@@ -49,15 +48,6 @@ class SpotBallMain extends Component {
     document.body.classList.remove("sidebar-collapse");
   }
 
-  getTotalTicketCount = () => {
-    axios
-    .post('/api/carts/getCartTotal', {userId: this.props.auth.user.id})
-    .then((res) => {
-      this.setState({totalTicketCount: res.data.totalTicketCount});
-    }).catch((err) => {
-      console.log(err);
-    });
-  }
 
   getCartTickets() {
     this.selectedTickObj = {};
@@ -79,6 +69,7 @@ class SpotBallMain extends Component {
           .then((res) => {
             this.selectedBatchChk = false;
             this.setState({cartItems: res.data});
+            this.setState({cartStatus: 'NeedUpdate', cartOpen: false});
           }).catch((err) => {
             console.log(err);
           });
@@ -97,6 +88,7 @@ class SpotBallMain extends Component {
             .post('/api/carts/addCartTicket', {cartItemId: this.selectedCartId, ticket: this.selectedTickObj})
             .then((res) => {
               this.getCartTickets();
+              this.setState({cartStatus: 'NeedUpdate', cartOpen: false});
             }).catch((err) => {
               console.log(err);
             });
@@ -107,6 +99,7 @@ class SpotBallMain extends Component {
             .post('/api/carts/updateCartTicket', {cartItemId: this.selectedCartId, ticket: this.selectedTickObj})
             .then((res) => {
               this.getCartTickets();
+              this.setState({cartStatus: 'NeedUpdate', cartOpen: false});
             }).catch((err) => {
               console.log(err);
             });
@@ -122,6 +115,7 @@ class SpotBallMain extends Component {
         .post('/api/carts/addCartTicket', {cartItemId: this.selectedCartId, ticket: this.selectedTickObj})
         .then((res) => {
           this.getCartTickets();
+          this.setState({cartStatus: 'NeedUpdate', cartOpen: false});
         }).catch((err) => {
           console.log(err);
         });
@@ -129,8 +123,8 @@ class SpotBallMain extends Component {
       axios
         .post('/api/carts/removeCartTicket', {cartItemId: params.selected_cid, ticketId: params.selected_tobj._id})
         .then((res) => {
-          
           this.getCartTickets();
+          this.setState({cartStatus: 'NeedUpdate', cartOpen: false});
         }).catch((err) => {
           console.log(err);
         });      
@@ -144,6 +138,7 @@ class SpotBallMain extends Component {
           .post('/api/carts/updateCartTicket', {cartItemId: this.selectedCartId, ticket: this.selectedTickObj})
           .then((res) => {
             this.getCartTickets();
+            this.setState({cartStatus: 'NeedUpdate', cartOpen: false});
           }).catch((err) => {
             console.log(err);
           });
@@ -152,10 +147,16 @@ class SpotBallMain extends Component {
       this.selectedBatchChk = !this.selectedBatchChk;
     }
   }
+
+  updateCartStatus = (status = '', cartOpen) => {
+    console.log(status, cartOpen);
+    this.setState({cartStatus: status, cartOpen: cartOpen});
+  } 
+
   render() {
     return (
       <>
-        <DropdownScrollNavbar  />
+        <DropdownScrollNavbar cartStatus={this.state.cartStatus} cartOpen={this.state.cartOpen} updateCartStatus={this.updateCartStatus}/>
         <div className="wrapper">
           <SpotBallHeader />
           <Container className="game-container mt-4">

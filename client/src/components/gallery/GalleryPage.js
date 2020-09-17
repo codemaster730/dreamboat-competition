@@ -14,6 +14,7 @@ class GalleryPage extends Component {
     super(props);
     this.state = {
       cartOpen: false,
+      cartStatus: '',
     }
   }
 
@@ -41,17 +42,17 @@ class GalleryPage extends Component {
     });
   }
 
-  updateCartOpenStatus = (cartOpen) => {
-    this.setState({cartOpen: cartOpen});
+  updateCartStatus = (status = '', cartOpen) => {
+    this.setState({cartStatus: status, cartOpen: cartOpen});
   } 
 
   render() {
     return (
       <>
-        <DropdownScrollNavbar cartOpen={this.state.cartOpen} updateCartOpenStatus={this.updateCartOpenStatus}/>
+        <DropdownScrollNavbar cartStatus={this.state.cartStatus} cartOpen={this.state.cartOpen} updateCartStatus={this.updateCartStatus}/>
         <div className="wrapper">
           <GalleryHeader />
-          <GalleryBody redirectToLogin={this.redirectToLogin} getTotalTicketCount={this.getTotalTicketCount} updateCartOpenStatus={this.updateCartOpenStatus}/>
+          <GalleryBody redirectToLogin={this.redirectToLogin} getTotalTicketCount={this.getTotalTicketCount} updateCartStatus={this.updateCartStatus}/>
           <FooterDefault />
         </div>
       </>

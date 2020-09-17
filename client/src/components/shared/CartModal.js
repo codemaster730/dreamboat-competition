@@ -18,17 +18,26 @@ class CartModal extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      cartItems: []
+      cartItems: [],
+
     }
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.cartStatus !== this.props.cartStatus || nextProps.cartOpen !== this.props.cartOpen) {
+      if (nextProps.cartStatus !== '' || nextProps.cartOpen === true) {
+        this.props.getTotalTicketCount();
+        this.getCartTickets();
+      }
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
 
   }
 
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
-      this.getCartTickets();
       this.props.getTotalTicketCount();
     } 
   }
