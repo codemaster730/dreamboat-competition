@@ -31,7 +31,7 @@ function DropdownScrollNavbar(props) {
   const [totalTicketCount, setTotalTicketCount] = React.useState(0);
 
   React.useEffect(() => {
-    props.onRef(this);
+    
     const updateNavbarColor = () => {
       if (
         document.documentElement.scrollTop > 99 ||

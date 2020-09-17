@@ -129,7 +129,7 @@ class SpotBallMain extends Component {
       axios
         .post('/api/carts/removeCartTicket', {cartItemId: params.selected_cid, ticketId: params.selected_tobj._id})
         .then((res) => {
-          //this.navRef.getTotalTicketCount();
+          
           this.getCartTickets();
         }).catch((err) => {
           console.log(err);
@@ -151,12 +151,11 @@ class SpotBallMain extends Component {
     }else if(params.type==="batchSelect"){
       this.selectedBatchChk = !this.selectedBatchChk;
     }
-    //this.navRef.getTotalTicketCount();
   }
   render() {
     return (
       <>
-        <DropdownScrollNavbar onRef={ref => (this.navRef = ref)} />
+        <DropdownScrollNavbar  />
         <div className="wrapper">
           <SpotBallHeader />
           <Container className="game-container mt-4">
