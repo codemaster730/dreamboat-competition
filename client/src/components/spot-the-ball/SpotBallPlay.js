@@ -21,6 +21,9 @@ class SpotBallPlay extends Component {
     this.props.onRef(this)
   }
 
+  componentDidUpdate() {
+  }
+
   componentWillUnmount() {
     this.props.onRef(undefined)
   }
@@ -161,10 +164,10 @@ class SpotBallPlay extends Component {
                             .attr("fill", "none");
         }      
     }else{//create plus mark
-      var plus_size = 10;
+  /*    var plus_size = 10;
       d3.select("#drawSVG").append("path")
                           .attr("d", "M"+(cur_x-plus_size)+","+(cur_y)+"L"+(cur_x+plus_size)+","+(cur_y)+"L"+(cur_x)+","+(cur_y)+"L"+(cur_x)+","+(cur_y+plus_size)+"L"+(cur_x)+","+(cur_y-plus_size))
-                          .attr("id","spotMarkX"+cur_x+"Y"+cur_y) //note: identify marks
+                          .attr("id","spotMarkX"+(cur_x*4)+"Y"+(cur_y*4)) //note: identify marks
                           .attr("stroke", "white")
                           .attr("stroke-width", 2)
                           .attr("class","plus_mark")
@@ -178,8 +181,9 @@ class SpotBallPlay extends Component {
                           .attr("stroke-width", 2)
                           .attr("class","plus_mark")
                           .attr("fill", "none");
+*/                          
       //call SpotBallMain
-      let param={type:"setPos",posX:cur_x,posY:cur_y};
+      let param={type:"setPos",posX:cur_x*4,posY:cur_y*4};
       this.props.updateCartItems(param);
     }
     
@@ -219,7 +223,27 @@ class SpotBallPlay extends Component {
     return (
       <>
         <div id="dreamboatSpotImage" class="has_lines" style={{backgroundImage: "url(/img/spot-the-ball/game/2.jfif)"}}>
-          <svg id = "drawSVG" height="556" version="1.1" width="736"  onMouseMove={this._onMouseMove.bind(this)} >
+          <svg id = "drawSVG" height="556" version="1.1" width="736"  onMouseMove={this._onMouseMove.bind(this)}>
+            {this.props.cartItems.map(item => {
+              return item.tickets.map(tItem => {
+                if (tItem.coordX === null || tItem.coordY === null) {
+                  return null;
+                }
+                let plus_size = 10;
+                let cur_x = tItem.coordX/4;
+                let cur_y = tItem.coordY/4;
+                return (
+                  <path
+                    d={"M"+(cur_x-plus_size)+","+(cur_y)+"L"+(cur_x+plus_size)+","+(cur_y)+"L"+(cur_x)+","+(cur_y)+"L"+(cur_x)+","+(cur_y+plus_size)+"L"+(cur_x)+","+(cur_y-plus_size)}
+                    id={"spotMarkX"+cur_x+"Y"+cur_y}
+                    stroke="white"
+                    strokeWidth={2}
+                    className="plus_mark"
+                    fill="none"
+                  />
+                );
+              });
+            })}
           </svg>
           <div id="dreamboatSpotLens" class="lensComponent" onMouseDown={this._onMouseDown.bind(this)} onMouseUp={this._onMouseUp.bind(this)} onMouseMove={this._onMouseMove_Z.bind(this)}>
             <div id="markdiv">
@@ -229,6 +253,26 @@ class SpotBallPlay extends Component {
             </div>
             <div id="dreamboatSpotZoomWrapper" style={{backgroundImage: "url(/img/spot-the-ball/game/2(zoom).jfif)"}}>
               <svg id="zoomSVG" version="1.1">
+                  {this.props.cartItems.map(item => {
+                    return item.tickets.map(tItem => {
+                      if (tItem.coordX === null || tItem.coordY === null) {
+                        return null;
+                      }
+                      let plus_size = 10;
+                      let cur_x = tItem.coordX;
+                      let cur_y = tItem.coordY;
+                      return (
+                        <path
+                          d={"M"+(cur_x-plus_size)+","+(cur_y)+"L"+(cur_x+plus_size)+","+(cur_y)+"L"+(cur_x)+","+(cur_y)+"L"+(cur_x)+","+(cur_y+plus_size)+"L"+(cur_x)+","+(cur_y-plus_size)}
+                          id={"spotMarkX"+cur_x+"Y"+cur_y}
+                          stroke="white"
+                          strokeWidth={2}
+                          className="plus_mark"
+                          fill="none"
+                        />
+                      );
+                    });
+                  })}
               </svg>
             </div>
           </div>

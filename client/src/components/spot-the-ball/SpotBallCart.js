@@ -1,11 +1,12 @@
 import React, { Component }  from 'react';
 
+
 // reactstrap components
 import {
   Button,
   CardBody,
   Row,
-  Col
+  Col, NavLink, NavItem
 } from "reactstrap";
 
 // core components
@@ -25,27 +26,33 @@ class SpotBallCart extends Component {
       item.tickets.forEach((tItem)=>{
         if((set_chk) && (tItem.coordX==null || tItem.coordY==null)){
           set_chk = 0;
+          this.props.updateCartItems({type:"selectTicket", selected_tobj:tItem, selected_cid: item._id});
           this.setState({selected_tid:tItem._id},()=>{
-            this.props.updateCartItems({type:"selectTicket", selected_tobj:tItem, selected_cid: item._id});
           });
         }
       });
     });
+    if(set_chk){
+      this.setState({selected_tid:0});
+    }
   }
 
   componentDidMount() {
     
+    var el=document.getElementById('tick'+this.state.selected_tid);
+    el.scrollIntoView();
   }
 
   componentDidUpdate(){
     
+    
   }
+  
   componentWillUnmount() {
 
   }
 
   componentWillReceiveProps(nextprops) {
-    console.log("receive_props");
     this.setState({cartItems: nextprops.cartItems}, () => {
       this.selectFirstTicket();
     });
@@ -58,7 +65,12 @@ class SpotBallCart extends Component {
         let i = 0;
         const ticketNum = item.ticketCount;
         while (i < ticketNum) {
-          const sel_chk = this.state.selected_tid===item.tickets[i]._id ? 1 : 0 ;
+          let sel_chk =  0;
+          if(this.state.selected_tid===item.tickets[i]._id){
+            sel_chk = 1;
+          }else{
+            sel_chk = 0;
+          }
           mtickets.push({...item, ticketNo: i + 1, sel_chk: sel_chk });
           i++;
         }
@@ -66,7 +78,10 @@ class SpotBallCart extends Component {
       return mtickets.map((item) => {
         const {thumnailUri, manufacturer, model, ticketNo, tickets, _id, sel_chk} = item;
         return (
-          <div className={(sel_chk)?"cart-item selected":"cart-item" } >
+          <div 
+            className={(sel_chk)?"cart-item selected":"cart-item" } 
+            id = {"tick"+tickets[ticketNo-1]._id}
+          >
             <Row>
               <Col xs="5">
                 <div className="card-image">
@@ -94,18 +109,19 @@ class SpotBallCart extends Component {
             <Row className="cart-actions">
               <Button
                 className="btn-round play"
+                style={{ backgroundColor: (sel_chk ? "grey": (tickets[ticketNo-1].coordX!==null) ? "CornflowerBlue " : "Darkgrey") }}
                 onClick={(e)=>{
                     this.props.updateCartItems({type:"selectTicket",selected_cid: _id, selected_tobj:tickets[ticketNo-1]});
                     this.setState({selected_tid : tickets[ticketNo-1]._id});
                   }}
               >
                 <i className="now-ui-icons loader_refresh spin"></i>
-                <span>{(tickets[ticketNo-1].coordX!==null) ? "Reply" : (sel_chk ? "In Play":"To Play")}</span>
+                <span>{(sel_chk ? "In Play": (tickets[ticketNo-1].coordX!==null) ? "Reply" : "To Play")}</span>
               </Button>
               <Button
                 className="btn-round add"
                 onClick={(e)=>{
-                      this.props.updateCartItems({type:"addTicket",selected_cid: _id,selected_tobj:tickets[ticketNo-1]});
+                      this.props.updateCartItems({type:"addTicket",selected_cid: _id, selected_tobj:tickets[ticketNo-1]});
                   }}
               >
                 <i className="now-ui-icons ui-1_simple-add"></i> Add
@@ -128,10 +144,35 @@ class SpotBallCart extends Component {
   render() {
     return (
       <>
-        <div className="cart-container">
+        <div className="cart-container" id='cart-container'>
           {
             this.renderCartItems()
           }
+          <div className="proc-container">
+              <Button
+                style={{ }}
+                className="select-all-btn"
+                onClick={(e)=>{
+                      this.props.updateCartItems({type:"batchSelect"});
+                  }}
+              >
+                <p>Batch Select</p>
+              </Button>
+              
+              <Button
+                style={{ }}
+                className="nav-link btn-default"
+              >
+                <p>Add More Tickets</p>
+              </Button>
+
+              <Button
+                style={{ }}
+                className="select-all-btn"
+              >
+                <p>Check Out</p>
+              </Button>
+          </div>
         </div>
       </>
     );

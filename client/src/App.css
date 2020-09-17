@@ -368,3 +368,15 @@ li.nav-item .ticket_count {
 div.cart-item.selected{
   background-color:rgb(190, 190, 190);
 }
+
+.proc-container{
+  position: sticky;
+  bottom: 0;
+  background-color: white;
+}
+.proc-container button{
+  background-color: #2CA8FF;
+  width: 100%;
+  height: 45px;
+  margin: 1px;
+}

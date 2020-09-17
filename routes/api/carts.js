@@ -83,6 +83,37 @@ router.post("/getCartTickets", (req, res) => {
   }
 });
 
+// @route POST api/carts/setBatchTickets
+// @desc Set all tickets to defined position(x,y)  and Return CartItems data
+// @access Public
+router.post("/setBatchTickets", (req, res) => {
+  if (req.body.userId) {
+    CartItem.find({userId: req.body.userId}).then(items => {
+      items.map(cartItem=>{
+        cartItem.tickets.map(tickItem=>{
+          tickItem.coordX = req.body.coordX;
+          tickItem.coordY = req.body.coordY;
+        });
+        cartItem
+          .save()
+          .then((item) => {
+            console.log("Successfully updated a ticket");
+          }).catch((err) => {
+            return res.status(500).json({message: "Error occured while updating a ticket."});
+          });
+      });
+      
+      if (items) {
+        return res.status(200).json(items);
+      } else {
+        return res.status(400).json({message: "Couldn't find cart items due to server issue"});
+      }
+    });
+  } else {
+    return res.status(400).json({message: "Couldn't find cart items for this user"});
+  }
+});
+
 // @route POST api/carts/addCartTicket
 // @desc Add a single ticket
 // @access Public
@@ -109,32 +140,34 @@ router.post("/addCartTicket", (req, res) => {
 // @route POST api/carts/removeCartTicket
 // @desc Remove a single ticket
 // @access Public
-router.post("/removeCartTicket", (req, res) => {
-  CartItem.findById(req.body.cartItemId).then(cartItem => {
-    if (cartItem) {
-      if (req.body.ticketId) {
-        cartItem.tickets.pop();
-      } else {
-        let tickets = cartItem.tickets;
-        cartItem.tickets = _.remove(tickets, (ticket) => {
-          return ticket._id == req.body.ticketId;
-        });
-      }
-      cartItem.ticketCount -= 1;
-      cartItem
-      .save()
-      .then((item) => {
-        return res.status(200).json({message: "Successfully removed a ticket"});
-      }).catch((err) => {
-        return res.status(500).json({message: "Error occured while removing a ticket."});
-      });
-    } else {
-      return res.status(404).send({
-        message: "Cart Item not found with id " + req.body.cartItemId
-      });
-    }
+router.post("/removeCartTicket", (req, res) => {
+    CartItem.findById(req.body.cartItemId).then(cartItem => {
+      if (cartItem) {        
+        if (req.body.ticketId===undefined) {
+          cartItem.tickets.pop();
+        } else {
+          let tickets = cartItem.tickets;
+        console.log(tickets);
+          const index = tickets.findIndex((ticket) => ticket._id === req.body.ticketId);
+          console.log(req.body.ticketId,"-",index);
+          tickets.splice(index, 1);
+          cartItem.tickets = tickets;
+        }
+        cartItem.ticketCount -= 1;
+        cartItem
+        .save()
+        .then((item) => {
+          return res.status(200).json({message: "Successfully removed a ticket"});
+        }).catch((err) => {
+          return res.status(500).json({message: "Error occured while removing a ticket."});
+        });
+      } else {
+        return res.status(404).send({
+          message: "Cart Item not found with id " + req.body.cartItemId
+        });
+      }
+    });
   });
-});
 
 // @route POST api/carts/updateCartTicket
 // @desc Update a single ticket
@@ -144,7 +177,7 @@ router.post("/updateCartTicket", (req, res) => {
   CartItem.findById(req.body.cartItemId).then(cartItem => {
     if (cartItem) {
       let tickets = cartItem.tickets;
-      const index = tickets.findIndex((ticket) => ticket.id == req.body.ticket._id);
+      const index = tickets.findIndex((ticket) => ticket._id == req.body.ticket._id);
       tickets.splice(index, 1, req.body.ticket);
       cartItem.tickets = tickets;
       cartItem

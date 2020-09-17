@@ -2,7 +2,7 @@ import React, { Component }  from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import axios from "axios";
-
+import * as d3 from 'd3';
 // reactstrap components
 import {
   Container,
@@ -29,8 +29,9 @@ class SpotBallMain extends Component {
       totalTicketCount: 0,
       
     }
-    this.selected_tobj = {}; //ticket object
-    this.selected_cid = ''; //cartitem id
+    this.selectedTickObj = {}; //ticket object
+    this.selectedCartId = ''; //cartitem id
+    this.selectedBatchChk = false;
   }
 
   componentDidMount() {
@@ -59,8 +60,8 @@ class SpotBallMain extends Component {
   }
 
   getCartTickets() {
-    this.selected_tobj = {};
-    this.selected_cid = '';
+    this.selectedTickObj = {};
+    this.selectedCartId = '';
     axios
     .post('/api/carts/getCartTickets', {userId: this.props.auth.user.id})
     .then((res) => {
@@ -71,22 +72,83 @@ class SpotBallMain extends Component {
   }
 
   updateCartItems = (params) =>{    
-    if(params.type==="setPos"){
-      
-      this.selected_tobj.coordX = params.posX;
-      this.selected_tobj.coordY = params.posY;
-      console.log("XXX"+this.selected_tobj.coordX+":"+this.selected_tobj._id+":"+this.selected_cid);
+    if(params.type==="setPos"){ //handle event from SpotBallPlay
+      if(this.selectedBatchChk){
+        axios
+          .post('/api/carts/setBatchTickets', {userId: this.props.auth.user.id, coordX: params.posX, coordY: params.posY})
+          .then((res) => {
+            this.selectedBatchChk = false;
+            this.setState({cartItems: res.data});
+          }).catch((err) => {
+            console.log(err);
+          });
+      }else{
+        if(this.selectedCartId===''){ //add new tickets when ticket is not selected 
+          this.state.cartItems.forEach((item)=>{
+              if(item.ticketCount>0){
+                this.selectedCartId = item._id;
+                this.selectedTickObj = item.tickets[0];
+              }
+            });
+          this.selectedTickObj.coordX = params.posX;
+          this.selectedTickObj.coordY = params.posY;
+          delete this.selectedTickObj._id;
+          axios
+            .post('/api/carts/addCartTicket', {cartItemId: this.selectedCartId, ticket: this.selectedTickObj})
+            .then((res) => {
+              this.getCartTickets();
+            }).catch((err) => {
+              console.log(err);
+            });
+        }else{
+          this.selectedTickObj.coordX = params.posX;
+          this.selectedTickObj.coordY = params.posY;
+          axios
+            .post('/api/carts/updateCartTicket', {cartItemId: this.selectedCartId, ticket: this.selectedTickObj})
+            .then((res) => {
+              this.getCartTickets();
+            }).catch((err) => {
+              console.log(err);
+            });
+        }
+      }
+    }else if(params.type==="addTicket"){
+      this.selectedTickObj = params.selected_tobj;
+      this.selectedCartId = params.selected_cid;
+      delete this.selectedTickObj._id;
+      this.selectedTickObj.coordX = null;
+      this.selectedTickObj.coordY = null;
       axios
-        .post('/api/carts/updateCartTicket', {cartItemId: this.selected_cid, ticket: this.selected_tobj})
+        .post('/api/carts/addCartTicket', {cartItemId: this.selectedCartId, ticket: this.selectedTickObj})
         .then((res) => {
           this.getCartTickets();
         }).catch((err) => {
           console.log(err);
         });
+    }else if(params.type==="removeTicket"){
+      axios
+        .post('/api/carts/removeCartTicket', {cartItemId: params.selected_cid, ticketId: params.selected_tobj._id})
+        .then((res) => {
+          this.getCartTickets();
+        }).catch((err) => {
+          console.log(err);
+        });      
     }else if(params.type==="selectTicket"){
-      this.selected_tobj = params.selected_tobj;
-      this.selected_cid = params.selected_cid;
-      console.log("sel"+this.selected_tobj._id+":"+this.selected_cid);
+      this.selectedTickObj = params.selected_tobj;
+      this.selectedCartId = params.selected_cid;
+      if(this.selectedTickObj.coordX){
+        this.selectedTickObj.coordX = null;
+        this.selectedTickObj.coordY = null;
+        axios
+          .post('/api/carts/updateCartTicket', {cartItemId: this.selectedCartId, ticket: this.selectedTickObj})
+          .then((res) => {
+            this.getCartTickets();
+          }).catch((err) => {
+            console.log(err);
+          });
+      }
+    }else if(params.type==="batchSelect"){
+      this.selectedBatchChk = !this.selectedBatchChk;
     }
   }
   render() {
@@ -169,7 +231,7 @@ class SpotBallMain extends Component {
               <div id="spotImageWrapper">
                 <div id="dreamboatSpotGameWrapper" >
                   <div id ='dreamboatSpotImageWrapper'  >
-                    <SpotBallPlay onRef={ref => (this.spotBallPlayRef = ref)} updateCartItems={this.updateCartItems}/>    
+                    <SpotBallPlay onRef={ref => (this.spotBallPlayRef = ref)} cartItems={this.state.cartItems} updateCartItems={this.updateCartItems}/>    
                   </div>
                 </div>   
               </div>
