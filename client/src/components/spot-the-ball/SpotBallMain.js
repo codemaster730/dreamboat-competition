@@ -2,7 +2,7 @@ import React, { Component }  from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import axios from "axios";
-import * as d3 from 'd3';
+
 // reactstrap components
 import {
   Container,

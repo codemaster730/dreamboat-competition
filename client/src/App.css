@@ -374,10 +374,11 @@ div.cart-item.selected{
   bottom: 0;
   background-color: white;
   text-align: center;
+  padding-top: 10px;
 }
 .proc-container a, .proc-container button{
   background-color: #2CA8FF;
-  width: 70%;
+  width: 90%;
   height: 45px;
   margin: 4px;
   border-radius: 20px;

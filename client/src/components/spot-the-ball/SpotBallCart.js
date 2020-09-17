@@ -6,7 +6,7 @@ import {
   Button,
   CardBody,
   Row,
-  Col, NavLink, NavItem
+  Col
 } from "reactstrap";
 
 // core components
@@ -18,8 +18,6 @@ class SpotBallCart extends Component {
       cartItems:{},
       selected_tid: 0
     }
-    
-
   }
 
   selectFirstTicket(){
@@ -161,7 +159,7 @@ class SpotBallCart extends Component {
                       this.props.updateCartItems({type:"batchSelect"});
                   }}
               >
-                <p>Batch Select</p>
+                Batch Select
               </Button>
               
               <Button
@@ -169,7 +167,7 @@ class SpotBallCart extends Component {
                 href="/boats"
                 target="_self"
               >
-                <p>Add More Tickets</p>
+                Add More Tickets
               </Button>
 
               <Button
@@ -177,7 +175,7 @@ class SpotBallCart extends Component {
                 href="/"
                 target="_self"
               >
-                <p>Check Out</p>
+                Check Out
               </Button>
           </div>
         </div>
