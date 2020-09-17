@@ -39,8 +39,8 @@ class SpotBallCart extends Component {
 
   componentDidMount() {
     
-    var el=document.getElementById('tick'+this.state.selected_tid);
-    el.scrollIntoView();
+    //var el=document.getElementById('tick'+this.state.selected_tid);
+    //el.scrollIntoView();
   }
 
   componentDidUpdate(){
