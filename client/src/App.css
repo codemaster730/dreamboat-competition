@@ -373,10 +373,12 @@ div.cart-item.selected{
   position: sticky;
   bottom: 0;
   background-color: white;
+  text-align: center;
 }
-.proc-container button{
+.proc-container a, .proc-container button{
   background-color: #2CA8FF;
-  width: 100%;
+  width: 70%;
   height: 45px;
-  margin: 1px;
+  margin: 4px;
+  border-radius: 20px;
 }

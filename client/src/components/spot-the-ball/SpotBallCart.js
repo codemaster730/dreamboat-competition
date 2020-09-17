@@ -18,6 +18,8 @@ class SpotBallCart extends Component {
       cartItems:{},
       selected_tid: 0
     }
+    
+
   }
 
   selectFirstTicket(){
@@ -28,6 +30,9 @@ class SpotBallCart extends Component {
           set_chk = 0;
           this.props.updateCartItems({type:"selectTicket", selected_tobj:tItem, selected_cid: item._id});
           this.setState({selected_tid:tItem._id},()=>{
+            var el=document.getElementById('tick'+this.state.selected_tid);
+            if(el)
+              el.scrollIntoView({behavior: "smooth", block: "center"});
           });
         }
       });
@@ -39,8 +44,6 @@ class SpotBallCart extends Component {
 
   componentDidMount() {
     
-    //var el=document.getElementById('tick'+this.state.selected_tid);
-    //el.scrollIntoView();
   }
 
   componentDidUpdate(){
@@ -112,6 +115,7 @@ class SpotBallCart extends Component {
                 style={{ backgroundColor: (sel_chk ? "grey": (tickets[ticketNo-1].coordX!==null) ? "CornflowerBlue " : "Darkgrey") }}
                 onClick={(e)=>{
                     this.props.updateCartItems({type:"selectTicket",selected_cid: _id, selected_tobj:tickets[ticketNo-1]});
+                    document.getElementById('tick'+tickets[ticketNo-1]._id).scrollIntoView({behavior: "smooth", block: "center"});
                     this.setState({selected_tid : tickets[ticketNo-1]._id});
                   }}
               >
@@ -121,6 +125,7 @@ class SpotBallCart extends Component {
               <Button
                 className="btn-round add"
                 onClick={(e)=>{
+                      document.getElementById('tick'+tickets[ticketNo-1]._id).scrollIntoView({behavior: "smooth", block: "center"});
                       this.props.updateCartItems({type:"addTicket",selected_cid: _id, selected_tobj:tickets[ticketNo-1]});
                   }}
               >
@@ -150,8 +155,8 @@ class SpotBallCart extends Component {
           }
           <div className="proc-container">
               <Button
-                style={{ }}
-                className="select-all-btn"
+                className="btn-info"
+                target="_self"
                 onClick={(e)=>{
                       this.props.updateCartItems({type:"batchSelect"});
                   }}
@@ -160,15 +165,17 @@ class SpotBallCart extends Component {
               </Button>
               
               <Button
-                style={{ }}
-                className="nav-link btn-default"
+                className="btn-info"
+                href="/boats"
+                target="_self"
               >
                 <p>Add More Tickets</p>
               </Button>
 
               <Button
-                style={{ }}
-                className="select-all-btn"
+                className="btn-info"
+                href="/"
+                target="_self"
               >
                 <p>Check Out</p>
               </Button>
