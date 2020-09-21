@@ -15,11 +15,18 @@ li.nav-item .ticket_count {
 .navbar .navbar-nav .nav-link:not(.btn) {
   font-size: 12px !important;
 }
+
+.footer.footer-default {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
+
 /* Modal Cart */
 
 #table-cart .img-container {
-  width: 240px;
-  max-height: 160px;
+  width: 150px;
+  max-height: 100px;
   overflow: hidden;
   display: block;
 }
@@ -30,8 +37,8 @@ li.nav-item .ticket_count {
 
 #table-cart .td-name {
   font-weight: 400;
-  font-size: 1.5em;
-  min-width: 200px;
+  font-size: 1.2em;
+  min-width: 150px;
 }
 
 #table-cart > tbody > tr > td {
@@ -45,10 +52,9 @@ li.nav-item .ticket_count {
 }
 
 #table-cart .td-number {
-  text-align: right;
-  min-width: 145px;
+  text-align: center;
   font-weight: 300;
-  font-size: 1.5em;
+  font-size: 1.2em;
 }
 
 #table-cart .td-name a {
@@ -57,11 +63,22 @@ li.nav-item .ticket_count {
   color: #444;
 }
 
-#table-cart .td-number {
-  font-size: 1.5em !important;
-}
 #table-cart .td-number .btn-group{
   margin-left: 15px !important;
+}
+
+#table-cart {
+  overflow-x: hidden !important;
+}
+
+#table-cart .td-actions{
+  max-width: 90px;
+}
+
+#table-cart .ticket-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #modal-cart .modal-body{
@@ -104,7 +121,7 @@ li.nav-item .ticket_count {
 }
 
 .section-image:after {
-  background-color: rgba(10, 103, 121, 0.4) !important;
+  background-color: rgba(10, 103, 121, 0.8) !important;
 }
 
 /* Gallery Page */
@@ -257,7 +274,7 @@ li.nav-item .ticket_count {
 
 @media screen and (min-width: 992px) {
   .modal-dialog {
-    max-width: 70% !important;
+    max-width: 50% !important;
   }
 }
 
@@ -265,6 +282,13 @@ li.nav-item .ticket_count {
   .gallery-page {
     max-height: 40vh !important;
     min-height: 40vh !important;
+  }
+}
+
+
+@media screen and (min-width: 601px) and (max-width:991px){
+  .modal-dialog {
+    max-width: 70% !important;
   }
 }
 
@@ -282,7 +306,7 @@ li.nav-item .ticket_count {
 
 /* Spot Ball */
 
-.spot-ball-page {
+.spot-ball-page, .checkout-page {
   max-height: 30vh !important;
   min-height: 30vh !important;
 
@@ -382,4 +406,49 @@ div.cart-item.selected{
   height: 45px;
   margin: 4px;
   border-radius: 20px;
+}
+
+/* Checkout Page */
+.checkout-page .card-summary {
+  color: white;
+  padding: 11px 22px !important;
+  background-color: #2CA8FF !important;
+  margin: 0;
+}
+
+.checkout-page .card-body {
+  padding: 0 !important;
+}
+
+#table-cart thead {
+  background-color: #2CA8FF !important;
+  color: white;
+}
+
+.checkout-page .table-responsive {
+  overflow: visible !important;
+}
+
+.checkout-page .summary-info {
+  justify-content: space-between;
+  margin-left: 7px;
+  margin-right: 7px;
+}
+
+.checkout-page .btn-row .btn-checkout {
+  width: 90%;
+}
+
+.checkout-page .btn-row{
+  text-align: center;
+}
+
+.wrapper {
+  margin-bottom: 150px !important;
+}
+
+@media screen and (max-width: 1200px) {
+  .checkout-page #table-cart .mobile {
+    display: none;
+  }
 }

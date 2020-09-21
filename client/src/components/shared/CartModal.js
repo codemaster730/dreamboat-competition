@@ -58,7 +58,7 @@ class CartModal extends Component {
       axios
       .post("/api/carts/removeCartTicket", {cartItemId: cartItemId})
       .then(res => {
-        toast(res.data.message);
+        toast.info(res.data.message);
         this.getCartTickets();
         this.props.getTotalTicketCount();
       }).catch(err => {
@@ -69,7 +69,7 @@ class CartModal extends Component {
       axios
       .post("/api/carts/addCartTicket", {cartItemId: cartItemId, ticket: ticketData})
       .then(res => {
-        toast(res.data.message);
+        toast.info(res.data.message);
         this.getCartTickets();
         this.props.getTotalTicketCount();
       }).catch(err => {
@@ -85,7 +85,7 @@ class CartModal extends Component {
       axios
         .post('/api/carts/getCartTickets', {userId: this.props.auth.user.id})
         .then((res) => {
-          toast(res.data.message);
+          toast.info(res.data.message);
           this.setState({cartItems: res.data});
           this.props.getTotalTicketCount();
         }).catch((err) => {

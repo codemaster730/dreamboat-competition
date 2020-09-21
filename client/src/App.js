@@ -15,6 +15,7 @@ import PrivateRoute from "./components/private-route/PrivateRoute";
 import Home from "./components/home/Home";
 import GalleryPage from "./components/gallery/GalleryPage";
 import SpotBallMain from "./components/spot-the-ball/SpotBallMain";
+import Checkout from "./components/checkout/Checkout";
 
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
@@ -48,6 +49,7 @@ class App extends Component {
             <Route exact path="/login" component={Login} />
             <Switch> 
               <PrivateRoute path="/spot-the-ball" component={SpotBallMain} />
+              <PrivateRoute path="/checkout" component={Checkout} />
             </Switch>
           </div>
         </Router>

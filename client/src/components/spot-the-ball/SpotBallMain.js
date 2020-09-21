@@ -18,6 +18,7 @@ import FooterDefault from "components/shared/FooterDefault.js";
 import SpotBallHeader from './SpotBallHeader';
 import SpotBallCart from './SpotBallCart';
 import SpotBallPlay from './SpotBallPlay';
+import { toast } from 'react-toastify';
 
 class SpotBallMain extends Component {
   constructor(props) {
@@ -153,6 +154,23 @@ class SpotBallMain extends Component {
     this.setState({cartStatus: status, cartOpen: cartOpen});
   } 
 
+  handleCheckoutEvent = () => {
+    let notCompleted = false;
+    this.state.cartItems.forEach((cartItem) => {
+      cartItem.tickets.forEach((ticket) => {
+        if (!ticket.coordX) {
+          notCompleted = true;
+        }
+      })
+    });
+    if (notCompleted) {
+       toast.info("Please play all your tickets before proceeding to Checkout.");
+    } else {
+      this.props.history.push("/checkout");
+    }
+  }
+
+
   render() {
     return (
       <>
@@ -238,7 +256,7 @@ class SpotBallMain extends Component {
                 </div>   
               </div>
               <div id="spotSidebar"> 
-                <SpotBallCart  cartItems={this.state.cartItems} updateCartItems={this.updateCartItems} />
+                <SpotBallCart  cartItems={this.state.cartItems} updateCartItems={this.updateCartItems} handleCheckoutEvent={this.handleCheckoutEvent}/>
               </div>
             </Row>
           </Container>

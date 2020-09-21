@@ -1,6 +1,5 @@
 import React, { Component }  from 'react';
 
-
 // reactstrap components
 import {
   Button,
@@ -15,7 +14,7 @@ class SpotBallCart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cartItems:{},
+      cartItems:[],
       selected_tid: 0
     }
   }
@@ -174,6 +173,10 @@ class SpotBallCart extends Component {
                 className="btn-info"
                 href="/"
                 target="_self"
+                onClick={(e) => {
+                  e.preventDefault();
+                  this.props.handleCheckoutEvent();
+                }}
               >
                 Check Out
               </Button>
