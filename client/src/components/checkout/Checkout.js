@@ -133,7 +133,7 @@ class Checkout extends Component {
             </td>
             <td className="td-number mobile">
               <small>£</small>
-              {ticketPrice * ticketCount}          
+              {_.floor(ticketPrice * ticketCount, 2)}          
             </td>
             <td className="td-actions">
               <Button
