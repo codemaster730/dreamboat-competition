@@ -11,6 +11,8 @@ import DropdownScrollNavbar from "components/shared/DropdownScrollNavbar.js";
 import FooterDefault from "components/shared/FooterDefault.js";
 import CheckoutHeader from './CheckoutHeader';
 
+import PaypalButton from "./PaypalButton";
+
 // reactstrap components
 import {
   Container,
@@ -242,20 +244,13 @@ class Checkout extends Component {
                    <div className="btn-row">
                      <hr />
                     <Button 
-                      className="btn-info btn-round btn-checkout"
+                      className="btn-info btn-checkout"
                       href="/boats"
                       target="_self"
                     >
                       Add More Tickets
                     </Button>
-                    <Button 
-                      className="btn-info btn-round btn-checkout"
-                      onClick={(e) => {
-                        e.preventDefault();
-                      }}
-                    >
-                      PayPal
-                    </Button>
+                    <PaypalButton />
                    </div>
                   </Container>
                 </Card>
