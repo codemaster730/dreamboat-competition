@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import _ from 'lodash';
 
 import { 
   Row,
@@ -131,7 +132,7 @@ class CartModal extends Component {
           </td>
           <td className="td-number">
             <small>£</small>
-            {ticketCount * ticketPrice}
+            {_.floor(ticketCount * ticketPrice, 2)}
           </td>
           <td className="td-actions">
             <Button
