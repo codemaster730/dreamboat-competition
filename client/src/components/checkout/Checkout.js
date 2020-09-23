@@ -29,7 +29,8 @@ class Checkout extends Component {
       cartItems: [],
       cartOpen: false,
       cartStatus: '',
-      collapses: [-1]
+      collapses: [-1],
+      paid: false,
     }
   }
 
@@ -65,6 +66,21 @@ class Checkout extends Component {
     });
   }
 
+  removeCartItems() {
+    let requests = [];
+    this.state.cartItems.forEach((cartItem) => {
+      requests.push(
+        axios
+        .post("/api/carts/removeCartItem", {cartItemId: cartItem._id})
+      )
+    });
+    axios.all(requests).then(axios.spread((...responses) => {
+      this.props.getTotalTicketCount();
+    })).catch((errors) => {
+      console.log(errors);
+    });
+  }
+  
   removeCartItem(cartItemId) {
     axios
     .post("/api/carts/removeCartItem", {cartItemId: cartItemId})
@@ -102,6 +118,30 @@ class Checkout extends Component {
   calculateTotalTickets() {
     const total = _.sumBy(this.state.cartItems, (item) => { return item.ticketCount * item.ticketPrice;});
     return _.floor(total, 2);
+  }
+
+  acceptedPayment = (paymentData) => {
+    console.log("Payment Approved: ", paymentData);
+    this.setState({paid: true});
+    const candidate = {
+      userId: this.props.auth.user.id,
+      paypalPayerId: paymentData.payerID,
+      paypalOrderId: paymentData.orderID,
+      total: this.calculateTotalTickets(),
+      tickets: []
+    }
+    this.state.cartItems.forEach((cartItem) => {
+      candidate.tickets = candidate.tickets.concat(cartItem.tickets); 
+    });
+
+    axios
+    .post('/api/candidates', {candidate: candidate})
+    .then((res) => {
+      console.log(res);
+      this.removeCartItems();
+    }).catch((err) => {
+      console.log(err);
+    });
   }
 
   renderCartTableData() {
@@ -154,9 +194,9 @@ class Checkout extends Component {
                 }}
               >
                 {this.state.collapses.includes(index) ?
-                  <i class="now-ui-icons arrows-1_minimal-down"></i>
+                  <i className="now-ui-icons arrows-1_minimal-down"></i>
                   :
-                  <i class="now-ui-icons arrows-1_minimal-up"></i>
+                  <i className="now-ui-icons arrows-1_minimal-up"></i>
                 }
               </Button>
             </td>
@@ -241,20 +281,35 @@ class Checkout extends Component {
                       <h5>Total:</h5>
                       <h5><small>£</small>{this.calculateTotalTickets()}</h5>
                    </Row>
-                   <div className="btn-row">
-                     <hr />
-                    <Button 
-                      className="btn-info btn-checkout"
-                      href="/boats"
-                      target="_self"
-                    >
-                      Add More Tickets
-                    </Button>
-                    <PaypalButton />
-                   </div>
+                   {!this.state.paid &&
+                    <div className="btn-row">
+                      <hr />
+                      <Button 
+                        className="btn-info btn-checkout"
+                        href="/boats"
+                        target="_self"
+                      >
+                        Add More Tickets
+                      </Button>
+                      <PaypalButton totalPrice = {this.calculateTotalTickets()} acceptedPayment={this.acceptedPayment}/>
+                    </div>
+                   }
                   </Container>
                 </Card>
               </Col>
+            </Row>
+            <Row>
+              <div class="mr-auto ml-auto">
+                {this.state.paid &&
+                  (
+                    <h4>
+                      <p className="text-info">Congrats!</p> You just paid for tickets you played. {" "} We will contact you when eventual winner is chosen and
+                      you can add more tickets to play{" "}
+                      <a href="/boats" class="btn-round btn btn-info"> Add More Tickets</a>
+                    </h4>
+                  )
+                }
+              </div>
             </Row>
           </Container>
         </div>

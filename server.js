@@ -7,6 +7,7 @@ const path = require("path");
 const users = require("./routes/api/users");
 const boats = require("./routes/api/boats");
 const carts = require("./routes/api/carts");
+const candidates = require("./routes/api/candidates");
 
 require('dotenv').config();
 
@@ -42,6 +43,8 @@ require("./config/passport")(passport);
 app.use("/api/users", users);
 app.use("/api/boats", boats);
 app.use("/api/carts", carts);
+app.use("/api/candidates", candidates);
+
 
 // Serve React
 

@@ -6,7 +6,7 @@ import scriptLoader from "react-async-script-loader";
    sandbox:
      "AWKAnqygV04yf-AorjMSdR5HGiwUKqkXnW8zurl78aZ5wMi4AEaGYdx6VjjjvyAS0Hc4VTVqpK9gCe3H",
    production:
-     "your_production_key"
+     '',
  };
 
  const CLIENT_ID =
@@ -23,7 +23,6 @@ class PaypalButton extends React.Component {
 
     this.state = {
       showButtons: false,
-      paid: false
     };
 
     window.React = React;
@@ -60,10 +59,10 @@ class PaypalButton extends React.Component {
     return actions.order.create({
       purchase_units: [
         {
-          description: "Mercedes G-Wagon",
+          description: "Tickets Buy For DreamBoat Competition",
           amount: {
-            currency_code: "USD",
-            value: 200
+            currency_code: "GBP",
+            value: this.props.totalPrice
           }
         }
       ]
@@ -76,17 +75,15 @@ class PaypalButton extends React.Component {
         payerID: data.payerID,
         orderID: data.orderID
       };
-      console.log("Payment Approved: ", paymentData);
-      this.setState({ showButtons: false, paid: true });
+      this.props.acceptedPayment(paymentData);
     });
   };
 
   render() {
-    const { showButtons, paid } = this.state;
+    const { showButtons } = this.state;
 
     return (
       <div className="main">
-
         {showButtons && (
           <div>
             <PayPalButton
@@ -95,18 +92,9 @@ class PaypalButton extends React.Component {
             />
           </div>
         )}
-
-        {paid && (
-          <div className="main">
-            <h2>
-              Congrats! you just paid for that picture. Work a little harder and
-              you'll be able to afford the car itself{" "}
-            </h2>
-          </div>
-        )}
       </div>
     );
   }
  }
 
- export default scriptLoader(`https://www.paypal.com/sdk/js?client-id=${CLIENT_ID}`)(PaypalButton);
+ export default scriptLoader(`https://www.paypal.com/sdk/js?client-id=${CLIENT_ID}&currency=GBP`)(PaypalButton);
