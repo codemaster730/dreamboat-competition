@@ -6,7 +6,7 @@ import scriptLoader from "react-async-script-loader";
    sandbox:
      "AWKAnqygV04yf-AorjMSdR5HGiwUKqkXnW8zurl78aZ5wMi4AEaGYdx6VjjjvyAS0Hc4VTVqpK9gCe3H",
    production:
-     '',
+     'AWKAnqygV04yf-AorjMSdR5HGiwUKqkXnW8zurl78aZ5wMi4AEaGYdx6VjjjvyAS0Hc4VTVqpK9gCe3H',
  };
 
  const CLIENT_ID =
