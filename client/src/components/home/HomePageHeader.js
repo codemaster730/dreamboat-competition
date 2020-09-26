@@ -37,7 +37,7 @@ function HomePageHeader() {
         ></div>
         <Container>
           <Row className="home-page-header">
-            <Col className="ml-auto text-right" md="9">
+            <Col className="ml-auto text-right home-title" md="9">
               <h1 className="title">WIN YOUR DREAM BOAT</h1>
             </Col>
             <Col className="ml-auto text-right" md="7">

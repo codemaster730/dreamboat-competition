@@ -16,12 +16,6 @@ li.nav-item .ticket_count {
   font-size: 12px !important;
 }
 
-.footer.footer-default {
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-}
-
 /* Modal Cart */
 
 #table-cart .img-container {
@@ -103,10 +97,6 @@ li.nav-item .ticket_count {
 }
 
 /* Home Page */
-
-.home-page-header {
-  padding-top: 60px !important;
-}
 
 .features {
   padding: 0px 0px !important;
@@ -443,12 +433,23 @@ div.cart-item.selected{
   text-align: center;
 }
 
-.wrapper {
-  margin-bottom: 150px !important;
-}
-
 @media screen and (max-width: 1200px) {
   .checkout-page #table-cart .mobile {
     display: none;
+  }
+}
+
+@media only screen and (max-width: 767.98px) {
+  h1 { font-size: 30px !important; }
+  h2 { font-size: 25px !important; }
+  .page-header .page-header-image {
+    background-position: left center !important;
+  }
+  .home-title {text-align: center !important;}
+}
+
+@media only screen and (min-width: 992px) {
+  .home-page-header {
+    padding-top: 60px !important;
   }
 }
