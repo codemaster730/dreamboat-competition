@@ -37,10 +37,10 @@ function HomePageHeader() {
         ></div>
         <Container>
           <Row className="home-page-header">
-            <Col className="ml-auto text-right home-title" md="9">
+            <Col className="ml-auto home-title" md="9">
               <h1 className="title">WIN YOUR DREAM BOAT</h1>
             </Col>
-            <Col className="ml-auto text-right" md="7">
+            <Col className="ml-auto home-description" md="7">
               <h4 className="description">
               The winner of our free-to-enter prize draw will be offered
               a six-berth three-cabin yacht for a week’s charter

@@ -88,7 +88,7 @@ class GalleryBody extends Component {
       axios
       .post("/api/carts/addCartTickets", tempCartItem)
       .then(res => {
-        toast(res.data.message);
+        toast.info(res.data.message);
         this.setState({boatInfoModal: false, ticketsAdded:1});
         this.props.updateCartStatus('NeedUpdate', true);
       })
@@ -101,6 +101,7 @@ class GalleryBody extends Component {
   }
 
   render() {
+    const isMobile = window.innerWidth < 768 ? true : false;
     return (
       <>
         <ToastContainer />
@@ -136,10 +137,10 @@ class GalleryBody extends Component {
             </div>
             <div className="modal-body">
               <Row>
-                <Col md="6" xs="12">
+                <Col xl="6">
                   <Carousel boat={this.state.selectedBoat}/>
                 </Col>
-                <Col md="6" xs="12">
+                <Col xl="6">
                   <Card>
                     <CardHeader>
                       <Nav className="justify-content-center" role="tablist" tabs>
@@ -170,15 +171,27 @@ class GalleryBody extends Component {
                     <CardBody>
                       <TabContent className="text-center" activeTab={"tabs" + this.state.tabs}>
                         <TabPane tabId="tabs1">
-                          <Col className="details">
-                            <Row><div className="mr-1 col-6 detail-item"><Badge color="info">Category </Badge></div><div>{this.state.selectedBoat.category}</div></Row>
-                            <Row><div className="mr-1 col-6 detail-item"><Badge color="info">Manufacturer</Badge></div><div>{this.state.selectedBoat.manufacturer}</div></Row>
-                            <Row><div className="mr-1 col-6 detail-item"><Badge color="info">Model</Badge></div><div>{this.state.selectedBoat.model}</div></Row>
-                            <Row><div className="mr-1 col-6 detail-item"><Badge color="info">Ticket</Badge></div><div>£{this.state.selectedBoat.ticketPrice}</div></Row>
-                            <Row><div className="mr-1 col-6 detail-item"><Badge color="info">Price</Badge></div><div>£{this.state.selectedBoat.prizePrice}</div></Row>
-                            <Row><div className="mr-1 col-6 detail-item"><Badge color="info">Length</Badge></div><div>{this.state.selectedBoat.length}</div></Row>
-                            <Row><div className="mr-1 col-6 detail-item"><Badge color="info">Width</Badge></div><div>{this.state.selectedBoat.width}</div></Row>
-                          </Col>
+                          {!isMobile ?
+                            <Col className="details">
+                              <Row><div className="mr-1 col-6 detail-item"><Badge color="info">Category </Badge></div><div>{this.state.selectedBoat.category}</div></Row>
+                              <Row><div className="mr-1 col-6 detail-item"><Badge color="info">Manufacturer</Badge></div><div>{this.state.selectedBoat.manufacturer}</div></Row>
+                              <Row><div className="mr-1 col-6 detail-item"><Badge color="info">Model</Badge></div><div>{this.state.selectedBoat.model}</div></Row>
+                              <Row><div className="mr-1 col-6 detail-item"><Badge color="info">Ticket</Badge></div><div>£{this.state.selectedBoat.ticketPrice}</div></Row>
+                              <Row><div className="mr-1 col-6 detail-item"><Badge color="info">Price</Badge></div><div>£{this.state.selectedBoat.prizePrice}</div></Row>
+                              <Row><div className="mr-1 col-6 detail-item"><Badge color="info">Length</Badge></div><div>{this.state.selectedBoat.length}</div></Row>
+                              <Row><div className="mr-1 col-6 detail-item"><Badge color="info">Width</Badge></div><div>{this.state.selectedBoat.width}</div></Row>
+                            </Col>
+                            :
+                            <Col>
+                              <Col><Badge color="info">Category </Badge><div>{this.state.selectedBoat.category}</div></Col>
+                              <Col><Badge color="info">Manufacturer</Badge><div>{this.state.selectedBoat.manufacturer}</div></Col>
+                              <Col><Badge color="info">Model</Badge><div>{this.state.selectedBoat.model}</div></Col>
+                              <Col><Badge color="info">Ticket</Badge><div>£{this.state.selectedBoat.ticketPrice}</div></Col>
+                              <Col><Badge color="info">Price</Badge><div>£{this.state.selectedBoat.prizePrice}</div></Col>
+                              <Col><Badge color="info">Length</Badge><div>{this.state.selectedBoat.length}</div></Col>
+                              <Col><Badge color="info">Width</Badge><div>{this.state.selectedBoat.width}</div></Col>
+                            </Col>
+                          }
                         </TabPane>
                         <TabPane tabId="tabs2">
                           <p>{this.state.selectedBoat.description}</p>

@@ -195,22 +195,24 @@ li.nav-item .ticket_count {
 
 /* Modal Dialog */
 .gallery-page .carousel-container {
-  height: 400px !important;
+  height: 400px;
 }
 
 .gallery-page .carousel-container img {
   width: 100%; 
-  height: 400px !important;
+  height: 400px;
   object-fit: cover;
 }
 
-.gallery-page .modal-dialog .card {
-  height: 400px !important;
-  overflow-y: scroll;
+@media screen and (min-width: 768px) {
+  .gallery-page .modal-dialog .card {
+    height: 400px;
+    overflow-y: scroll;
+  }
 }
 
 .gallery-page .details {
-  margin: 15px 0px 0 0px !important;
+  margin: 15px 0px 0 0px;
 }
 
 .gallery-page .modal-dialog .ui-1_simple-remove{
@@ -244,7 +246,7 @@ li.nav-item .ticket_count {
 
 .gallery-page .modal-dialog .nav-tabs > .nav-item > .nav-link.active {
   background-color: #2CA8FF !important;
-  margin-top: 20px !important;
+  margin-top: 20px;
   box-shadow: 0px 5px 25px 0px rgba(44, 168, 255, 0.2) !important;
 }
 .gallery-page .modal-dialog .nav-tabs > .nav-item > .nav-link {
@@ -261,38 +263,46 @@ li.nav-item .ticket_count {
   padding-bottom: 0 !important;
 }
 
-
-@media screen and (min-width: 992px) {
-  .modal-dialog {
-    max-width: 50% !important;
-  }
-}
-
-@media screen and (max-width: 992px) {
-  .gallery-page {
-    max-height: 40vh !important;
-    min-height: 40vh !important;
-  }
-}
-
-
-@media screen and (min-width: 601px) and (max-width:991px){
-  .modal-dialog {
-    max-width: 70% !important;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .gallery-page {
-    max-height: 50vh !important;
-    min-height: 50vh !important;
-  }
-
+@media screen and (min-width: 768px) {
   .modal-dialog {
     max-width: 90% !important;
   }
 }
 
+@media screen and (max-width: 767.98px) {
+  .gallery-page {
+    max-height: 50vh !important;
+  }
+
+  .gallery-page .carousel-container {
+    height: 200px;
+  }
+  
+  .gallery-page .carousel-container img {
+    width: 100%; 
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .gallery-page .details {
+    margin: 0;
+  }
+
+  .gallery-page .modal-dialog .nav-tabs > .nav-item > .nav-link.active {
+    background-color: #2CA8FF !important;
+    margin-top: 0;
+    box-shadow: 0px 5px 25px 0px rgba(44, 168, 255, 0.2) !important;
+  }
+  .gallery-page .modal-dialog .nav-tabs > .nav-item > .nav-link {
+    margin-top: 0 !important;
+  }
+}
+
+@media screen and (max-width: 991.98px) {
+  .gallery-page {
+    max-height: 40vh !important;
+  }
+}
 
 /* Spot Ball */
 
@@ -442,14 +452,19 @@ div.cart-item.selected{
 @media only screen and (max-width: 767.98px) {
   h1 { font-size: 30px !important; }
   h2 { font-size: 25px !important; }
-  .page-header .page-header-image {
-    background-position: left center !important;
+  h3 { font-size: 20px !important; }
+  h4 { font-size: 18px !important; }
+  .page-header .page-header-image { background-position: left center !important;}
+  .home-title,.home-description {text-align: center !important;}
+  .card-body {
+    padding-top: 0 !important;
   }
-  .home-title {text-align: center !important;}
 }
 
 @media only screen and (min-width: 992px) {
   .home-page-header {
     padding-top: 60px !important;
   }
+  .home-title,.home-description {text-align: right !important;}
+
 }
