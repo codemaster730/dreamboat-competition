@@ -42,12 +42,12 @@ li.nav-item .ticket_count {
 #table-cart .td-name small {
   color: #9A9A9A;
   font-size: 0.75em;
-  font-weight: 300;
+  font-weight: 500;
 }
 
 #table-cart .td-number {
   text-align: center;
-  font-weight: 300;
+  font-weight: 500;
   font-size: 1.2em;
 }
 
@@ -84,7 +84,6 @@ li.nav-item .ticket_count {
   padding-top: 16px !important;
 }
 
-
 @media screen and (max-width: 767.98px) {
   #table-cart .img-container {
     width: 80px;
@@ -106,7 +105,7 @@ li.nav-item .ticket_count {
 
   #table-cart .td-number {
     text-align: center;
-    font-weight: 300;
+    font-weight: 500;
     font-size: 0.8em;
   }
 
@@ -117,6 +116,11 @@ li.nav-item .ticket_count {
   .table td, .table th {
     padding: 0.25rem !important;
   }
+
+  #modal-cart .modal-content .modal-footer {
+    padding-left: 12px !important;
+  }
+  
 }
 
 
