@@ -14,7 +14,6 @@ import '../spot-the-ball/SpotBallMobile.css';
 //import 'swiper/css/swiper.css';
 import 'swiper/swiper.scss';
 import './SpotBallMobileSwiper.css';
-import { $CombinedState } from 'redux';
 
 class SpotBallMobilePlay extends Component {
     constructor(props) {
