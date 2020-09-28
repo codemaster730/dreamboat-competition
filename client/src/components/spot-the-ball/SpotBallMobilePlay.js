@@ -1,6 +1,7 @@
 import React, { Component }  from 'react';
 import axios from "axios";
 import * as d3 from 'd3';
+//import { FullScreen, useFullScreenHandle } from "react-full-screen";
 //import Swiper from 'react-id-swiper';
 import Swiper from 'swiper/js/swiper.js';
 import {
@@ -30,6 +31,7 @@ class SpotBallMobilePlay extends Component {
         this.currentPos = {x:0, y:0};
     }
     componentDidMount() {
+        
         this.swiper = new Swiper('.swiper-container', {
             init: true,
             updateOnWindowResize: true,
@@ -45,7 +47,11 @@ class SpotBallMobilePlay extends Component {
               slideShadows: false,
             },
             pagination: {
-              el: '.swiper-pagination',
+                el: '.swiper-pagination',
+                type: 'custom',
+                renderCustom: function (swiper, current, total) {
+                    return current + ' of ' + total;
+                },
             },
         });
         this.swiper.update();
@@ -84,8 +90,9 @@ class SpotBallMobilePlay extends Component {
             window.addEventListener('resize', _this.updateWindowDimensions);
         }
         console.log("mount end");
+        //document.body.requestFullscreen();
+        //this.openFullscreen();
     }
-
     componentDidUpdate() {
         this.updateSwiper();
     }
@@ -94,14 +101,28 @@ class SpotBallMobilePlay extends Component {
         
         if(this.swiper){
             console.log("updateSwiper");
-            if(this.winWidth>this.winHeight-this.backHeight-100){
-                this.swiper.changeDirection('horizontal');
-                document.getElementsByClassName("swiper-container")[0].style.top = (this.winHeight - this.backHeight-300)/2 +"px"; 
-                document.getElementsByClassName("swiper-container")[0].style.height = (this.winHeight - this.backHeight+110)/2 +"px"
+            if(this.winWidth<this.winHeight){ //portrait
+                if(this.winWidth>this.winHeight-this.backHeight-100){
+                    this.swiper.changeDirection('horizontal');
+                    document.getElementsByClassName("swiper-container")[0].style.top = (this.winHeight - this.backHeight-300)/2 +"px"; 
+                    document.getElementsByClassName("swiper-container")[0].style.left = "0px"; 
+                    document.getElementsByClassName("swiper-container")[0].style.height = (this.winHeight - this.backHeight+110)/2 +"px"
+                }else{
+                    this.swiper.changeDirection('vertical');
+                    document.getElementsByClassName("swiper-container")[0].style.left = (this.winWidth - 210)/2 +"px";
+                    document.getElementsByClassName("swiper-container")[0].style.top = "0px";
+                    document.getElementsByClassName("swiper-container")[0].style.height = (this.winHeight - this.backHeight-100) +"px"
+                }
             }else{
-                this.swiper.changeDirection('vertical');
-                document.getElementsByClassName("swiper-container")[0].style.left = (this.winWidth - 210)/2 +"px";
-                document.getElementsByClassName("swiper-container")[0].style.height = (this.winHeight - this.backHeight-100) +"px"
+                if(this.winWidth-this.backWidth>this.winHeight-100){//landscape
+                    this.swiper.changeDirection('horizontal');
+                    document.getElementsByClassName("swiper-container")[0].style.top = (this.winHeight - 310)/2 +"px"; 
+                    document.getElementsByClassName("swiper-container")[0].style.left = "0px"; 
+                }else{//portrait
+                    this.swiper.changeDirection('vertical');
+                    document.getElementsByClassName("swiper-container")[0].style.left = (this.winWidth-this.backWidth - 200)/2 +"px";
+                    document.getElementsByClassName("swiper-container")[0].style.top = "0px";
+                }
             }
             this.swiper.update(true);
         }
@@ -134,24 +155,22 @@ class SpotBallMobilePlay extends Component {
     updateWindowDimensions() {  //get resized window size & get back image size & max margin\
         console.log("window-dimension_resize");
         this.winWidth= window.innerWidth;
-        this.winHeight= window.innerHeight-15;
+        this.winHeight= window.innerHeight;
         this.backWidth = 0;
         this.backHeight = 0;
         if(this.winWidth > this.winHeight){//landscape
             if(this.winWidth-210<this.winHeight*this.backImageWidth/this.backImageHeight){
-                document.getElementsByClassName("botPlay")[0].style.width = (this.winWidth-210) +"px";
-                document.getElementsByClassName("botPlay")[0].style.height = (this.winHeight) +"px";    
+                this.backHeight = (this.winWidth-210)*this.backImageHeight / this.backImageWidth;
+                this.backWidth = this.winWidth-210 ;   
             }else{
-
+                this.backHeight = this.winHeight;
+                this.backWidth = this.winHeight * this.backImageWidth/ this.backImageHeight ;
             }
-
-            this.backHeight = this.winHeight;
-            this.backWidth = this.winHeight * this.backImageWidth/ this.backImageHeight ;
-            // document.getElementsByClassName("botBack")[0].style.backgroundSize= " "+ (this.backWidth+"px ") + (this.backHeight+"px") ;
-            // document.getElementsByClassName("botBack")[0].style.width = this.backWidth +"px";
-            // document.getElementsByClassName("botBack")[0].style.height = this.backHeight +"px";
-            // document.getElementsByClassName("botBack")[0].style.left = (this.winWidth-this.backWidth)/2 +"px";
-            document.getElementsByClassName("sidebar")[0].style.top = "0px";
+            document.getElementsByClassName("botBack")[0].style.backgroundSize= " "+ (this.backWidth+"px ") + (this.backHeight+"px") ;
+            document.getElementsByClassName("botBack")[0].style.width = this.backWidth +"px";
+            document.getElementsByClassName("botBack")[0].style.height = this.backHeight +"px";
+            document.getElementsByClassName("botPlay")[0].style.width = (this.winWidth-210) +"px";
+            document.getElementsByClassName("botPlay")[0].style.height = (this.winHeight) +"px"; 
         }else{//Portrait
             if(this.winWidth*this.backImageHeight/this.backImageWidth > this.winHeight-300){//backImage-landscape
                 this.backHeight = this.winHeight - 300;
@@ -162,16 +181,13 @@ class SpotBallMobilePlay extends Component {
                 this.backWidth = this.winWidth;
                 this.backHeight = this.winWidth*this.backImageHeight/this.backImageWidth;
                 document.getElementsByClassName("botPlay")[0].style.width = this.winWidth +"px";
-                document.getElementsByClassName("botPlay")[0].style.height = this.winWidth +"px";
+                document.getElementsByClassName("botPlay")[0].style.height = (this.winHeight-300)  +"px";
             }
             document.getElementsByClassName("botBack")[0].style.backgroundSize= " "+ (this.backWidth+"px ") + (this.backHeight+"px") ;
             document.getElementsByClassName("botBack")[0].style.width = this.backWidth +"px";
             document.getElementsByClassName("botBack")[0].style.height = this.backHeight +"px";
             document.getElementsByClassName("botBack")[0].style.left = (this.winWidth-this.backWidth)/2 +"px";
-            document.getElementsByClassName("sidebar")[0].style.top = this.backHeight +"px";
         }   
-
-        
         this.currentPos.x = this.backWidth /2;
         this.currentPos.y = this.backHeight /2;
         this.markPos.x = 0;
@@ -181,7 +197,39 @@ class SpotBallMobilePlay extends Component {
             this.updateSwiper();
         });
     }
-    
+    setDOMStyle = () => {
+        const eleLens = document.getElementsByClassName("lensComponent")[0];
+        const eleCoord = document.getElementsByClassName("live_coordinates")[0];
+        const eleZoom = document.getElementsByClassName("dreamboatSpotZoomWrapper")[0];
+        const eleMarkee = document.getElementById("botbSpotCursor");
+        const eleBack = document.getElementsByClassName("botBack")[0];   
+        if(this.winWidth>this.winHeight){   //landscape
+            if(this.backHeight<this.winHeight){
+                eleBack.style.left = "0px";
+                eleBack.style.top = (this.winHeight- this.backHeight)/2+"px";
+            }
+            document.getElementsByClassName("sidebar")[0].style.left = this.backWidth+"px";
+            document.getElementsByClassName("sidebar")[0].style.height = this.winHeight+"px";
+            document.getElementsByClassName("cartItemBar")[0].style.height = (this.winHeight-100)+"px";
+        }else{  //portrait
+            if(this.winWidth<this.backWidth){
+                eleBack.style.left = (-(this.backWidth-this.winWidth)/this.winWidth*this.currentPos.x) + "px";
+                eleBack.style.top = "0px";
+            }
+            document.getElementsByClassName("sidebar")[0].style.top = (this.backHeight-5)+"px";
+            document.getElementsByClassName("sidebar")[0].style.height = (this.winHeight-this.backHeight-100)+"px";
+            document.getElementsByClassName("cartItemBar")[0].style.height = (this.winHeight-this.backHeight-100)+"px";
+        }
+        eleLens.style.left = (this.currentPos.x - 32) + "px";
+        eleLens.style.top = (this.currentPos.y - 32) + "px";
+        eleCoord.style.left = (this.currentPos.x - 42) + "px";
+        eleCoord.style.top = (this.currentPos.y - 52) + "px";
+        eleCoord.innerHTML = "X:"+Math.floor(this.currentPos.x * this.state.zoomRatio+this.markPos.x) + "&nbsp;&nbsp;Y:"+Math.floor(this.currentPos.y * this.state.zoomRatio+this.markPos.y);
+        eleZoom.style.left = (-this.currentPos.x * this.state.zoomRatio + 32) + "px";
+        eleZoom.style.top = (-this.currentPos.y * this.state.zoomRatio + 32) + "px";
+        eleMarkee.style.left = (this.markPos.x + 16) + "px";
+        eleMarkee.style.top = (this.markPos.y + 16) + "px";
+    }
     //Get Ray's Positions from Segment's Positions  return - obj{x1,y1,x2,y2,isline}
     _getRayPositions(pos1X, pos1Y, pos2X, pos2Y) {
         const delt_x = pos2X - pos1X
@@ -248,28 +296,7 @@ class SpotBallMobilePlay extends Component {
             this.clickCheckPos = {x:-1, y:-1};
         }
     }
-    setDOMStyle = () => {
-        const eleLens = document.getElementsByClassName("lensComponent")[0];
-        const eleCoord = document.getElementsByClassName("live_coordinates")[0];
-        const eleZoom = document.getElementsByClassName("dreamboatSpotZoomWrapper")[0];
-        const eleMarkee = document.getElementById("botbSpotCursor");
-        const eleBack = document.getElementsByClassName("botBack")[0];
-        if(this.winWidth<this.winHeight && this.winWidth<this.backWidth){
-            eleBack.style.left = (-(this.backWidth-this.winWidth)/this.winWidth*this.currentPos.x) + "px";
-        }
-        if(this.winWidth>this.winHeight){
-            eleBack.style.left = "0px";
-        }
-        eleLens.style.left = (this.currentPos.x - 32) + "px";
-        eleLens.style.top = (this.currentPos.y - 32) + "px";
-        eleCoord.style.left = (this.currentPos.x - 42) + "px";
-        eleCoord.style.top = (this.currentPos.y - 52) + "px";
-        eleCoord.innerHTML = "X:"+Math.floor(this.currentPos.x * this.state.zoomRatio+this.markPos.x) + "&nbsp;&nbsp;Y:"+Math.floor(this.currentPos.y * this.state.zoomRatio+this.markPos.y);
-        eleZoom.style.left = (-this.currentPos.x * this.state.zoomRatio + 32) + "px";
-        eleZoom.style.top = (-this.currentPos.y * this.state.zoomRatio + 32) + "px";
-        eleMarkee.style.left = (this.markPos.x + 16) + "px";
-        eleMarkee.style.top = (this.markPos.y + 16) + "px";
-    }
+    
     _onPenLineBtn(){
         if(this.chkPenLine){//state line
             document.body.classList.add("drawing");
@@ -337,7 +364,6 @@ class SpotBallMobilePlay extends Component {
     renderCartItems() {
         if (this.state.cartItems.length > 0) {
           let mtickets = [];
-          console.log("YYYYYYYYYYYY ->", this.state.cartItems);
           this.state.cartItems.forEach((item) => {
             let i = 0;
             const ticketNum = item.ticketCount;
@@ -348,7 +374,7 @@ class SpotBallMobilePlay extends Component {
           });
           console.log("XXXXXXXXXXXXXX ->", mtickets);
           return mtickets.map((item) => {
-            const {thumnailUri, manufacturer, model, ticketNo, tickets, _id, sel_chk} = item;
+            const {thumnailUri, manufacturer, model, ticketNo, tickets, sel_chk} = item;
             return (
                 <div className="swiper-slide" id = {tickets[ticketNo-1]._id}>
                     <div 
@@ -376,7 +402,8 @@ class SpotBallMobilePlay extends Component {
                             <Button
                                 className= {"btn-icon btn-round play " + ((tickets[ticketNo-1].coordX!==null)?"btn-info":"btn-secondary") } 
                                 onClick={(e)=>{
-                                    this.props.updateCartItems({type:"selectTicket",selected_cid: _id, selected_tobj:tickets[ticketNo-1]});
+                                    //this.props.updateCartItems({type:"selectTicket",selected_cid: _id, selected_tobj:tickets[ticketNo-1]});
+                                    this.updateTicket({type:"set_blank"});
                                 }}
                             >
                                 <i className="now-ui-icons loader_refresh "></i>
@@ -441,6 +468,7 @@ class SpotBallMobilePlay extends Component {
                                 console.log(err);
                             });
                         }else if(params.type === "removeTicket"){
+                            delTicketIndex = key;
                             axios
                                 .post('/api/carts/removeCartTicket', {cartItemId: item._id, ticketId: tItem._id})
                                 .then((res) => {
@@ -448,7 +476,6 @@ class SpotBallMobilePlay extends Component {
                                 }).catch((err) => {
                                 console.log(err);
                             });
-                            delTicketIndex = key;
                         }
                     }
                     return tItem;
@@ -459,13 +486,14 @@ class SpotBallMobilePlay extends Component {
                 }
                 if(delTicketIndex !==-1){
                     item.ticketCount --;
-                    delete item.tickets[delTicketIndex];
+                    item.tickets.splice(delTicketIndex,1);
                 }
                 return item;
             });
             this.setState({cartItems: cartItems},()=>{
                 this.swiper.update();
                 if(params.type === "place_replace"){
+                    this.swiper.slideNext();
                     this.selectBlankTicketItem();
                 }else if (params.type === "add_new"){
                     this.selectBlankTicketItem();
@@ -596,6 +624,7 @@ class SpotBallMobilePlay extends Component {
                                 this.renderCartItems()
                             }
                         </div>
+                        <div class = "swiper-pagination"></div>
                     </div>
 
                 </div>
@@ -622,7 +651,7 @@ class SpotBallMobilePlay extends Component {
                     </Button>
                 </div>
                 <div className="procBar">
-                    <Button className="proc_btn btn-info" style={{width: "100%"}} onClick ={(e)=>{
+                    <Button className="proc_btn btn-info btn-round" style={{width: "100%"}} onClick ={(e)=>{
                         this.updateTicket({type:"place_replace"});
                     }}>
                     Place

@@ -20,6 +20,7 @@ svg{
   .sidebar {
     background-color: white;
     min-width: 200px;
+    height: 100%;
     right: 0;
     position: absolute;
     flex-direction: column;
@@ -30,33 +31,52 @@ svg{
       background-color: white;
       flex: 1;
     }
+    .toolBar {
+      height: 50px;
+      text-align: center;
+      box-shadow: 3px 0 3px #aaa;
+    }
+    .toolBar button{
+      margin-top: 6px;
+    }
+    .toolBar a{
+      margin-top: 6px;
+    }
+    .procBar {
+      height: 50px;
+      box-shadow: 3px 0 3px #aaa;
+    }
+    .procBar button{
+      margin-top: 6px;
+    }
+
 
 @media (max-aspect-ratio: 1/1) {
-  .playContainer {
-    flex-direction: column;
-  }
-  .sidebar {
-    width: 100%;
-    min-height: 250px;
-    display: flex;
-    bottom: 0;
-    position: absolute;
-  }
-  .cartItemBar {
-    width: 100%;
-    height: 90%;
-    order: 3;
-  }
- 
-  .toolBar {
-    height: 50px;
-    order: 1;
-    text-align: center;
-  }
-  .procBar {
-    height: 50px;
-    order: 2;
-  }
+    .playContainer {
+      flex-direction: column;
+    }
+    .sidebar {
+      width: 100%;
+      min-height: 250px;
+      display: flex;
+      bottom: 0;
+      position: absolute;
+    }
+    .cartItemBar {
+      width: 100%;
+      order: 3;
+    }
+  
+    .toolBar {
+      height: 50px;
+      order: 1;
+      text-align: center;
+      box-shadow: 3px 0 3px #aaa;
+    }
+    .procBar {
+      height: 50px;
+      order: 2;
+    }
 
 }
 
