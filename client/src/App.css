@@ -84,6 +84,42 @@ li.nav-item .ticket_count {
   padding-top: 16px !important;
 }
 
+
+@media screen and (max-width: 767.98px) {
+  #table-cart .img-container {
+    width: 80px;
+  }
+
+  #table-cart .td-name {
+    font-weight: 400;
+    font-size: 0.8em;
+    min-width: 100px;
+  }
+  
+  .gallery-page .modal-dialog .ui-1_simple-delete{
+    font-size: 0.6em !important;
+  }
+  
+  .gallery-page .modal-dialog .ui-1_simple-add{
+    font-size: 0.6em !important;
+  }
+
+  #table-cart .td-number {
+    text-align: center;
+    font-weight: 300;
+    font-size: 0.8em;
+  }
+
+  #table-cart .td-number .btn-group{
+    margin-left: 0 !important;
+  }
+  
+  .table td, .table th {
+    padding: 0.25rem !important;
+  }
+}
+
+
 /* Register/ Login */
 
 .login-page .card-login {
@@ -232,11 +268,11 @@ li.nav-item .ticket_count {
 }
 
 .gallery-page .modal-dialog .ui-1_simple-delete{
-  font-size: 1.8em !important;
+  font-size: 1.8em;
 }
 
 .gallery-page .modal-dialog .ui-1_simple-add{
-  font-size: 1.8em !important;
+  font-size: 1.8em;
 }
 
 .gallery-page .modal-dialog .ticket-number{
