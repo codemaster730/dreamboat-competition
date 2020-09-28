@@ -112,7 +112,7 @@ function DropdownScrollNavbar(props) {
                 color={buyButtonColor}
                 onClick={() => setCartOpen(true)}
               >
-                <p className={"ticket_count " + cartButtonColor}>({totalTicketCount})</p>
+                {totalTicketCount > 0 && <p className={"ticket_count " + cartButtonColor}>({totalTicketCount})</p>}
                 <i className={"now-ui-icons shopping_cart-simple " + cartButtonColor}></i> 
               </Button>
               :
