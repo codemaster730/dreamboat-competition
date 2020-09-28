@@ -106,7 +106,7 @@ function DropdownScrollNavbar(props) {
             <UncontrolledTooltip target="navbar-brand">
               Designed by Michael Dawson
             </UncontrolledTooltip>
-            {isMobile && props.auth.isAuthenticated ?
+            {isMobile && props.auth.isAuthenticated && totalTicketCount > 0?
               <Button
                 className="nav-link btn-default"
                 color={buyButtonColor}
@@ -258,19 +258,15 @@ function DropdownScrollNavbar(props) {
                   <p>SIGNUP</p>
                 </Button>
               </NavItem>
-              {!isMobile && props.auth.isAuthenticated ?
+              {!isMobile && props.auth.isAuthenticated && totalTicketCount > 0?
                 <NavItem>
                   <Button
-                    className={totalTicketCount > 0 ? "nav-link btn-info" : "nav-link btn-default"}
+                    className="nav-link btn-default"
                     color={buyButtonColor}
                     onClick={() => setCartOpen(true)}
                   >
-                    {totalTicketCount > 0 ? 
-                      <p className="ticket_count">({totalTicketCount})</p>
-                      : 
-                      <i className="now-ui-icons shopping_box"></i> 
-                    }
-                    <p className="shopping_cart">CART</p>
+                    {totalTicketCount > 0 && <p className={"ticket_count " + cartButtonColor}>({totalTicketCount})</p>}
+                    <i className={"now-ui-icons shopping_cart-simple " + cartButtonColor}></i> 
                   </Button>
                 </NavItem>
                 :
