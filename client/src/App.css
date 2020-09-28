@@ -29,7 +29,17 @@ li.nav-item .ticket_count {
   margin-top: 10px !important;
 }
 
+.navbar .nav-btn {
+  width: 90% !important;
+}
 
+.color-white {
+  color: white;
+}
+
+.color-blue {
+  color: #2CA8FF;
+}
 /* Modal Cart */
 
 #table-cart .img-container {

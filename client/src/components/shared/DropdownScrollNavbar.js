@@ -4,6 +4,9 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
 import axios from "axios";
+import {
+  isMobile
+} from "react-device-detect";
 
 // reactstrap components
 import {
@@ -18,8 +21,7 @@ import {
   NavItem,
   Nav,
   Container,
-  UncontrolledTooltip,
-  Label
+  UncontrolledTooltip
 } from "reactstrap";
 
 import CartModal from './CartModal.js';
@@ -31,6 +33,7 @@ function DropdownScrollNavbar(props) {
   const [cartOpen, setCartOpen] = React.useState(false);
   const [cartStatus, setCartStatus] = React.useState('');
   const [totalTicketCount, setTotalTicketCount] = React.useState(0);
+  const [cartButtonColor, setCartButtonColor] = React.useState("color-blue");
 
   React.useEffect(() => {
     
@@ -41,12 +44,15 @@ function DropdownScrollNavbar(props) {
       ) {
         setNavbarColor("");
         setBuyButtonColor("info");
+        setCartButtonColor("color-white");
+
       } else if (
         document.documentElement.scrollTop < 100 ||
         document.body.scrollTop < 100
       ) {
         setNavbarColor(" navbar-transparent");
         setBuyButtonColor("neutral");
+        setCartButtonColor("color-blue");
       }
     };
     window.addEventListener("scroll", updateNavbarColor);
@@ -100,6 +106,18 @@ function DropdownScrollNavbar(props) {
             <UncontrolledTooltip target="navbar-brand">
               Designed by Michael Dawson
             </UncontrolledTooltip>
+            {isMobile && props.auth.isAuthenticated ?
+              <Button
+                className="nav-link btn-default"
+                color={buyButtonColor}
+                onClick={() => setCartOpen(true)}
+              >
+                <p className={"ticket_count " + cartButtonColor}>({totalTicketCount})</p>
+                <i className={"now-ui-icons shopping_cart-simple " + cartButtonColor}></i> 
+              </Button>
+              :
+              <></>
+            }
             <button
               onClick={() => {
                 document.documentElement.classList.toggle("nav-open");
@@ -213,7 +231,7 @@ function DropdownScrollNavbar(props) {
                   <Button
                     color={buyButtonColor}
                     onClick={onLogoutClick}
-                    className="nav-link btn-default"
+                    className="nav-link btn-default nav-btn"
                   >
                     <p>LOGOUT</p>
                   </Button>
@@ -221,7 +239,7 @@ function DropdownScrollNavbar(props) {
                 :
                 <NavItem>
                   <Button
-                    className="nav-link btn-default"
+                    className="nav-link btn-default nav-btn"
                     color={buyButtonColor}
                     href="/login"
                     target="_self"
@@ -232,15 +250,15 @@ function DropdownScrollNavbar(props) {
               }
               <NavItem>
                 <Button
-                  className="nav-link btn-default"
+                  className="nav-link btn-default nav-btn"
                   color={buyButtonColor}
                   href="/register"
                   target="_self"
                 >
-                  <p className="shopping_cart">SIGNUP</p>
+                  <p>SIGNUP</p>
                 </Button>
               </NavItem>
-              {props.auth.isAuthenticated ?
+              {!isMobile && props.auth.isAuthenticated ?
                 <NavItem>
                   <Button
                     className={totalTicketCount > 0 ? "nav-link btn-info" : "nav-link btn-default"}
