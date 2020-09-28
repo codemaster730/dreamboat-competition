@@ -38,16 +38,17 @@ class SpotBallMobilePlay extends Component {
             centeredSlides: true,
             slidesPerView: 'auto',
             coverflowEffect: {
-              rotate: 40,
+              rotate: 50,
               stretch: 0,
-              depth: 100,
+              depth: 200,
               modifier: 1,
-              slideShadows: true,
+              slideShadows: false,
             },
             pagination: {
               el: '.swiper-pagination',
             },
         });
+        this.swiper.update();
         this.swiper.on('transitionEnd', function () {
             const eleActiveSliders = document.getElementsByClassName("swiper-slide-active");
             if(eleActiveSliders.length>0) {
@@ -137,7 +138,15 @@ class SpotBallMobilePlay extends Component {
         this.backWidth = 0;
         this.backHeight = 0;
         if(this.winWidth > this.winHeight){//landscape
-            //this.setState({maxMarginLeft: wid-w+200, maxMarginTop: hei - h});
+            this.backHeight = this.winHeight;
+            this.backWidth = 300;
+            document.getElementsByClassName("botPlay")[0].style.width = (this.winWidth-210) +"px";
+            document.getElementsByClassName("botPlay")[0].style.height = (this.winHeight) +"px";
+            // document.getElementsByClassName("botBack")[0].style.backgroundSize= " "+ (this.backWidth+"px ") + (this.backHeight+"px") ;
+            // document.getElementsByClassName("botBack")[0].style.width = this.backWidth +"px";
+            // document.getElementsByClassName("botBack")[0].style.height = this.backHeight +"px";
+            // document.getElementsByClassName("botBack")[0].style.left = (this.winWidth-this.backWidth)/2 +"px";
+            // document.getElementsByClassName("sidebar")[0].style.top = this.backHeight +"px";
         }else{//Portrait
             if(this.winWidth > this.winHeight-300){//backImage-landscape
                 this.backHeight = this.winHeight - 300;
@@ -150,13 +159,14 @@ class SpotBallMobilePlay extends Component {
                 document.getElementsByClassName("botPlay")[0].style.width = this.winWidth +"px";
                 document.getElementsByClassName("botPlay")[0].style.height = this.winWidth +"px";
             }
+            document.getElementsByClassName("botBack")[0].style.backgroundSize= " "+ (this.backWidth+"px ") + (this.backHeight+"px") ;
+            document.getElementsByClassName("botBack")[0].style.width = this.backWidth +"px";
+            document.getElementsByClassName("botBack")[0].style.height = this.backHeight +"px";
+            document.getElementsByClassName("botBack")[0].style.left = (this.winWidth-this.backWidth)/2 +"px";
+            document.getElementsByClassName("sidebar")[0].style.top = this.backHeight +"px";
         }   
 
-        document.getElementsByClassName("botBack")[0].style.backgroundSize= " "+ (this.backWidth+"px ") + (this.backHeight+"px") ;
-        document.getElementsByClassName("botBack")[0].style.width = this.backWidth +"px";
-        document.getElementsByClassName("botBack")[0].style.height = this.backHeight +"px";
-        document.getElementsByClassName("botBack")[0].style.left = (this.winWidth-this.backWidth)/2 +"px";
-        document.getElementsByClassName("sidebar")[0].style.top = this.backHeight +"px";
+        
         this.currentPos.x = this.backWidth /2;
         this.currentPos.y = this.backHeight /2;
         this.markPos.x = 0;
