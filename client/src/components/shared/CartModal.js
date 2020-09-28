@@ -163,7 +163,7 @@ class CartModal extends Component {
     return (
       <>
         <ToastContainer />
-        <Modal
+        <Modal        
           id="modal-cart"
           isOpen={this.props.cartOpen}
           toggle={() => {this.props.closeCart();}}
