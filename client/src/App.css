@@ -2,6 +2,8 @@
 
 .navbar .navbar-brand {
   font-size: large !important;
+  padding-top: 0 !important;
+  margin-right: 0.5rem;
 }
 
 li.nav-item .shopping_cart {
@@ -16,6 +18,28 @@ li.nav-item .ticket_count {
   font-size: 12px !important;
 }
 
+.navbar .navbar-brand img{
+  width: 40px;
+  height: 34px;
+}
+
+.navbar label {
+  font-size: 1.6em;
+  margin-right: 10px;
+  margin-top: 10px !important;
+}
+
+.navbar .nav-btn {
+  width: 90% !important;
+}
+
+.color-white {
+  color: white;
+}
+
+.color-blue {
+  color: #2CA8FF;
+}
 /* Modal Cart */
 
 #table-cart .img-container {

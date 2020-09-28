@@ -109,10 +109,10 @@ class Login extends Component {
                     <Form noValidate action="" className="form" method="" onSubmit={this.onSubmit}>
                       <CardHeader className="text-center">
                       <div className="logo-container">
-                        <img
+                        {/* <img
                           alt="..."
                           src="/img/now-logo.png"
-                        ></img>
+                        ></img> */}
                       </div>
                     </CardHeader>
                       <CardBody>
