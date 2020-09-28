@@ -19,6 +19,7 @@ import {
   Nav,
   Container,
   UncontrolledTooltip,
+  Label
 } from "reactstrap";
 
 import CartModal from './CartModal.js';
@@ -90,11 +91,14 @@ function DropdownScrollNavbar(props) {
       <Navbar className={"fixed-top" + navbarColor} color="white" expand="lg">
         <Container>
           <div className="navbar-translate">
-            <NavbarBrand to="/" tag={Link} id="navbar-brand" className="navbar-brand">
-              DREAMBOAT
-            </NavbarBrand>
+            <div>
+              <NavbarBrand to="/" tag={Link} id="navbar-brand" className="navbar-brand">
+                <img src="/img/logo.png" alt=""/>
+              </NavbarBrand>
+              <label>DreamBoat</label>
+            </div>
             <UncontrolledTooltip target="navbar-brand">
-              Designed by Invision. Coded by Creative Tim
+              Designed by Michael Dawson
             </UncontrolledTooltip>
             <button
               onClick={() => {
@@ -128,10 +132,6 @@ function DropdownScrollNavbar(props) {
                   <DropdownItem to="/boats" tag={Link} target="_self">
                     <i className="now-ui-icons design_image"></i>
                     Weekly Dream Boat
-                  </DropdownItem>
-                  <DropdownItem to="/" tag={Link} target="_self">
-                    <i className="now-ui-icons business_chart-pie-36"></i>
-                    Weekly Lifestyle
                   </DropdownItem>
                   <DropdownItem
                     href="#"
