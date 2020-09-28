@@ -445,6 +445,7 @@ class SpotBallMobilePlay extends Component {
                             delTicketIndex = key;
                         }
                     }
+                    return tItem;
                 });
                 if(newTItem){
                     item.ticketCount ++;
@@ -566,6 +567,8 @@ class SpotBallMobilePlay extends Component {
                                                         className="straight_line"
                                                         fill="none"
                                                     />);
+                                                }else{
+                                                    return null;
                                                 }
                                             })
                                         }
