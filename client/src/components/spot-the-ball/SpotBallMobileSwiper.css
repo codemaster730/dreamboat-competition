@@ -14,7 +14,7 @@ height:auto;
 }
 
 .swiper-slide .cart-item{
-    width:200px;
-    height:210px;   
+    min-width:200px;
+    min-height:210px;   
 }
 

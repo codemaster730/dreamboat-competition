@@ -30,7 +30,36 @@ class SpotBallMobilePlay extends Component {
         this.markPos = {x:0, y:0};
         this.currentPos = {x:0, y:0};
     }
-    componentDidMount() {      
+    componentDidMount() {
+        this.swiper = new Swiper('.swiper-container', {
+            init: true,
+            updateOnWindowResize: true,
+            effect: 'coverflow',
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: 'auto',
+            coverflowEffect: {
+              rotate: 40,
+              stretch: 0,
+              depth: 100,
+              modifier: 1,
+              slideShadows: true,
+            },
+            pagination: {
+              el: '.swiper-pagination',
+            },
+        });
+        this.swiper.on('transitionEnd', function () {
+            const eleActiveSliders = document.getElementsByClassName("swiper-slide-active");
+            if(eleActiveSliders.length>0) {
+                var eleSelectedTickets = document.getElementsByClassName("selectedTicket");
+                while(eleSelectedTickets.length>0) {
+                    eleSelectedTickets[0].classList.remove("selectedTicket");
+                }
+                //document.getElementById("t"+eleActiveSliders[0].id).classList.add("selectedTicket");
+                //document.getElementById("z"+eleActiveSliders[0].id).classList.add("selectedTicket");
+            }
+        });
         console.log("mount start");
         var _this = this;
         var img = new Image();
@@ -42,32 +71,18 @@ class SpotBallMobilePlay extends Component {
 
             _this.updateWindowDimensions();
             window.addEventListener('resize', _this.updateWindowDimensions);
-            _this.swiper = new Swiper('.swiper-container', {
-                init: true,
-                updateOnWindowResize: true,
-                effect: 'coverflow',
-                grabCursor: true,
-                centeredSlides: true,
-                slidesPerView: 'auto',
-                coverflowEffect: {
-                  rotate: 40,
-                  stretch: 0,
-                  depth: 100,
-                  modifier: 1,
-                  slideShadows: true,
-                },
-                pagination: {
-                  el: '.swiper-pagination',
-                },
-            });
-            _this.updateSwiper();
-            console.log("load image and set swiper");
-
         }
         console.log("mount end");
     }
+
+    componentDidUpdate() {
+        this.updateSwiper();
+    }
+
     updateSwiper =()=>{
+        
         if(this.swiper){
+            console.log("updateSwiper");
             if(this.winWidth>this.winHeight-this.backHeight-100){
                 this.swiper.changeDirection('horizontal');
             }else{
@@ -84,17 +99,7 @@ class SpotBallMobilePlay extends Component {
                     cart_index++;
                 });
             });
-            this.swiper.on('transitionEnd', function () {
-                const eleActiveSliders = document.getElementsByClassName("swiper-slide-active");
-                if(eleActiveSliders.length>0) {
-                    var eleSelectedTickets = document.getElementsByClassName("selectedTicket");
-                    while(eleSelectedTickets.length>0) {
-                        eleSelectedTickets[0].classList.remove("selectedTicket");
-                    }
-                    document.getElementById("t"+eleActiveSliders[0].id).classList.add("selectedTicket");
-                    document.getElementById("z"+eleActiveSliders[0].id).classList.add("selectedTicket");
-                }
-            });
+            this.swiper.update(true);
         }
     }
     componentDidUpdate(){
@@ -401,13 +406,17 @@ class SpotBallMobilePlay extends Component {
                         <svg id="drawSVG" version="1.1">
                                     {
                                         this.state.sightLines.map(pos =>{
-                                            return(<path
-                                                d={"M" + pos.x1/this.state.zoomRatio + "," + pos.y1/this.state.zoomRatio + "L" + pos.x2/this.state.zoomRatio + "," + pos.y2/this.state.zoomRatio}
-                                                stroke="#f0801f"
-                                                strokeWidth={1}
-                                                className="straight_line"
-                                                fill="none"
-                                            />);
+                                            if(pos.x1===null){
+                                                return null;
+                                            }
+                                                return(<path
+                                                    d={"M" + pos.x1/this.state.zoomRatio + "," + pos.y1/this.state.zoomRatio + "L" + pos.x2/this.state.zoomRatio + "," + pos.y2/this.state.zoomRatio}
+                                                    stroke="#f0801f"
+                                                    strokeWidth={1}
+                                                    className="straight_line"
+                                                    fill="none"
+                                                />);
+                                            
                                         })
                                     }
                                     {
@@ -439,13 +448,15 @@ class SpotBallMobilePlay extends Component {
                                 <svg id="zoomSVG" version="1.1">
                                         {
                                             this.state.sightLines.map(pos =>{
-                                                return(<path
-                                                    d={"M" + pos.x1 + "," + pos.y1 + "L" + pos.x2 + "," + pos.y2}
-                                                    stroke="#f0801f"
-                                                    strokeWidth={1}
-                                                    className="straight_line"
-                                                    fill="none"
-                                                />);
+                                                if(pos.x1){
+                                                    return(<path
+                                                        d={"M" + pos.x1 + "," + pos.y1 + "L" + pos.x2 + "," + pos.y2}
+                                                        stroke="#f0801f"
+                                                        strokeWidth={1}
+                                                        className="straight_line"
+                                                        fill="none"
+                                                    />);
+                                                }
                                             })
                                         }
                                         {this.props.cartItems.map(item => {
@@ -516,7 +527,7 @@ class SpotBallMobilePlay extends Component {
                 <div className="procBar">
                     <Button className="btn-info" style={{width: "100%"}} onClick ={(e)=>{
                         this.props.updateCartItems({type: "setPos", posX: Math.floor(this.currentPos.x * this.state.zoomRatio+this.markPos.x), posY: Math.floor(this.currentPos.y * this.state.zoomRatio+this.markPos.y)});
-                        this.swiper.slideNext();
+                        //this.swiper.slideNext();
                     }}>
                     Place
                   </Button>
