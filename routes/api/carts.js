@@ -125,7 +125,7 @@ router.post("/addCartTicket", (req, res) => {
       cartItem
       .save()
       .then((item) => {
-        return res.status(200).json({message: "Successfully added a ticket"});
+        return res.status(200).json({message: "Successfully added a ticket", newId: cartItem.tickets[cartItem.ticketCount-1].id });
       }).catch((err) => {
         return res.status(500).json({message: "Error occured while adding a ticket."});
       });

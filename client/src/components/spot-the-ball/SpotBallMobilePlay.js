@@ -1,12 +1,11 @@
 import React, { Component }  from 'react';
+import axios from "axios";
 import * as d3 from 'd3';
 //import Swiper from 'react-id-swiper';
 import Swiper from 'swiper/js/swiper.js';
 import {
     Button,
-    Col,
     CardBody,
-    Row,
   } from "reactstrap";
 
 import '../spot-the-ball/SpotBallMobile.css';
@@ -56,9 +55,20 @@ class SpotBallMobilePlay extends Component {
                 while(eleSelectedTickets.length>0) {
                     eleSelectedTickets[0].classList.remove("selectedTicket");
                 }
-                //document.getElementById("t"+eleActiveSliders[0].id).classList.add("selectedTicket");
-                //document.getElementById("z"+eleActiveSliders[0].id).classList.add("selectedTicket");
-            }
+                if(d3.select(".swiper-slide-active").select(".position").html().length>5){
+                    document.getElementById("t"+eleActiveSliders[0].id).classList.add("selectedTicket");
+                    document.getElementById("z"+eleActiveSliders[0].id).classList.add("selectedTicket");
+                }
+                if(d3.select(".swiper-slide-active").select(".position").html().length<=5){
+                    d3.select(".proc_btn").html("Place");
+                    document.getElementsByClassName("proc_btn")[0].classList.add("btn-info");
+                    document.getElementsByClassName("proc_btn")[0].classList.remove("btn-warning");
+                }else{
+                    d3.select(".proc_btn").html("Replace");
+                    document.getElementsByClassName("proc_btn")[0].classList.remove("btn-info");
+                    document.getElementsByClassName("proc_btn")[0].classList.add("btn-warning");
+                }
+            }            
         });
         console.log("mount start");
         var _this = this;
@@ -85,29 +95,39 @@ class SpotBallMobilePlay extends Component {
             console.log("updateSwiper");
             if(this.winWidth>this.winHeight-this.backHeight-100){
                 this.swiper.changeDirection('horizontal');
+                document.getElementsByClassName("swiper-container")[0].style.top = (this.winHeight - this.backHeight-300)/2 +"px"; 
+                document.getElementsByClassName("swiper-container")[0].style.height = (this.winHeight - this.backHeight+110)/2 +"px"
             }else{
                 this.swiper.changeDirection('vertical');
+                document.getElementsByClassName("swiper-container")[0].style.left = (this.winWidth - 210)/2 +"px";
+                document.getElementsByClassName("swiper-container")[0].style.height = (this.winHeight - this.backHeight-100) +"px"
             }
-            var set_chk = 1;
-            var cart_index = 0;
-            this.props.cartItems.forEach((item) => {
-                item.tickets.forEach((tItem)=>{
-                    if((set_chk) && (tItem.coordX==null || tItem.coordY==null)){
-                        set_chk = 0;
-                        this.swiper.slideTo(cart_index);
-                    }
-                    cart_index++;
-                });
-            });
             this.swiper.update(true);
         }
-    }
-    componentDidUpdate(){
-        console.log("com update");
     }
     
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateWindowDimensions);
+    }
+
+    componentWillReceiveProps(nextprops) {
+        this.setState({cartItems: nextprops.cartItems},()=>{
+            this.selectBlankTicketItem();
+        });
+    }
+
+    selectBlankTicketItem = () =>{
+        var set_chk = 1;
+        var cart_index = 0;
+        this.state.cartItems.forEach((item) => {
+            item.tickets.forEach((tItem)=>{
+                if((set_chk) && (tItem.coordX==null || tItem.coordY==null)){
+                    set_chk = 0;
+                    this.swiper.slideTo(cart_index);
+                }
+                cart_index++;
+            });
+        });
     }
     
     updateWindowDimensions() {  //get resized window size & get back image size & max margin\
@@ -209,7 +229,7 @@ class SpotBallMobilePlay extends Component {
             this.setState({lineX2: touch.clientX, lineY2: touch.clientY});
         }
         if(this.clickCheckPos.x===touch.clientX && this.clickCheckPos.y===touch.clientY){
-            alert("click");
+            this.updateTicket({type:"place_replace"});
             this.clickCheckPos = {x:-1, y:-1};
         }
     }
@@ -299,22 +319,18 @@ class SpotBallMobilePlay extends Component {
     }
 
     renderCartItems() {
-        if (this.props.cartItems.length > 0) {
+        if (this.state.cartItems.length > 0) {
           let mtickets = [];
-          this.props.cartItems.forEach((item) => {
+          console.log("YYYYYYYYYYYY ->", this.state.cartItems);
+          this.state.cartItems.forEach((item) => {
             let i = 0;
             const ticketNum = item.ticketCount;
             while (i < ticketNum) {
-              let sel_chk =  0;
-              if(this.state.selected_tid===item.tickets[i]._id){
-                sel_chk = 1;
-              }else{
-                sel_chk = 0;
-              }
-              mtickets.push({...item, ticketNo: i + 1, sel_chk: sel_chk });
+              mtickets.push({...item, ticketNo: i + 1});
               i++;
             }
           });
+          console.log("XXXXXXXXXXXXXX ->", mtickets);
           return mtickets.map((item) => {
             const {thumnailUri, manufacturer, model, ticketNo, tickets, _id, sel_chk} = item;
             return (
@@ -352,7 +368,8 @@ class SpotBallMobilePlay extends Component {
                             <Button
                                 className=" btn-icon btn-round btn-warning add"
                                 onClick={(e)=>{
-                                    this.props.updateCartItems({type:"addTicket",selected_cid: _id, selected_tobj:tickets[ticketNo-1]});
+                                    //this.props.updateCartItems({type:"addTicket",selected_cid: _id, selected_tobj:tickets[ticketNo-1]});
+                                    this.updateTicket({type:"add_new"});
                                 }}
                             >
                                 <i className="now-ui-icons ui-1_simple-add"></i> 
@@ -360,9 +377,8 @@ class SpotBallMobilePlay extends Component {
                             <Button
                                 className=" btn-icon btn-round btn-secondary remove"
                                 onClick={(e)=>{
-                                    alert(123);
-                                    console.log(_id,tickets[ticketNo-1])
-                                    this.props.updateCartItems({type:"removeTicket",selected_cid: _id,selected_tobj:tickets[ticketNo-1]});
+                                    //this.props.updateCartItems({type:"removeTicket",selected_cid: _id,selected_tobj:tickets[ticketNo-1]});
+                                    this.updateTicket({type:"removeTicket"});
                                 }}
                             >
                                 <i className="now-ui-icons ui-1_simple-remove"></i> 
@@ -375,8 +391,71 @@ class SpotBallMobilePlay extends Component {
         } else return []; 
       }
 
-
-
+    updateTicket= (params) =>{
+        const eleActiveSliders = document.getElementsByClassName("swiper-slide-active");
+        if(eleActiveSliders.length>0) {
+            
+            var cartItems = 
+            this.state.cartItems.map(item => {
+                var newTItem;
+                var delTicketIndex = -1;
+                item.tickets.map((tItem,key)=>{
+                    if(tItem._id === eleActiveSliders[0].id){
+                        if(params.type === "place_replace"){
+                            tItem.coordX = Math.floor(this.currentPos.x * this.state.zoomRatio + this.markPos.x);
+                            tItem.coordY = Math.floor(this.currentPos.y * this.state.zoomRatio + this.markPos.y);
+                            axios
+                                .post('/api/carts/updateCartTicket', {cartItemId: item._id, ticket: tItem})
+                                .then((res) => {
+                                }).catch((err) => {
+                                console.log(err);
+                                });
+                            
+                        }else if(params.type === "add_new"){
+                            newTItem = {...tItem};
+                            delete newTItem._id;
+                            newTItem.coordX = null;
+                            newTItem.coordY = null;
+                            
+                            axios
+                                .post('/api/carts/addCartTicket', {cartItemId: item._id, ticket: newTItem})
+                                .then((res) => {
+                                    newTItem._id = res.data.newId;
+                                }).catch((err) => {
+                                console.log(err);
+                            });
+                        }else if(params.type === "removeTicket"){
+                            axios
+                                .post('/api/carts/removeCartTicket', {cartItemId: item._id, ticketId: tItem._id})
+                                .then((res) => {
+                                    
+                                }).catch((err) => {
+                                console.log(err);
+                            });
+                            delTicketIndex = key;
+                        }
+                    }
+                });
+                if(newTItem){
+                    item.ticketCount ++;
+                    item.tickets.push(newTItem);
+                }
+                if(delTicketIndex !==-1){
+                    item.ticketCount --;
+                    delete item.tickets[delTicketIndex];
+                }
+                return item;
+            });
+            this.setState({cartItems: cartItems},()=>{
+                this.swiper.update();
+                if(params.type === "place_replace"){
+                    this.selectBlankTicketItem();
+                }else if (params.type === "add_new"){
+                    this.selectBlankTicketItem();
+                }
+            })
+        }
+    }
 
 
 
@@ -403,24 +482,9 @@ class SpotBallMobilePlay extends Component {
                             backgroundImage: "url(/img/spot-the-ball/game/2.jfif)",
                         }}
                     >
-                        <svg id="drawSVG" version="1.1">
+                        <svg id="drawSVG" version="1.1">                                    
                                     {
-                                        this.state.sightLines.map(pos =>{
-                                            if(pos.x1===null){
-                                                return null;
-                                            }
-                                                return(<path
-                                                    d={"M" + pos.x1/this.state.zoomRatio + "," + pos.y1/this.state.zoomRatio + "L" + pos.x2/this.state.zoomRatio + "," + pos.y2/this.state.zoomRatio}
-                                                    stroke="#f0801f"
-                                                    strokeWidth={1}
-                                                    className="straight_line"
-                                                    fill="none"
-                                                />);
-                                            
-                                        })
-                                    }
-                                    {
-                                        this.props.cartItems.map(item => {
+                                        this.state.cartItems.map(item => {
                                             return item.tickets.map(tItem => {
                                                 if (tItem.coordX === null || tItem.coordY === null) {
                                                     return null;
@@ -441,25 +505,27 @@ class SpotBallMobilePlay extends Component {
                                             });
                                         })
                                     }
+                                    {
+                                        this.state.sightLines.map(pos =>{
+                                            if(pos.x1===null){
+                                                return null;
+                                            }
+                                                return(<path
+                                                    d={"M" + pos.x1/this.state.zoomRatio + "," + pos.y1/this.state.zoomRatio + "L" + pos.x2/this.state.zoomRatio + "," + pos.y2/this.state.zoomRatio}
+                                                    stroke="#f0801f"
+                                                    strokeWidth={1}
+                                                    className="straight_line"
+                                                    fill="none"
+                                                />);
+                                            
+                                        })
+                                    }
                         </svg>
                         <div id="dreamboatSpotLens" className="lensComponent">
                             <div id="botbSpotCursor"></div>
                             <div className="dreamboatSpotZoomWrapper" style={{backgroundImage:"url(/img/spot-the-ball/game/2(zoom).jfif)",}}>
                                 <svg id="zoomSVG" version="1.1">
-                                        {
-                                            this.state.sightLines.map(pos =>{
-                                                if(pos.x1){
-                                                    return(<path
-                                                        d={"M" + pos.x1 + "," + pos.y1 + "L" + pos.x2 + "," + pos.y2}
-                                                        stroke="#f0801f"
-                                                        strokeWidth={1}
-                                                        className="straight_line"
-                                                        fill="none"
-                                                    />);
-                                                }
-                                            })
-                                        }
-                                        {this.props.cartItems.map(item => {
+                                        {this.state.cartItems.map(item => {
                                             return item.tickets.map(tItem => {
                                                 if (tItem.coordX === null || tItem.coordY === null) {
                                                 return null;
@@ -479,6 +545,20 @@ class SpotBallMobilePlay extends Component {
                                                 );
                                             });
                                         })}
+
+                                        {
+                                            this.state.sightLines.map(pos =>{
+                                                if(pos.x1){
+                                                    return(<path
+                                                        d={"M" + pos.x1 + "," + pos.y1 + "L" + pos.x2 + "," + pos.y2}
+                                                        stroke="#f0801f"
+                                                        strokeWidth={1}
+                                                        className="straight_line"
+                                                        fill="none"
+                                                    />);
+                                                }
+                                            })
+                                        }
                                 </svg>
                             </div>
                         </div>
@@ -491,17 +571,15 @@ class SpotBallMobilePlay extends Component {
               <div className="sidebar">
                 <div className="cartItemBar">
                         
-                        <div className="swiper-container">
-                            <div className="swiper-wrapper">
-                                {
-                                    this.renderCartItems()
-                                }
-                            </div>
+                    <div className="swiper-container">
+                        <div className="swiper-wrapper">
+                            {
+                                this.renderCartItems()
+                            }
                         </div>
+                    </div>
 
                 </div>
-
-
                 <div className="toolBar">
                     <Button className="btn-icon btn-round btn-info btn_linepen" onClick={this._onPenLineBtn.bind(this)} >
                         <i className= " penline_btn now-ui-icons design-2_ruler-pencil"></i>
@@ -525,9 +603,8 @@ class SpotBallMobilePlay extends Component {
                     </Button>
                 </div>
                 <div className="procBar">
-                    <Button className="btn-info" style={{width: "100%"}} onClick ={(e)=>{
-                        this.props.updateCartItems({type: "setPos", posX: Math.floor(this.currentPos.x * this.state.zoomRatio+this.markPos.x), posY: Math.floor(this.currentPos.y * this.state.zoomRatio+this.markPos.y)});
-                        //this.swiper.slideNext();
+                    <Button className="proc_btn btn-info" style={{width: "100%"}} onClick ={(e)=>{
+                        this.updateTicket({type:"place_replace"});
                     }}>
                     Place
                   </Button>

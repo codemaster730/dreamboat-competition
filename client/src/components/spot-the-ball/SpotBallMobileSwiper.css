@@ -8,13 +8,13 @@ overflow: hidden;
 }
 
 .swiper-slide {
-width:auto;
-height:auto;
+    width:200px;
+    height:210px;  
 /*this one holds the dimension of each slides and can be changed according to the user wish*/
 }
 
 .swiper-slide .cart-item{
-    min-width:200px;
-    min-height:210px;   
+    width:200px;
+    height:210px;   
 }
 

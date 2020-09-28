@@ -180,4 +180,8 @@ path.selectedTicket {
   flex: 1;
   text-align: center;
   height: 50px;
+  display: none;
+}
+.swiper-slide-active .cart-action{
+  display: block;
 }
