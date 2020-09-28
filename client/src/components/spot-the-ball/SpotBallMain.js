@@ -3,6 +3,11 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import axios from "axios";
 
+import {
+  isMobile,
+  isTablet
+} from "react-device-detect";
+
 // reactstrap components
 import {
   Container,
@@ -18,6 +23,7 @@ import FooterDefault from "components/shared/FooterDefault.js";
 import SpotBallHeader from './SpotBallHeader';
 import SpotBallCart from './SpotBallCart';
 import SpotBallPlay from './SpotBallPlay';
+import SpotBallMobilePlay from './SpotBallMobilePlay';
 import { toast } from 'react-toastify';
 
 class SpotBallMain extends Component {
@@ -172,7 +178,14 @@ class SpotBallMain extends Component {
 
 
   render() {
-    return (
+    if(isMobile || isTablet)
+      return(
+        <div>
+          <SpotBallMobilePlay cartItems={this.state.cartItems} updateCartItems={this.updateCartItems} imgSrc="/img/spot-the-ball/game/2(zoom).jfif" />
+        </div>
+      );
+    else
+      return (
       <>
         <DropdownScrollNavbar cartStatus={this.state.cartStatus} cartOpen={this.state.cartOpen} updateCartStatus={this.updateCartStatus}/>
         <div className="wrapper">

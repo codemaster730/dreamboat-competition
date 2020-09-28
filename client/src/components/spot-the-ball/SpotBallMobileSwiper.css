@@ -1,0 +1,20 @@
+.swiper-container {
+width: 100%;
+height: 100%;
+/*this gives the dimension of slider container*/
+/*these values will make the container as big as the parent div*/
+overflow: hidden;
+/*important parameter to not disrupt the container when slides increases in coverflow and other effect*/
+}
+
+.swiper-slide {
+width:auto;
+height:auto;
+/*this one holds the dimension of each slides and can be changed according to the user wish*/
+}
+
+.swiper-slide .cart-item{
+    width:200px;
+    height:210px;   
+}
+

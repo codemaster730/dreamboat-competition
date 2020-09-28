@@ -1,0 +1,183 @@
+
+svg{
+  width: 100%;
+  height: 100%;
+}
+.playContainer {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+}
+    .botBack{
+      width: 100%;
+      height: 100%;
+      margin-top: 0;
+      background-size: contain, cover;;
+      background-repeat: no-repeat;
+      position: absolute;
+    }
+
+  .sidebar {
+    background-color: white;
+    min-width: 200px;
+    right: 0;
+    position: absolute;
+    flex-direction: column;
+    z-index: 10;
+  }
+
+    .cartItemBar {
+      background-color: white;
+      flex: 1;
+    }
+
+@media (max-aspect-ratio: 1/1) {
+  .playContainer {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    min-height: 250px;
+    display: flex;
+    bottom: 0;
+    position: absolute;
+  }
+  .cartItemBar {
+    width: 100%;
+    height: 100%;
+    order: 3;
+  }
+ 
+  .toolBar {
+    height: 50px;
+    order: 1;
+    text-align: center;
+  }
+  .procBar {
+    height: 50px;
+    order: 2;
+  }
+
+}
+
+
+#dreamboatSpotLens {
+  width: 64px;
+  height: 64px;
+  min-width: 64px;
+  min-height: 64px;
+  border-radius: 64px;
+  left: 0px;
+  top: 0px;
+}
+#dreamboatSpotImage.has_lines #dreamboatSpotLens {
+  z-index: 1000;
+}
+
+#dreamboatSpotLens {
+  overflow: hidden;
+  border: 1.5px solid #ff8201;
+  border-radius: 32px;
+}
+
+.live_coordinates {
+  position: absolute;
+  display: block;
+  left: -100px;
+  top: -100px;
+  color: #ffffff;
+  white-space: nowrap;
+  font-size: 14px;
+  z-index: 1001;
+  text-shadow: 1px 0 0 #333333, -1px 0 0 #333333, 0 1px 0 #333333,
+    0 -1px 0 #333333, 1px 1px #333333, -1px -1px 0 #333333, 1px -1px 0 #333333,
+    -1px 1px 0 #333333;
+}
+
+.dreamboatSpotZoomWrapper {
+  background-image: url("/img/spot-the-ball/game/2(zoom).jfif");
+  background-size: 2944px 2224px;
+  background-repeat: no-repeat;
+  height: 2224px;
+  width: 2944px;
+  left: -32px;
+  top:  -32px;
+  margin-left: 0px;
+  margin-top: 0px;
+  position: absolute;
+  overflow: hidden;
+}
+
+#botbSpotCursor {
+  background-image: url("/img/spot-the-ball/game/mouse_cursor_31.png");
+  width: 31px;
+  height: 31px;
+  left: 16px;
+  top: 16px;
+  z-index: 2000;
+  position: absolute;
+}
+#botbSpotCursor.played {
+  z-index: 1 !important;
+}
+
+.drawing button{
+  display: none;
+}
+button.btn_cancel{
+  display: none;
+}
+.drawing button.btn_cancel{
+  display: inline;
+}
+.drawing button.btn_linepen{
+  display: inline;
+}
+
+.drawing #dreamboatSpotLens{
+  display: none;
+}
+.drawing .live_coordinates{
+  display: none;
+}
+
+.lensComponent {
+  position: absolute;
+  z-index: 101;
+  display: block;
+}
+
+.drawing svg {
+  z-index: 102 !important;
+}
+.drawing svg path {
+  opacity: 0.2;
+}
+.drawing svg path:last-child {
+  opacity: 1;
+}
+
+.drawing svg path#ltest {
+  opacity: 1;
+}
+path.selectedTicket {
+  stroke: #f0801f;
+}
+
+
+.cart-item{
+  background-color: white;
+}
+
+.card-body h6{
+  font-size: 10px;
+  margin-bottom: 2px;
+}
+.card-image{
+  height: 100px;
+}
+.cart-action{
+  flex: 1;
+  text-align: center;
+  height: 50px;
+}

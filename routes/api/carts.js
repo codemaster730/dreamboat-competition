@@ -148,7 +148,7 @@ router.post("/removeCartTicket", (req, res) => {
         } else {
           let tickets = cartItem.tickets;
         console.log(tickets);
-          const index = tickets.findIndex((ticket) => ticket._id === req.body.ticketId);
+          const index = tickets.findIndex((ticket) => ticket.id === req.body.ticketId);
           console.log(req.body.ticketId,"-",index);
           tickets.splice(index, 1);
           cartItem.tickets = tickets;
@@ -177,7 +177,7 @@ router.post("/updateCartTicket", (req, res) => {
   CartItem.findById(req.body.cartItemId).then(cartItem => {
     if (cartItem) {
       let tickets = cartItem.tickets;
-      const index = tickets.findIndex((ticket) => ticket._id == req.body.ticket._id);
+      const index = tickets.findIndex((ticket) => ticket.id == req.body.ticket._id);
       tickets.splice(index, 1, req.body.ticket);
       cartItem.tickets = tickets;
       cartItem

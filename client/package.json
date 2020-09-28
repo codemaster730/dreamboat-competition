@@ -14,10 +14,15 @@
     "react": "^16.6.3",
     "react-async-script-loader": "^0.3.0",
     "react-bootstrap-switch": "15.5.3",
+    "react-coverflow": "^0.2.20",
     "react-datetime": "2.16.3",
+    "react-device-detect": "^1.13.1",
     "react-dom": "^16.6.3",
     "react-google-maps": "9.4.5",
+    "react-id-swiper": "^4.0.0",
+    "react-native-responsive-dimensions": "^3.1.1",
     "react-redux": "^5.1.1",
+    "react-responsive": "^8.1.0",
     "react-router": "5.2.0",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1",
@@ -27,7 +32,8 @@
     "reactstrap": "8.4.1",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "rellax": "1.12.1"
+    "rellax": "1.12.1",
+    "swiper": "5.3.8"
   },
   "scripts": {
     "start": "cross-env NODE_PATH=./src react-scripts start",
