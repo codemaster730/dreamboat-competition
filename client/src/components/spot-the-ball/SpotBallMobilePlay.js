@@ -138,24 +138,29 @@ class SpotBallMobilePlay extends Component {
         this.backWidth = 0;
         this.backHeight = 0;
         if(this.winWidth > this.winHeight){//landscape
+            if(this.winWidth-210<this.winHeight*this.backImageWidth/this.backImageHeight){
+                document.getElementsByClassName("botPlay")[0].style.width = (this.winWidth-210) +"px";
+                document.getElementsByClassName("botPlay")[0].style.height = (this.winHeight) +"px";    
+            }else{
+
+            }
+
             this.backHeight = this.winHeight;
-            this.backWidth = 300;
-            document.getElementsByClassName("botPlay")[0].style.width = (this.winWidth-210) +"px";
-            document.getElementsByClassName("botPlay")[0].style.height = (this.winHeight) +"px";
+            this.backWidth = this.winHeight * this.backImageWidth/ this.backImageHeight ;
             // document.getElementsByClassName("botBack")[0].style.backgroundSize= " "+ (this.backWidth+"px ") + (this.backHeight+"px") ;
             // document.getElementsByClassName("botBack")[0].style.width = this.backWidth +"px";
             // document.getElementsByClassName("botBack")[0].style.height = this.backHeight +"px";
             // document.getElementsByClassName("botBack")[0].style.left = (this.winWidth-this.backWidth)/2 +"px";
-            // document.getElementsByClassName("sidebar")[0].style.top = this.backHeight +"px";
+            document.getElementsByClassName("sidebar")[0].style.top = "0px";
         }else{//Portrait
-            if(this.winWidth > this.winHeight-300){//backImage-landscape
+            if(this.winWidth*this.backImageHeight/this.backImageWidth > this.winHeight-300){//backImage-landscape
                 this.backHeight = this.winHeight - 300;
                 this.backWidth = this.backHeight * this.backImageWidth / this.backImageHeight;
                 document.getElementsByClassName("botPlay")[0].style.width = this.winWidth +"px";
                 document.getElementsByClassName("botPlay")[0].style.height = (this.winHeight-300) +"px";
             }else{//backImage-squre
-                this.backHeight = this.winWidth;
-                this.backWidth = this.backHeight * this.backImageWidth / this.backImageHeight;
+                this.backWidth = this.winWidth;
+                this.backHeight = this.winWidth*this.backImageHeight/this.backImageWidth;
                 document.getElementsByClassName("botPlay")[0].style.width = this.winWidth +"px";
                 document.getElementsByClassName("botPlay")[0].style.height = this.winWidth +"px";
             }
@@ -250,10 +255,11 @@ class SpotBallMobilePlay extends Component {
         const eleMarkee = document.getElementById("botbSpotCursor");
         const eleBack = document.getElementsByClassName("botBack")[0];
         if(this.winWidth<this.winHeight && this.winWidth<this.backWidth){
-            
             eleBack.style.left = (-(this.backWidth-this.winWidth)/this.winWidth*this.currentPos.x) + "px";
         }
-        //eleBack.style.top = -this.maxMarginTop * this.currentPos.y / this.backHeight + "px";
+        if(this.winWidth>this.winHeight){
+            eleBack.style.left = "0px";
+        }
         eleLens.style.left = (this.currentPos.x - 32) + "px";
         eleLens.style.top = (this.currentPos.y - 32) + "px";
         eleCoord.style.left = (this.currentPos.x - 42) + "px";
