@@ -19,15 +19,15 @@
 }
 
 .swiper-pagination {
-  color: #444444;
+  color: #2CA8FF;
   text-align: left;
   font-size: 18px;
   font-family: cb;
   font-weight: bold;
-  text-shadow: 1px 1px 0 #f6f6f6, -1px 1px 0 #f6f6f6, -1px -1px 0 #f6f6f6,
+  text-shadow: 2px 2px 0 #f6f6f6, -2px 2px 0 #f6f6f6, -1px -1px 0 #f6f6f6,
     1px -1px 0 #f6f6f6;
   left: 8px;
-  top: 0;
+  top: 210px;
   height: 0;
   position: absolute;
   text-align: center;

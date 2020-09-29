@@ -100,36 +100,7 @@ class SpotBallMobilePlay extends Component {
         this.updateSwiper();
     }
 
-    updateSwiper =()=>{
-        
-        if(this.swiper){
-            console.log("updateSwiper");
-            if(this.winWidth<this.winHeight){ //portrait
-                if(this.winWidth>this.winHeight-this.backHeight-100){
-                    this.swiper.changeDirection('horizontal');
-                    document.getElementsByClassName("swiper-container")[0].style.top = (this.winHeight - this.backHeight-300)/2 +"px"; 
-                    document.getElementsByClassName("swiper-container")[0].style.left = "0px"; 
-                    document.getElementsByClassName("swiper-container")[0].style.height = (this.winHeight - this.backHeight+110)/2 +"px"
-                }else{
-                    this.swiper.changeDirection('vertical');
-                    document.getElementsByClassName("swiper-container")[0].style.left = (this.winWidth - 210)/2 +"px";
-                    document.getElementsByClassName("swiper-container")[0].style.top = "0px";
-                    document.getElementsByClassName("swiper-container")[0].style.height = (this.winHeight - this.backHeight-100) +"px"
-                }
-            }else{
-                if(this.winWidth-this.backWidth>this.winHeight-100){//landscape
-                    this.swiper.changeDirection('horizontal');
-                    document.getElementsByClassName("swiper-container")[0].style.top = (this.winHeight - 310)/2 +"px"; 
-                    document.getElementsByClassName("swiper-container")[0].style.left = "0px"; 
-                }else{//portrait
-                    this.swiper.changeDirection('vertical');
-                    document.getElementsByClassName("swiper-container")[0].style.left = (this.winWidth-this.backWidth - 200)/2 +"px";
-                    document.getElementsByClassName("swiper-container")[0].style.top = "0px";
-                }
-            }
-            this.swiper.update(true);
-        }
-    }
+    
     
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateWindowDimensions);
@@ -187,7 +158,7 @@ class SpotBallMobilePlay extends Component {
                 this.backWidth = this.winWidth;
                 this.backHeight = this.winWidth*this.backImageHeight/this.backImageWidth;
                 document.getElementsByClassName("botPlay")[0].style.width = this.winWidth +"px";
-                document.getElementsByClassName("botPlay")[0].style.height = (this.winHeight-300)  +"px";
+                document.getElementsByClassName("botPlay")[0].style.height =  this.backHeight +"px";
             }
             document.getElementsByClassName("botBack")[0].style.backgroundSize= " "+ (this.backWidth+"px ") + (this.backHeight+"px") ;
             document.getElementsByClassName("botBack")[0].style.width = this.backWidth +"px";
@@ -200,8 +171,8 @@ class SpotBallMobilePlay extends Component {
         this.markPos.y = 0;
         this.setState({zoomRatio: this.backImageHeight / this.backHeight},()=>{
             this.setDOMStyle();
-            this.updateSwiper();
         });
+        this.updateSwiper();
     }
     setDOMStyle = () => {
         const eleLens = document.getElementsByClassName("lensComponent")[0];
@@ -215,6 +186,7 @@ class SpotBallMobilePlay extends Component {
                 eleBack.style.top = (this.winHeight- this.backHeight)/2+"px";
             }
             document.getElementsByClassName("sidebar")[0].style.left = this.backWidth+"px";
+            document.getElementsByClassName("sidebar")[0].style.top = "0px";
             document.getElementsByClassName("sidebar")[0].style.height = this.winHeight+"px";
             document.getElementsByClassName("cartItemBar")[0].style.height = (this.winHeight-100)+"px";
         }else{  //portrait
@@ -223,7 +195,8 @@ class SpotBallMobilePlay extends Component {
                 eleBack.style.top = "0px";
             }
             document.getElementsByClassName("sidebar")[0].style.top = (this.backHeight-5)+"px";
-            document.getElementsByClassName("sidebar")[0].style.height = (this.winHeight-this.backHeight-100)+"px";
+            document.getElementsByClassName("sidebar")[0].style.left = "0px";
+            document.getElementsByClassName("sidebar")[0].style.height = (this.winHeight-this.backHeight)+"px";
             document.getElementsByClassName("cartItemBar")[0].style.height = (this.winHeight-this.backHeight-100)+"px";
         }
         eleLens.style.left = (this.currentPos.x - 32) + "px";
@@ -235,6 +208,40 @@ class SpotBallMobilePlay extends Component {
         eleZoom.style.top = (-this.currentPos.y * this.state.zoomRatio + 32) + "px";
         eleMarkee.style.left = (this.markPos.x + 16) + "px";
         eleMarkee.style.top = (this.markPos.y + 16) + "px";
+    }
+    updateSwiper =()=>{
+        
+        if(this.swiper){
+            console.log("updateSwiper");
+            if(this.winWidth<this.winHeight){ //portrait
+                // if(this.winWidth>this.winHeight-this.backHeight-100)
+                {
+                    this.swiper.changeDirection('horizontal');
+                    document.getElementsByClassName("swiper-container")[0].style.top = (this.winHeight - this.backHeight-300)/2 +"px"; 
+                    document.getElementsByClassName("swiper-container")[0].style.left = "0px"; 
+                    document.getElementsByClassName("swiper-container")[0].style.height = (this.winHeight - this.backHeight+110)/2 +"px"
+                }
+                // else{
+                //     this.swiper.changeDirection('vertical');
+                //     document.getElementsByClassName("swiper-container")[0].style.left = (this.winWidth - 210)/2 +"px";
+                //     document.getElementsByClassName("swiper-container")[0].style.top = "0px";
+                //     document.getElementsByClassName("swiper-container")[0].style.height = (this.winHeight - this.backHeight-100) +"px"
+                // }
+            }else{
+                // if(this.winWidth-this.backWidth>this.winHeight-100)
+                {//landscape
+                    this.swiper.changeDirection('horizontal');
+                    document.getElementsByClassName("swiper-container")[0].style.top = (this.winHeight - 310)/2 +"px"; 
+                    document.getElementsByClassName("swiper-container")[0].style.left = "0px"; 
+                }
+                // else{//portrait
+                //     this.swiper.changeDirection('vertical');
+                //     document.getElementsByClassName("swiper-container")[0].style.left = (this.winWidth-this.backWidth - 200)/2 +"px";
+                //     document.getElementsByClassName("swiper-container")[0].style.top = "0px";
+                // }
+            }
+            this.swiper.update(true);
+        }
     }
     //Get Ray's Positions from Segment's Positions  return - obj{x1,y1,x2,y2,isline}
     _getRayPositions(pos1X, pos1Y, pos2X, pos2Y) {
