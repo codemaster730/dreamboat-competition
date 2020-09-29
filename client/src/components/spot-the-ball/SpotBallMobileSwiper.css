@@ -35,3 +35,12 @@
   transform: translate3d(0, 0, 0);
   z-index: 10;
 }
+
+.cart-ticket-check{
+  position: absolute;
+  margin: -15px 0 0 155px;
+  display: block;
+}
+.no-visible{
+  display: none;
+}

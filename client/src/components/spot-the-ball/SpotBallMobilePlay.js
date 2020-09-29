@@ -1,7 +1,6 @@
 import React, { Component }  from 'react';
 import axios from "axios";
 import * as d3 from 'd3';
-//import { FullScreen, useFullScreenHandle } from "react-full-screen";
 //import Swiper from 'react-id-swiper';
 import Swiper from 'swiper/js/swiper.js';
 import {
@@ -90,8 +89,12 @@ class SpotBallMobilePlay extends Component {
             window.addEventListener('resize', _this.updateWindowDimensions);
         }
         console.log("mount end");
-        //document.body.requestFullscreen();
-        //this.openFullscreen();
+        if (document.fullscreenElement) {
+            document.exitFullscreen();
+        } else {
+            document.body.requestFullscreen();
+        }
+        
     }
     componentDidUpdate() {
         this.updateSwiper();
@@ -138,12 +141,15 @@ class SpotBallMobilePlay extends Component {
         });
     }
 
-    selectBlankTicketItem = () =>{
+    selectBlankTicketItem = (sel_id) =>{
         var set_chk = 1;
         var cart_index = 0;
         this.state.cartItems.forEach((item) => {
             item.tickets.forEach((tItem)=>{
-                if((set_chk) && (tItem.coordX==null || tItem.coordY==null)){
+                if(tItem._id === sel_id){
+                    this.swiper.slideTo(cart_index);
+                }
+                if((!sel_id)&&(set_chk) && (tItem.coordX==null || tItem.coordY==null)){
                     set_chk = 0;
                     this.swiper.slideTo(cart_index);
                 }
@@ -374,12 +380,19 @@ class SpotBallMobilePlay extends Component {
           });
           console.log("XXXXXXXXXXXXXX ->", mtickets);
           return mtickets.map((item) => {
-            const {thumnailUri, manufacturer, model, ticketNo, tickets, sel_chk} = item;
+            const {thumnailUri, manufacturer, model, ticketNo, _id, tickets, sel_chk} = item;
             return (
                 <div className="swiper-slide" id = {tickets[ticketNo-1]._id}>
                     <div 
                     className={(sel_chk)?"cart-item selected":"cart-item" } 
                     >
+                        <div className={(tickets[ticketNo-1].coordX!==null)?"cart-ticket-check":"no-visible"}>
+                            <Button
+                                className=" btn-icon btn-round btn-success btn-sm"
+                            >
+                                <i className="now-ui-icons ui-1_check"></i> 
+                            </Button>
+                        </div>
                         <CardBody style={{padding: '0 0 0 0'}}>
                             <h6 className="card-title">{manufacturer}</h6>
                             <h6 className="category text-info">{model}</h6>
@@ -402,8 +415,8 @@ class SpotBallMobilePlay extends Component {
                             <Button
                                 className= {"btn-icon btn-round play " + ((tickets[ticketNo-1].coordX!==null)?"btn-info":"btn-secondary") } 
                                 onClick={(e)=>{
-                                    //this.props.updateCartItems({type:"selectTicket",selected_cid: _id, selected_tobj:tickets[ticketNo-1]});
-                                    this.updateTicket({type:"set_blank"});
+                                    this.props.updateCartItems({type:"selectTicket",selected_cid: _id, selected_tobj:tickets[ticketNo-1]});
+                                    //this.updateTicket({type:"set_blank"});
                                 }}
                             >
                                 <i className="now-ui-icons loader_refresh "></i>
@@ -437,10 +450,9 @@ class SpotBallMobilePlay extends Component {
     updateTicket= (params) =>{
         const eleActiveSliders = document.getElementsByClassName("swiper-slide-active");
         if(eleActiveSliders.length>0) {
-            
+            var newTItem, newTId;
             var cartItems = 
             this.state.cartItems.map(item => {
-                var newTItem;
                 var delTicketIndex = -1;
                 item.tickets.map((tItem,key)=>{
                     if(tItem._id === eleActiveSliders[0].id){
@@ -468,6 +480,7 @@ class SpotBallMobilePlay extends Component {
                                 console.log(err);
                             });
                         }else if(params.type === "removeTicket"){
+                            alert(key);
                             delTicketIndex = key;
                             axios
                                 .post('/api/carts/removeCartTicket', {cartItemId: item._id, ticketId: tItem._id})
@@ -480,9 +493,11 @@ class SpotBallMobilePlay extends Component {
                     }
                     return tItem;
                 });
-                if(newTItem){
+                if(newTItem && (newTItem._id!==null)){
                     item.ticketCount ++;
                     item.tickets.push(newTItem);
+                    newTId = newTItem._id;
+                    newTItem = null;
                 }
                 if(delTicketIndex !==-1){
                     item.ticketCount --;
@@ -496,7 +511,9 @@ class SpotBallMobilePlay extends Component {
                     this.swiper.slideNext();
                     this.selectBlankTicketItem();
                 }else if (params.type === "add_new"){
-                    this.selectBlankTicketItem();
+                    if(newTId!==null)
+                        this.selectBlankTicketItem(newTId);
+                    //this.swiper.slideTo(cart_index);
                 }
             })
         }
