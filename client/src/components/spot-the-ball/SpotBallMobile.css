@@ -34,7 +34,7 @@ svg{
     .toolBar {
       height: 50px;
       text-align: center;
-      box-shadow: 3px 0 3px #aaa;
+      box-shadow: 1px 0 1px #aaa;
     }
     .toolBar button{
       margin-top: 6px;
@@ -44,7 +44,6 @@ svg{
     }
     .procBar {
       height: 50px;
-      box-shadow: 3px 0 3px #aaa;
     }
     .procBar button{
       margin-top: 6px;
@@ -204,4 +203,14 @@ path.selectedTicket {
 }
 .swiper-slide-active .cart-action{
   display: block;
+}
+.temp-item button{
+  display:none;
+}
+button.temp-btn{
+
+  display:none;
+}
+.temp-item .temp-btn{
+  display:inline;
 }
