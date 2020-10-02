@@ -8,6 +8,7 @@ const users = require("./routes/api/users");
 const boats = require("./routes/api/boats");
 const carts = require("./routes/api/carts");
 const candidates = require("./routes/api/candidates");
+var enforce = require('express-sslify');
 
 require('dotenv').config();
 
@@ -20,6 +21,7 @@ app.use(
   })
 );
 app.use(bodyParser.json());
+app.use(enforce.HTTPS());
 
 // DB Config
 const db = process.env.MONGO_URI;
