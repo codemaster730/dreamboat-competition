@@ -8,7 +8,6 @@ const users = require("./routes/api/users");
 const boats = require("./routes/api/boats");
 const carts = require("./routes/api/carts");
 const candidates = require("./routes/api/candidates");
-var enforce = require('express-sslify');
 
 require('dotenv').config();
 
@@ -21,7 +20,6 @@ app.use(
   })
 );
 app.use(bodyParser.json());
-app.use(enforce.HTTPS());
 
 // DB Config
 const db = process.env.MONGO_URI;
@@ -47,6 +45,13 @@ app.use("/api/boats", boats);
 app.use("/api/carts", carts);
 app.use("/api/candidates", candidates);
 
+// Redirect Http to Https
+app.use(function(req, res, next) {
+  if ((req.get('X-Forwarded-Proto') !== 'https')) {
+    res.redirect('https://' + req.get('Host') + req.url);
+  } else
+    next();
+});
 
 // Serve React
 
