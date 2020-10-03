@@ -532,3 +532,7 @@ div.cart-item.selected{
   .home-title,.home-description {text-align: right !important;}
 
 }
+
+.red-text{
+  color:rgb(255, 198, 198);
+}

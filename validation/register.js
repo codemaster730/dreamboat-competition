@@ -11,7 +11,7 @@ module.exports = function validateRegisterInput(data) {
   data.password2 = !isEmpty(data.password2) ? data.password2 : "";
   data.phone = !isEmpty(data.phone) ? data.phone : "";
   data.phone2 = !isEmpty(data.phone2) ? data.phone2 : "";
-   
+  data.termcheck = !isEmpty(data.termcheck) ? data.termcheck : "";
 // First Name checks
   if (Validator.isEmpty(data.firstName)) {
     errors.firstName = "First Name field is required";
@@ -41,6 +41,10 @@ module.exports = function validateRegisterInput(data) {
     errors.phone2 = "Secondary Phone field is required";
   } else if (!Validator.isNumeric(data.phone2)) {
     errors.phone2 = "Secondary Phone field should be";
+  }
+// Agree Terms Check
+  if (Validator.isEmpty(data.termcheck)) {
+    errors.termcheck = "Agree to the terms and conditions";
   }
 // Password checks
   if (Validator.isEmpty(data.password)) {

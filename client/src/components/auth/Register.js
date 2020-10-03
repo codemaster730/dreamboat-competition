@@ -38,6 +38,7 @@ class Register extends Component {
       password: "",
       password2: "",
       country: "",
+      termcheck: false,
       errors: {},
       firstFocus: false,
       lastFocus: false,
@@ -80,6 +81,13 @@ class Register extends Component {
     this.setState({ [e.target.id]: e.target.value });
   };
 
+  onChangeTermCheck = e =>{
+    if(e.target.checked){
+      window.open("http://localhost:5000/2.jpg","_blank");
+    }
+    this.setState({ termcheck: e.target.checked });
+  }
+
   onSubmit = e => {
     e.preventDefault();
     const newUser = {
@@ -91,7 +99,8 @@ class Register extends Component {
         phone2: this.state.phone2,
         password: this.state.password,
         password2: this.state.password2,
-        country: this.state.country
+        country: this.state.country,
+        termcheck: this.state.termcheck ? "on":"",
       };
       this.props.registerUser(newUser, this.props.history); 
   };
@@ -387,11 +396,17 @@ class Register extends Component {
                           <Row>
                             <FormGroup check>
                               <Label check>
-                                <Input defaultChecked type="checkbox"></Input>
+                                <Input 
+                                  type="checkbox" 
+                                  onChange={this.onChangeTermCheck}
+                                  error={errors.termcheck}
+                                  id="termcheck"
+                                ></Input>
                                 <span className="form-check-sign"></span>
                                 I agree to the terms and conditions.
                               </Label>
                             </FormGroup>
+                            <span className="red-text">{errors.termcheck}</span>
                           </Row>
                         </Col>
                       </Row>
