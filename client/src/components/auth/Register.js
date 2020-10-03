@@ -83,7 +83,7 @@ class Register extends Component {
 
   onChangeTermCheck = e =>{
     if(e.target.checked){
-      window.open("http://localhost:5000/2.jpg","_blank");
+      window.open('https://www.dreamboatcompetitions.co.uk/terms/DreamboatTC.pdf',"_blank");
     }
     this.setState({ termcheck: e.target.checked });
   }

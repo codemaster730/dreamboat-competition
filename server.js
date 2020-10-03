@@ -12,6 +12,7 @@ const candidates = require("./routes/api/candidates");
 require('dotenv').config();
 
 const app = express();
+app.use(express.static('uploads'));
 
 // Bodyparser middleware
 app.use(
