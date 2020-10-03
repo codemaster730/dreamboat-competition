@@ -15,7 +15,7 @@ function Footer() {
             <ul>
               <li>
                 <a
-                  href="#"
+                  href="https://www.dreamboatcompetitions.co.uk/terms/DreamboatTC.pdf"
                   target="_blank"
                 >
                   TERMS OF PLAY
