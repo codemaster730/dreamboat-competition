@@ -1,7 +1,13 @@
 const mongoose = require("mongoose");
+const constant = require("../shared/constants");
 const Schema = mongoose.Schema;
 // Create Schema
 const UserSchema = new Schema({
+    role: {
+      type: String,
+      required: false,
+      default: constant['ROLE']['EMPLOYEE']
+    },
     firstName: {
       type: String,
       required: true
@@ -33,6 +39,10 @@ const UserSchema = new Schema({
     date: {
       type: Date,
       default: Date.now
+    },
+    active:{
+      type: Boolean,
+      default: false,
     }
 });
 

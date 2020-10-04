@@ -63,6 +63,7 @@ class GalleryBody extends Component {
 
   componentDidMount() {
     this.loadData();
+    console.log("XXXXX",this.props.auth);
   }
 
   componentWillUnmount() {

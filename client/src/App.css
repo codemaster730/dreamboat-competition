@@ -536,3 +536,13 @@ div.cart-item.selected{
 .red-text{
   color:rgb(255, 198, 198);
 }
+
+.dropzone{
+  border-style: dashed;
+}
+
+.img-remover{
+  width: 100%;
+  text-align: center;
+  font-size: large;
+}

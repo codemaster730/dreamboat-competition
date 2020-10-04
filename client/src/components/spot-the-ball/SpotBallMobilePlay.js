@@ -215,12 +215,12 @@ class SpotBallMobilePlay extends Component {
             console.log("updateSwiper");
             if(this.winWidth<this.winHeight){ //portrait
                 // if(this.winWidth>this.winHeight-this.backHeight-100)
-                {
+                //{
                     this.swiper.changeDirection('horizontal');
                     document.getElementsByClassName("swiper-container")[0].style.top = (this.winHeight - this.backHeight-300)/2 +"px"; 
                     document.getElementsByClassName("swiper-container")[0].style.left = "0px"; 
                     document.getElementsByClassName("swiper-container")[0].style.height = (this.winHeight - this.backHeight+110)/2 +"px"
-                }
+                //}
                 // else{
                 //     this.swiper.changeDirection('vertical');
                 //     document.getElementsByClassName("swiper-container")[0].style.left = (this.winWidth - 210)/2 +"px";
@@ -229,12 +229,12 @@ class SpotBallMobilePlay extends Component {
                 // }
             }else{
                 // if(this.winWidth-this.backWidth>this.winHeight-100)
-                {//landscape
+                //{//landscape
                     this.swiper.changeDirection('horizontal');
                     document.getElementsByClassName("swiper-container")[0].style.top = (this.winHeight - 310)/2 +"px"; 
                     document.getElementsByClassName("swiper-container")[0].style.left = "0px"; 
                     document.getElementsByClassName("swiper-container")[0].style.height = (this.winHeight-100 -(this.winHeight - 310)/2) +"px"
-                }
+                //}
                 // else{//portrait
                 //     this.swiper.changeDirection('vertical');
                 //     document.getElementsByClassName("swiper-container")[0].style.left = (this.winWidth-this.backWidth - 200)/2 +"px";
@@ -391,7 +391,7 @@ class SpotBallMobilePlay extends Component {
           console.log("XXXXX:",temp);
           mtickets.push(temp);
           return mtickets.map((item) => {
-            const {thumnailUri, manufacturer, model, ticketNo, _id, tickets, sel_chk, tempChk} = item;
+            const {thumnailUri, manufacturer, model, ticketNo, tickets, tempChk} = item;
             return (
                 <div className="swiper-slide" id = {tickets[ticketNo-1]._id}>
                     <div 
@@ -485,7 +485,7 @@ class SpotBallMobilePlay extends Component {
                                     console.log(err);
                                 });
                         }else if(params.type === "toPlay"){
-                            var temp = {...tItem};
+                            temp = {...tItem};
                             temp.coordX = null;
                             temp.coordY = null;
                             axios
@@ -496,7 +496,7 @@ class SpotBallMobilePlay extends Component {
                                     console.log(err);
                                 });
                         }else if(params.type === "add_new"){
-                            var temp = {...tItem};
+                            temp = {...tItem};
                             delete temp._id;
                             temp.coordX = null;
                             temp.coordY = null;
@@ -509,18 +509,18 @@ class SpotBallMobilePlay extends Component {
                                     console.log(err);
                                 });
                         }else if(this.swiper.isEnd && params.type === "place_replace"){
-                                var temp = {...tItem};
-                                delete temp._id;
-                                temp.coordX = Math.floor(this.currentPos.x * this.state.zoomRatio + this.markPos.x);
-                                temp.coordY = Math.floor(this.currentPos.y * this.state.zoomRatio + this.markPos.y);
-                                axios
-                                    .post('/api/carts/addCartTicket', {cartItemId: item._id, ticket: temp})
-                                    .then((res) => {
-                                        temp._id = res.data.newId;
-                                        this.updateStateCartItems({type:"add_new", cindex:ckey, index:key, ticketObj:temp});
-                                    }).catch((err) => {
-                                        console.log(err);
-                                    });
+                            temp = {...tItem};
+                            delete temp._id;
+                            temp.coordX = Math.floor(this.currentPos.x * this.state.zoomRatio + this.markPos.x);
+                            temp.coordY = Math.floor(this.currentPos.y * this.state.zoomRatio + this.markPos.y);
+                            axios
+                                .post('/api/carts/addCartTicket', {cartItemId: item._id, ticket: temp})
+                                .then((res) => {
+                                    temp._id = res.data.newId;
+                                    this.updateStateCartItems({type:"add_new", cindex:ckey, index:key, ticketObj:temp});
+                                }).catch((err) => {
+                                    console.log(err);
+                                });
                         }else if(params.type === "removeTicket"){
                             axios
                                 .post('/api/carts/removeCartTicket', {cartItemId: item._id, ticketId: tItem._id})

@@ -3,15 +3,23 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const path = require("path");
+const fileUpload = require('express-fileupload');
+const constants = require("./shared/constants");
 
 const users = require("./routes/api/users");
 const boats = require("./routes/api/boats");
 const carts = require("./routes/api/carts");
 const candidates = require("./routes/api/candidates");
+const userAdmin = require("./routes/api/userAdmin");
+const boatAdmin = require("./routes/api/boatAdmin");
 
 require('dotenv').config();
 
 const app = express();
+app.use(fileUpload({
+  limits: { fileSize: constants['MAX_UPLOAD_FILE_SIZE'] },
+  createParentPath: true  
+}));
 app.use(express.static('uploads'));
 
 // Bodyparser middleware
@@ -45,14 +53,16 @@ app.use("/api/users", users);
 app.use("/api/boats", boats);
 app.use("/api/carts", carts);
 app.use("/api/candidates", candidates);
+app.use("/api/useradmin", userAdmin);
+app.use("/api/boatadmin", boatAdmin);
 
 // Redirect Http to Https
-app.use(function(req, res, next) {
-  if ((req.get('X-Forwarded-Proto') !== 'https')) {
-    res.redirect('https://' + req.get('Host') + req.url);
-  } else
-    next();
-});
+// app.use(function(req, res, next) {
+//   if ((req.get('X-Forwarded-Proto') !== 'https')) {
+//     res.redirect('https://' + req.get('Host') + req.url);
+//   } else
+//     next();
+// });
 
 // Serve React
 

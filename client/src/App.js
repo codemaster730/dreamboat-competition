@@ -8,14 +8,24 @@ import { setCurrentUser, logoutUser } from "./actions/authActions";
 import { Provider } from "react-redux";
 import store from "./store";
 
+//Auth
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 
+//Routes
 import PrivateRoute from "./components/private-route/PrivateRoute";
+import AdminRoute from "./components/admin-route/AdminRoute";
+
+// User pages
 import Home from "./components/home/Home";
 import GalleryPage from "./components/gallery/GalleryPage";
 import SpotBallMain from "./components/spot-the-ball/SpotBallMain";
 import Checkout from "./components/checkout/Checkout";
+
+// Admin pages
+import AdminHome from "./components/admin/home/AdminHome";
+import UserList from "./components/admin/users/UserList";
+import BoatList from "./components/admin/boats/BoatList";
 
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
@@ -33,7 +43,7 @@ if (localStorage.jwtToken) {
     // Logout user
     store.dispatch(logoutUser());
     // Redirect to login
-    window.location.href = "./login";
+    window.location.href = "/login";
   }
 }
 
@@ -50,6 +60,10 @@ class App extends Component {
             <Switch> 
               <PrivateRoute path="/spot-the-ball" component={SpotBallMain} />
               <PrivateRoute path="/checkout" component={Checkout} />
+              
+              <AdminRoute exact path="/admin" component={AdminHome} />
+              <AdminRoute exact path="/admin/users" component={UserList} />
+              <AdminRoute exact path="/admin/boats" component={BoatList} />
             </Switch>
           </div>
         </Router>
