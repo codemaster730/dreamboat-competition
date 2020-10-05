@@ -9,7 +9,7 @@ module.exports = {
   },
   'ROLE': {
     'ADMINISTRATOR': 'Administrator',
-    'EMPLOYEE': 'Employee'
+    'USER': 'User'
   },
   'MAX_UPLOAD_FILE_SIZE': 1000000,
   'MAX_UPLOAD_FILE_COUNT': 10,

@@ -6,7 +6,7 @@ const UserSchema = new Schema({
     role: {
       type: String,
       required: false,
-      default: constant['ROLE']['EMPLOYEE']
+      default: constant['ROLE']['USER']
     },
     firstName: {
       type: String,
@@ -42,7 +42,7 @@ const UserSchema = new Schema({
     },
     active:{
       type: Boolean,
-      default: false,
+      default: true,
     }
 });
 
