@@ -23,7 +23,6 @@ import SpotBallMain from "./components/spot-the-ball/SpotBallMain";
 import Checkout from "./components/checkout/Checkout";
 
 // Admin pages
-import AdminHome from "./components/admin/home/AdminHome";
 import UserList from "./components/admin/users/UserList";
 import BoatList from "./components/admin/boats/BoatList";
 
@@ -60,8 +59,6 @@ class App extends Component {
             <Switch> 
               <PrivateRoute path="/spot-the-ball" component={SpotBallMain} />
               <PrivateRoute path="/checkout" component={Checkout} />
-              
-              <AdminRoute exact path="/admin" component={AdminHome} />
               <AdminRoute exact path="/admin/users" component={UserList} />
               <AdminRoute exact path="/admin/boats" component={BoatList} />
             </Switch>

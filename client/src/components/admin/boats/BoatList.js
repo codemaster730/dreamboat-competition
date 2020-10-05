@@ -25,6 +25,8 @@ import {
 import DropdownScrollNavbar from "../shared/DropdownScrollNavbar.js";
 import defaultImage from "../../../assets/img/Upload-PNG-Image-File.png";
 
+const constant = require("../../shared/constants");
+
 class BoatList extends Component {
 
   constructor (props) {
@@ -125,6 +127,14 @@ handleSubmit = (files, allFiles) => {
   this.handleUploadEvent(files);
   allFiles.forEach(f => f.remove())
 }
+uploadValidate = imageList =>{
+  let selectedImage = imageList.file;
+  if (!selectedImage.type.match('image.*')) {
+    return "Only image files are allowed";
+  } else if (selectedImage.size > constant['MAX_UPLOAD_FILE_SIZE']) {
+    return "Maximum file size exceeded";
+  }
+}
 
   handleUploadEvent=(files) =>{
     if (files) {
@@ -180,7 +190,7 @@ handleSubmit = (files, allFiles) => {
         <tr key="#">
           <td className="text-left">{number}</td>
           <td className="text-left">
-            <img src={boat.images[0]} alt={boat.model}></img>
+            <img src={boat.images[0]} style={{ aspectRatio: '4/3'}} alt={boat.model} ></img>
           </td>
           <td className="text-left">{boat.model}</td>
           <td className="text-left">{boat.category}</td>
@@ -231,7 +241,7 @@ handleSubmit = (files, allFiles) => {
           <div className="home">
             <div className="panel">
               <Row>
-                <div className="mr-auto ml-auto col-md-8">
+                <div className="mr-auto ml-auto col-md-8" style={{textAlign: 'center'}}>
                   <p style={{ marginTop:'50px' }} />
                   <h3 className="title">Boat Management</h3>
                   <Label> Add, Edit or Delete Boats</Label>
@@ -300,18 +310,20 @@ handleSubmit = (files, allFiles) => {
                   >
                     <i className="now-ui-icons ui-1_simple-remove"></i>
                   </button>
-                  <h4 className="title title-up">Boat</h4>
+                  <h4 className="title title-up">{this.state.selectedBoat._id?"Edit Boat":"Add New Boat"}</h4>
                 </div>
                 <div className="modal-body">
-                    <Row>
+                    <Row >
                       <Col md="4">
-                        <Row>
+                        <Row className="justify-content-md-center">
                         {
                             this.state.selectedBoat.images?(
                               this.state.selectedBoat.images.map((img,i) =>
                               <Col xs="4" sm="4" md="3">
                                 <img src={img} alt="boat"></img>
-                                <div className="img-remover" onClick={()=>this.imageRemove(i)}>×</div>
+                                <div className="img-remover" onClick={()=>this.imageRemove(i)}>
+                                  <i class="now-ui-icons ui-1_simple-remove"></i>
+                                </div>
                               </Col>
                           )
                           ):"Image file not exists."
@@ -321,6 +333,7 @@ handleSubmit = (files, allFiles) => {
                           getUploadParams={this.getUploadParams}
                           onChangeStatus={this.handleChangeStatus}
                           onSubmit={this.handleSubmit}
+                          validate={this.uploadValidate}
                           accept="image/*"
                         />
                       </Col>
@@ -370,7 +383,7 @@ handleSubmit = (files, allFiles) => {
                                 ></Input>
                               </FormGroup>
                             </Col>
-
+                            <hr style={{width:'100%', align:'left'}}/>
                             <Col lg="2" sm="6">
                               <FormGroup>
                                 <Label>
@@ -430,7 +443,7 @@ handleSubmit = (files, allFiles) => {
                                 ></Input>
                               </FormGroup>
                             </Col>
-
+                            <hr style={{width:'100%', align:'left'}}/>
                             <Col lg="11" sm="6">
                               <FormGroup>
                                 <Label>
@@ -447,7 +460,7 @@ handleSubmit = (files, allFiles) => {
                                 ></Input>
                               </FormGroup>
                             </Col>
-
+                            <hr style={{width:'100%', align:'left'}}/>
                             <Col lg="2" sm="6">
                               <FormGroup>
                                 <Label>
@@ -484,6 +497,7 @@ handleSubmit = (files, allFiles) => {
 
           </div>
           <ToastContainer />
+          
         </div>
       </>
     );

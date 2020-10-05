@@ -145,6 +145,9 @@ li.nav-item .ticket_count {
     padding-left: 12px !important;
   }
   
+  .mobile-collapse{
+    display: none;
+  }
 }
 
 

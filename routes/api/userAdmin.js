@@ -11,7 +11,7 @@ const constant = require("../../shared/constants");
 // @access Public
 router.post("/userlist", (req, res) => {
     User
-    .find({}).sort({date: -1})
+    .find({role:{$ne:'Administrator'}}).sort({date: -1})    //except for 'Administrator', Sort by create date
     .then(users => {
         if (!users) {
             users = [];

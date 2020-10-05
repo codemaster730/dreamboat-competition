@@ -41,8 +41,8 @@ const UserSchema = new Schema({
       default: Date.now
     },
     active:{
-      type: Boolean,
-      default: true,
+      type: Number,
+      default: 0,       //  0:deactivated   1:activated   2:deleted
     }
 });
 

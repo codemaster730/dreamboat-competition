@@ -13,6 +13,7 @@
     "nouislider": "14.5.0",
     "query-string": "^6.13.1",
     "react": "^16.6.3",
+    "react-aspect-ratio-img": "^2.1.0",
     "react-async-script-loader": "^0.3.0",
     "react-bootstrap-switch": "15.5.3",
     "react-coverflow": "^0.2.20",
