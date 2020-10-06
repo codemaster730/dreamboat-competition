@@ -34,11 +34,13 @@ class SpotBallMain extends Component {
       cartItems: [],
       cartOpen: false,
       cartStatus: '',
+      backImg: {src:"", width:100, height:100},
     }
     //this.navBarRef = React.createRef();
     this.selectedTickObj = {}; //ticket object
     this.selectedCartId = ''; //cartitem id
     this.selectedBatchChk = false;
+    
   }
 
   componentDidMount() {
@@ -48,6 +50,12 @@ class SpotBallMain extends Component {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
     this.getCartTickets();
+    axios.get('/api/spotballs/get_active_image', {})
+      .then((res) => {
+        this.setState({backImg: {src:res.data.spotball[0].image, width:res.data.spotball[0].width, height:res.data.spotball[0].height}});
+      }).catch((err) => {
+        console.log(err);
+      });
   }
 
   componentWillUnmount() {
@@ -181,7 +189,11 @@ class SpotBallMain extends Component {
     if(isMobile || isTablet)
       return(
         <div>
-          <SpotBallMobilePlay cartItems={this.state.cartItems} updateCartItems={this.updateCartItems} imgSrc="/img/spot-the-ball/game/2(zoom).jfif" />
+          {
+            this.state.backImg.src!=="" ?(
+              <SpotBallMobilePlay cartItems={this.state.cartItems} updateCartItems={this.updateCartItems} imgSrc={this.state.backImg.src} />
+              ):""
+          }
         </div>
       );
     else
@@ -264,12 +276,12 @@ class SpotBallMain extends Component {
               <div id="spotImageWrapper">
                 <div id="dreamboatSpotGameWrapper" >
                   <div id ='dreamboatSpotImageWrapper'  >
-                    <SpotBallPlay onRef={ref => (this.spotBallPlayRef = ref)} cartItems={this.state.cartItems} updateCartItems={this.updateCartItems}/>    
+                    <SpotBallPlay backImg={this.state.backImg.src} onRef={ref => (this.spotBallPlayRef = ref)} cartItems={this.state.cartItems} updateCartItems={this.updateCartItems}  />    
                   </div>
                 </div>   
               </div>
               <div id="spotSidebar"> 
-                <SpotBallCart  cartItems={this.state.cartItems} updateCartItems={this.updateCartItems} handleCheckoutEvent={this.handleCheckoutEvent}/>
+                <SpotBallCart  cartItems={this.state.cartItems} updateCartItems={this.updateCartItems} handleCheckoutEvent={this.handleCheckoutEvent} backImg={this.state.backImg.src} />
               </div>
             </Row>
           </Container>

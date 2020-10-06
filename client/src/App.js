@@ -25,6 +25,8 @@ import Checkout from "./components/checkout/Checkout";
 // Admin pages
 import UserList from "./components/admin/users/UserList";
 import BoatList from "./components/admin/boats/BoatList";
+import SpotBallList from "./components/admin/spotballs/SpotBallList";
+import TicketList from "./components/admin/tickets/TicketList";
 
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
@@ -61,6 +63,8 @@ class App extends Component {
               <PrivateRoute path="/checkout" component={Checkout} />
               <AdminRoute exact path="/admin/users" component={UserList} />
               <AdminRoute exact path="/admin/boats" component={BoatList} />
+              <AdminRoute exact path="/admin/spotballs" component={SpotBallList} />
+              <AdminRoute exact path="/admin/tickets" component={TicketList} />
             </Switch>
           </div>
         </Router>

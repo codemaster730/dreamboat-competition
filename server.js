@@ -9,9 +9,13 @@ const constants = require("./shared/constants");
 const users = require("./routes/api/users");
 const boats = require("./routes/api/boats");
 const carts = require("./routes/api/carts");
+const spotballs = require("./routes/api/spotballs");
 const candidates = require("./routes/api/candidates");
+
 const userAdmin = require("./routes/api/userAdmin");
 const boatAdmin = require("./routes/api/boatAdmin");
+const spotballAdmin = require("./routes/api/spotballAdmin");
+const ticketAdmin = require("./routes/api/ticketAdmin");
 
 require('dotenv').config();
 
@@ -52,17 +56,21 @@ require("./config/passport")(passport);
 app.use("/api/users", users);
 app.use("/api/boats", boats);
 app.use("/api/carts", carts);
+app.use("/api/spotballs", spotballs);
 app.use("/api/candidates", candidates);
+
 app.use("/api/useradmin", userAdmin);
 app.use("/api/boatadmin", boatAdmin);
+app.use("/api/spotballadmin", spotballAdmin);
+app.use("/api/ticketadmin", ticketAdmin);
 
 // Redirect Http to Https
-// app.use(function(req, res, next) {
-//   if ((req.get('X-Forwarded-Proto') !== 'https')) {
-//     res.redirect('https://' + req.get('Host') + req.url);
-//   } else
-//     next();
-// });
+app.use(function(req, res, next) {
+  if ((req.get('X-Forwarded-Proto') !== 'https')) {
+    res.redirect('https://' + req.get('Host') + req.url);
+  } else
+    next();
+});
 
 // Serve React
 

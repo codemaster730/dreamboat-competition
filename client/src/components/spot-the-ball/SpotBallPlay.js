@@ -13,12 +13,13 @@ class SpotBallPlay extends Component {
       move_x: -100, 
       move_y: -100,
       pen_chk: true,
-      cur_color: "yellow"
+      cur_color: "yellow",
+      backImg: "",
     }
   }
 
   componentDidMount() {
-    this.props.onRef(this)
+    this.props.onRef(this);
   }
 
   componentDidUpdate() {
@@ -65,8 +66,10 @@ class SpotBallPlay extends Component {
             .attr("style","top:"+(movey-12)+"px;left:"+(movex-12)+"px;");
       d3.select(".live_coordinates")
             .attr("style","top:"+(movey-40)+"px;left:"+(movex-20)+"px;");
-      d3.select("#dreamboatSpotZoomWrapper")
-            .attr("style","top:"+(-movey*4+32)+"px;left:"+(-movex*4+32)+"px;");
+      // document.getElementsById("dreamboatSpotZoomWrapper").style.left = (-movex*4+32)+"px";
+      // document.getElementsById("dreamboatSpotZoomWrapper").style.top = (-movey*4+32)+"px";
+      d3.select("#dreamboatSpotZoomWrapper").attr("style","top:"+(-movey*4+32)+"px;left:"+(-movex*4+32)+"px; background-image:url(" +this.props.backImg+"); ");
+      
     }
 
     const pos = this._getRayPositions(this.state.x, this.state.y, cur_x, cur_y)
@@ -109,8 +112,10 @@ class SpotBallPlay extends Component {
       }
     }
     this.setState({ move_x: cur_x, move_y:cur_y});
-    d3.select("#dreamboatSpotZoomWrapper")
-          .attr("style","top:"+(-cur_y*4+32)+"px;left:"+(-cur_x*4+32)+"px;");
+    // const ele = document.getElementsById("dreamboatSpotZoomWrapper");
+    // ele.style.left = (-cur_x*4+32)+"px";
+    // document.getElementsById("dreamboatSpotZoomWrapper").style.top = (-cur_y*4+32)+"px";
+    d3.select("#dreamboatSpotZoomWrapper").attr("style","top:"+(-cur_y*4+32)+"px;left:"+(-cur_x*4+32)+"px; background-image:url(" +this.props.backImg+"); ");
   }
 
   _onMouseDown(e) {
@@ -188,6 +193,7 @@ class SpotBallPlay extends Component {
     }
     
   }
+  
 
   handlePenToggle = () => {
     this.setState({pen_chk:false});
@@ -222,7 +228,7 @@ class SpotBallPlay extends Component {
   render() {
     return (
       <>
-        <div id="dreamboatSpotImage" class="has_lines" style={{backgroundImage: "url(/img/spot-the-ball/game/2.jfif)"}}>
+        <div id="dreamboatSpotImage" class="has_lines" style={{backgroundImage: "url("+this.props.backImg+")"}}>
           <svg id = "drawSVG" height="556" version="1.1" width="736"  onMouseMove={this._onMouseMove.bind(this)}>
             {this.props.cartItems.map(item => {
               return item.tickets.map(tItem => {
@@ -251,7 +257,7 @@ class SpotBallPlay extends Component {
                 <path d="M22,32L42,32L32,32L32,22L32,42" id="spotMarkee" stroke="grey" stroke-width="1" fill="none"></path>
               </svg>
             </div>
-            <div id="dreamboatSpotZoomWrapper" style={{backgroundImage: "url(/img/spot-the-ball/game/2(zoom).jfif)"}}>
+            <div id="dreamboatSpotZoomWrapper" style={{backgroundImage: "url("+this.props.backImg+")"}} >
               <svg id="zoomSVG" version="1.1">
                   {this.props.cartItems.map(item => {
                     return item.tickets.map(tItem => {

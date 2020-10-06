@@ -45,14 +45,14 @@ const CartItemSchema = new Schema({
         coordY: {type: Number}
       }
     ],
-    boatId: {
-      type: String,
-      required: true
-    },
-    userId: {
-      type: String,
-      required: true
-    }
+    boatId: [{ 
+      type: Schema.Types.ObjectId, 
+      ref:'boats' 
+    }],
+    userId: [{ 
+      type: Schema.Types.ObjectId, 
+      ref:'users' 
+    }],
 });
 
 module.exports = CartItem = mongoose.model("cartItems", CartItemSchema);

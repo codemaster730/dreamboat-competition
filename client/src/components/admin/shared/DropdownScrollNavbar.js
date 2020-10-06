@@ -16,7 +16,6 @@ import {
 function DropdownScrollNavbar() {
   const [collapseOpen, setCollapseOpen] = React.useState(false);
   const [navbarColor, setNavbarColor] = React.useState("");
-  const [ setBuyButtonColor] = React.useState("neutral");
   React.useEffect(() => {
     const updateNavbarColor = () => {
       if (
@@ -24,7 +23,7 @@ function DropdownScrollNavbar() {
         document.body.scrollTop > 499
       ) {
         setNavbarColor("");
-        setBuyButtonColor("info");
+        //setBuyButtonColor("info");
       } else if (
         document.documentElement.scrollTop < 500 ||
         document.body.scrollTop < 500
@@ -101,6 +100,16 @@ function DropdownScrollNavbar() {
                   <p>All Boats</p>
                 </NavLink>
               </NavItem>
+
+              <NavItem>
+                <NavLink
+                  href="/admin/spotballs"
+                >
+                  <i className="now-ui-icons education_paper"></i>
+                  <p>SpotBall Setting</p>
+                </NavLink>
+              </NavItem>
+
               <NavItem>
                 <NavLink
                   href="/admin/tickets"

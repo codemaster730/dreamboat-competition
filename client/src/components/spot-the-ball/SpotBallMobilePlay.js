@@ -588,9 +588,7 @@ class SpotBallMobilePlay extends Component {
                         onTouchMove={this._onTouchMove.bind(this)}
                         onTouchEnd={this._onTouchEnd.bind(this)}
                         className="botBack has_lines"   
-                        style={{
-                            backgroundImage: "url(/img/spot-the-ball/game/2.jfif)",
-                        }}
+                        style={{backgroundImage: "url("+this.props.imgSrc+")"}}
                     >
                         <svg id="drawSVG" version="1.1">                                    
                                     {
@@ -633,7 +631,7 @@ class SpotBallMobilePlay extends Component {
                         </svg>
                         <div id="dreamboatSpotLens" className="lensComponent">
                             <div id="botbSpotCursor"></div>
-                            <div className="dreamboatSpotZoomWrapper" style={{backgroundImage:"url(/img/spot-the-ball/game/2(zoom).jfif)",}}>
+                            <div className="dreamboatSpotZoomWrapper" style={{backgroundImage: "url("+this.props.imgSrc+")"}}>
                                 <svg id="zoomSVG" version="1.1">
                                         {this.state.cartItems.map(item => {
                                             return item.tickets.map(tItem => {

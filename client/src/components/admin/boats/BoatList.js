@@ -64,7 +64,6 @@ class BoatList extends Component {
   }
 
   removeBoat(boat) {
-    alert(boat._id);
     axios
     .delete(`/api/boatadmin/boat/${boat._id}`)
     .then((res) => {
@@ -89,7 +88,7 @@ class BoatList extends Component {
       .then((res) => {
         //toast.info(res.data.message);
         this.setState({modalView: false, selectedBoat: {}});
-        this.getUserList();
+        this.getBoatList();
       }).catch((err) => {
         console.log(err);
       });
@@ -97,10 +96,9 @@ class BoatList extends Component {
       axios
       .post(`/api/boatadmin/boat/create`,{boat:boat})
       .then((res) => {
-        //toast.info(res.data.message);
-        alert(res.data.boat._id);
+        toast.info(res.data.message);
         this.setState({modalView: false, selectedBoat: {}});
-        this.getUserList();
+        this.getBoatList();
       }).catch((err) => {
         console.log(err);
       });
