@@ -45,7 +45,9 @@ class SpotBallList extends Component {
     document.body.classList.add("spotball-admin-page");
     document.body.classList.add("sidebar-collapse");
     document.documentElement.classList.remove("nav-open");
+   
     this.getSpotBallList();
+
   }
 
   getSpotBallList() {
@@ -59,7 +61,10 @@ class SpotBallList extends Component {
   }
 
   editSpotBall(spotball) {
-    this.setState({modalView: true, selectedSpotBall: spotball});
+    this.setState({modalView: true, selectedSpotBall: spotball},()=>{
+      
+    });
+    
     // spotball.active = true;
     // axios
     //   .put(`/api/spotballadmin/spotball/${spotball._id}`, {spotball: spotball})
@@ -121,6 +126,12 @@ class SpotBallList extends Component {
     this.setState({selectedSpotBall: selSpotBall});
   }
 
+  modalImageClick = (e) =>{
+    document.getElementsByName("goalCoordX")[0].value = Math.floor(this.state.selectedSpotBall.width * e.nativeEvent.offsetX /document.getElementsByClassName("spotBack")[0].clientWidth);
+    document.getElementsByName("goalCoordY")[0].value = Math.floor(this.state.selectedSpotBall.height * e.nativeEvent.offsetY /document.getElementsByClassName("spotBack")[0].clientHeight);
+    document.getElementsByName("markSVG")[0].style.left = (e.nativeEvent.offsetX+16) +"px";
+    document.getElementsByName("markSVG")[0].style.top = (e.nativeEvent.offsetY) +"px";
+  }
 
 //-------------------------------upload---------------------------------------------
 
@@ -305,10 +316,12 @@ uploadValidate = imageList =>{
                         <Row className="justify-content-md-center">
                         {
                           this.state.selectedSpotBall.image?(
-                            <Col xs="12">
-                              <img src={this.state.selectedSpotBall.image} alt={this.state.selectedSpotBall.title}></img>
-                              <div className="img-remover" onClick={()=>this.imageRemove()}>
-                                <i class="now-ui-icons ui-1_simple-remove"></i>
+                            <Col xs="12" >
+                              <div className="spotBack"  onMouseDown={this.modalImageClick}>
+                                <svg name="markSVG" version="1.1" style={{ position:'absolute', width:'64px', height:'64px', left:(this.state.selectedSpotBall.goalCoordX/this.state.selectedSpotBall.width*100)+'%', top: (this.state.selectedSpotBall.goalCoordY/this.state.selectedSpotBall.height*100)+'%', marginLeft:'-32px', marginTop:'-32px' }} >
+                                  <path d="M22,32L42,32L32,32L32,22L32,42" id="spotMarkee" stroke="white" stroke-width="1" fill="none"></path>
+                                </svg>
+                                <img src={this.state.selectedSpotBall.image} alt={this.state.selectedSpotBall.title}></img>
                               </div>
                             </Col>
                           ):"Image file not exists."
@@ -338,6 +351,7 @@ uploadValidate = imageList =>{
                                 ></Input>
                               </FormGroup>
                             </Col>
+                            <hr style={{width:'100%', align:'left'}}/>
                             <Col lg="11" sm="6">
                               <FormGroup>
                                 <Label>
@@ -354,6 +368,33 @@ uploadValidate = imageList =>{
                                 ></Input>
                               </FormGroup>
                             </Col>
+                            <Col lg="2" sm="6">
+                              <FormGroup>
+                                <Label>
+                                  Goal Position X:
+                                </Label>
+                                <Input
+                                  className = "spotball-input"
+                                  name = "goalCoordX"
+                                  type="text"
+                                  defaultValue={this.state.selectedSpotBall.goalCoordX}
+                                ></Input>
+                              </FormGroup>
+                            </Col>
+                            <Col lg="2" sm="6">
+                              <FormGroup>
+                                <Label>
+                                  Goal Position Y:
+                                </Label>
+                                <Input
+                                  className = "spotball-input"
+                                  name = "goalCoordY"
+                                  type="text"
+                                  defaultValue={this.state.selectedSpotBall.goalCoordY}
+                                ></Input>
+                              </FormGroup>
+                            </Col>
+                            <hr style={{width:'100%', align:'left'}}/>
                             <Col lg="2" sm="2">                             
 
                               <FormGroup check>

@@ -5,6 +5,7 @@ const router = express.Router();
 const Ticket = require("../../models/CartItem");
 const Boat = require("../../models/Boat");
 const User = require("../../models/User");
+const SpotBall = require("../../models/SpotBall");
 const constant = require("../../shared/constants");
 
 
@@ -12,22 +13,84 @@ const constant = require("../../shared/constants");
 // @desc Get tickets
 // @access Public
 router.post("/ticketlist", (req, res) => {
-    Ticket
-    .find({
-    })
-    .populate('boatId userId')
-    .then(tickets => {
-        if (!tickets) {
-            tickets = [];
-        }
-        console.log(tickets[0].boatId);
-        return res.json({
-            success: true,
-            tickets: tickets
+    Ticket.aggregate(
+      [
+        {
+            $project: {
+                userId:{$toObjectId:"$userId"},
+                boatId:{$toObjectId:"$boatId"},
+                tickets: "$tickets",
+            }
+        },
+        {
+            $lookup: {
+                from : "users",
+                localField : "userId",
+                foreignField : "_id",
+                as: 'user',
+            },
+        },
+        {
+            $lookup: {
+                from : "boats",
+                localField : "boatId",
+                foreignField : "_id",
+                as: 'boat',
+            },
+        },
+        {
+            $group: {
+                _id: "$userId",
+                user: {"$first":"$user"},
+                data: {"$push":{cartItemId:"$_id", boat:"$boat", tickets:"$tickets"}, },
+            },            
+        },
+      ],
+      function (err, tickets) {
+        SpotBall.find({active:true})
+        .then(spotBall=>{
+            return res.status(200).send({
+                tickets: tickets,
+                spotball: spotBall,
+            });
         });
-    })
-    .catch(err => console.log(err));
+      }
+    )
+
+    
+    // Ticket
+    // .find({})
+    // .populate('boatId userId')
+    // .then(tickets => {
+    //     //console.log(tickets);
+    //     if (!tickets) {
+    //         tickets = [];
+    //     }
+    //     return res.json({
+    //         success: true,
+    //         tickets: tickets
+    //     });
+    // })
+    // .catch(err => console.log(err));
 });
+
+// router.post("/ticketlist", (req, res) => {
+//     Ticket
+//     .find({
+//     })
+//     .populate('boatId userId')
+//     .then(tickets => {
+//         console.log(tickets);
+//         if (!tickets) {
+//             tickets = [];
+//         }
+//         return res.json({
+//             success: true,
+//             tickets: tickets
+//         });
+//     })
+//     .catch(err => console.log(err));
+// });
 
 // @route POST api/ticketadmin/ticket
 // @desc Update Ticket
@@ -73,6 +136,31 @@ router.delete("/ticket/:ticketId", (req, res) => {
             });
         }
         res.status(200).send({message: "Ticket deleted successfully!"});
+    }).catch(err => {
+        if(err.kind === 'ObjectId' || err.name === 'NotFound') {
+            return res.status(404).send({
+                message: "Ticket not found with id " + req.params.ticketId
+            });                
+        }
+        return res.status(500).send({
+            message: "Could not delete ticket with id " + req.params.ticketId
+        });
+    });
+  
+  });
+
+// @route GET api/ticketadmin/ticket/clear
+// @desc Clear All tickets
+// @access Public
+router.post("/ticket/clear", (req, res) => {
+    Ticket.deleteMany({})
+    .then(ticket => {
+        if(!ticket) {
+            return res.status(404).send({
+                message: "Ticket not found with id " + req.params.ticketId
+            });
+        }
+        res.status(200).send({message: "Ticket cleared successfully!"});
     }).catch(err => {
         if(err.kind === 'ObjectId' || err.name === 'NotFound') {
             return res.status(404).send({

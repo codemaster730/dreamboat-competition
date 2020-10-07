@@ -25,9 +25,15 @@ class TicketList extends Component {
     super(props);
     this.state = {
       tickets: [],
+      spotball: {},
+      winner:{},
     }
   }
 
+  componentWillMount(){
+    
+
+  }
   componentDidMount() {
     document.body.classList.add("ticket-pay-page");
     document.body.classList.add("sidebar-collapse");
@@ -35,11 +41,38 @@ class TicketList extends Component {
     this.getTicketList();
   }
 
+
   getTicketList() {
     axios
       .post('/api/ticketadmin/ticketlist', {})
     .then((res) => {
-      this.setState({tickets: res.data.tickets});
+      console.log("TTTTT",res.data.tickets,"SSSS",res.data.spotball);
+      this.setState({tickets: res.data.tickets, spotball:res.data.spotball[0]});
+
+      var maxPrize = 0;
+      var winner= {};
+      var tickets = res.data.tickets;
+      tickets.map((ticket, key)=>{
+        
+        var goals =0;
+        ticket.data.map((data,key)=>{
+          
+          var gCnt = 0;
+          var posX = this.state.spotball.goalCoordX;
+          var posY = this.state.spotball.goalCoordY;
+          for (let i=0; i<data.tickets.length; i++){
+              if((data.tickets[i].coordX - posX)*(data.tickets[i].coordX - posX)+ (data.tickets[i].coordY - posY)*(data.tickets[i].coordY - posY) <10000){
+                gCnt++;
+              }
+          }
+          goals += gCnt* data.boat[0].prizePrice;
+        })
+        if(goals>maxPrize){
+          winner = ticket;
+          maxPrize = goals;
+        }
+      })
+      this.setState({winner: winner});
     }).catch((err) => {
       console.log(err);
     });
@@ -66,6 +99,16 @@ class TicketList extends Component {
       console.log(err);
     });
   }
+  clearTickets=()=>{
+    axios
+    .post(`/api/ticketadmin/ticket/clear`)
+    .then((res) => {
+      toast.info(res.data.message);
+      this.getTicketList();
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
 
   componentWillUnmount() {
     document.body.classList.remove("ticket-pay-page");
@@ -74,51 +117,78 @@ class TicketList extends Component {
 
   renderTicketListTableData() {
     let number = 0;
+    var maxPrize = 0;
+    var winner = {};
     return this.state.tickets.map((ticket) => {
       number += 1;
+      var total = 0;
+      var goals =0;
       return (
         <tr key="#">
           <td className="text-left">{number}</td>
-          <td className="text-left mobile-collapse">{ticket.userId[0].email}</td>
+          <td className="text-left mobile-collapse">{ticket.user[0].email} </td>
           <td className="text-left">
-            <img src={ticket.thumnailUri} style={{width:'100px', height:'80px' }} alt={ticket.model} ></img>
+            {
+              ticket.data.map((data,key)=>{
+                total += data.tickets.length* data.boat[0].ticketPrice;
+                return (
+                  <div>
+                    {/* <img src={data.boat[0].images[0]} style={{width:'100px', height:'80px' }} alt={"akt"} >
+                    </img> */}
+                     <button className="mr-1 badge badge-default">#{key+1}-tickets: {data.tickets.length} ticket price:{data.boat[0].ticketPrice}</button>
+                  </div>
+                )
+              })
+            }
+            Total Price:{total}
           </td>
-          <td className="text-left mobile-collapse">{ticket.ticketCount}</td>
-          <td className="text-left mobile-collapse">{ticket.ticketPrice}</td>
-          <td className="text-left mobile-collapse">
-            {/* {ticket.tickets.map((ticket)=>{
-              return "("+ticket.coordX+","+ticket.coordY+") ";
-            })
-            } */}
+          <td className="text-left">
+            {
+              
+              ticket.data.map((data,key)=>{
+                
+                var gCnt = 0;
+                var posX = this.state.spotball.goalCoordX;
+                var posY = this.state.spotball.goalCoordY;
+                for (let i=0; i<data.tickets.length; i++){
+                    if((data.tickets[i].coordX - posX)*(data.tickets[i].coordX - posX)+ (data.tickets[i].coordY - posY)*(data.tickets[i].coordY - posY) <10000){
+                      gCnt++;
+                    }
+                }
+                goals += gCnt* data.boat[0].prizePrice;
+                return (
+                  <div>
+                    {/* <img src={data.boat[0].images[0]} style={{width:'100px', height:'80px' }} alt={"akt"} >
+                    </img> */}
+                     <button className="mr-1 badge badge-default">#{key+1}-tickets: {gCnt} prize price:{data.boat[0].prizePrice}</button>
+                  </div>
+                )
+              })
+            }
+            Total Prize Price:{goals}
           </td>
-          {/* <td className="text-right">
+          
+          <td className="text-right">
             <>
-              <span style={{ display: 'none' }}>{ticket.active?"actived":"deactived"}</span>
               <Button
                 id="edit-ticket"
                 className="mr-1"
-                color={ticket.active===0?"secondary":
-                          ticket.active===1?"success":
-                            "danger"}
+                color="success"
                 size="sm"
-                style={{ width:'130px' }}
                 type="button"
                 onClick={() => this.editTicket(ticket)}
               >
                 <i className="now-ui-icons ui-2_settings-90"></i>
-                {ticket.active===0?"deactive":
-                          ticket.active===1?"active":
-                            "deleted"}
               </Button>
               <UncontrolledTooltip
                   delay={100}
                   placement="top"
                   target="edit-ticket"
                 >
-                  Toggle Ticket Active
+                  View Detail
               </UncontrolledTooltip>
             </>
-          </td> */}
+          </td>
           <td className="text-right">
             <>
               <Button
@@ -156,24 +226,30 @@ class TicketList extends Component {
               <Row>
                 <div className="mr-auto ml-auto col-md-8" style={{textAlign: 'center'}}>
                   <p style={{ marginTop:'50px' }} />
-                  <h3 className="title">Ticket Management</h3>
-                  <Label> Active or Delete Ticket</Label>
+                  <h3 className="title">Ticket Management</h3>           
                 </div>
               </Row>
               <Row>
+                  <div className="mr-auto ml-auto col-md-8" style={{textAlign: 'center'}}>
+                  <h5 className="title">Potential Winner:</h5>
+                    <span class="lr-1 badge badge-primary">{this.state.winner.user===undefined?"":this.state.winner.user[0].email}</span>
+                  </div>
+              </Row>
+              <Row>
                 <div className="mr-auto ml-auto col-md-8">
-
                   <Card className="card-plain mt-2 table-card">
+                  <Button className="btn-cpp" type="button" onClick={()=>this.clearTickets()}>
+                        Clear Tickets
+                      </Button>
                     <CardBody>
                       {this.state.tickets.length > 0 ?
                         <Table responsive>
                           <thead>
                             <tr>
                               <th className="text-left">#</th>
-                              <th className="text-left mobile-collapse">User eMail</th>
-                              <th className="text-left">Boat Image</th>
-                              <th className="text-left mobile-collapse">Ticket Count</th>
-                              <th className="text-left mobile-collapse">Ticket Price</th>
+                              <th className="text-left mobile-collapse">User</th>
+                              <th className="text-left">Tickets</th>
+                              <th className="text-left">Goals</th>
                               <th className="text-left mobile-collapse">Tickets</th>
                               {/* <th className="text-left">Active</th> */}
                               <th className="text-right">Actions</th>

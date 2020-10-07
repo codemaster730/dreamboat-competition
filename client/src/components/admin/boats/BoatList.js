@@ -246,9 +246,7 @@ uploadValidate = imageList =>{
                 </div>
               </Row>
               <Row>
-                <div className="mr-auto ml-auto col-md-8">
-                  
-                  
+                <div className="mr-auto ml-auto col-md-8">                  
                   <Card className="card-plain mt-2 table-card">
                     <CardBody>
                       <Button className="btn-cpp" type="button" onClick={()=>{

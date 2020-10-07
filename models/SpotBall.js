@@ -14,6 +14,16 @@ const SpotBallSchema = new Schema({
       type: Number,
       required: true
     },
+    goalCoordX: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    goalCoordY: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
     description: {
       type: String,
       required: false
