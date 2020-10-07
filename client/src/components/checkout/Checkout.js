@@ -128,10 +128,13 @@ class Checkout extends Component {
       paypalPayerId: paymentData.payerID,
       paypalOrderId: paymentData.orderID,
       total: this.calculateTotalTickets(),
-      tickets: []
+      items: []
     }
     this.state.cartItems.forEach((cartItem) => {
-      candidate.tickets = candidate.tickets.concat(cartItem.tickets); 
+      const data = {};
+      data.boatId = cartItem.boatId;
+      data.tickets = cartItem.tickets;
+      candidate.items.push(data); 
     });
 
     axios

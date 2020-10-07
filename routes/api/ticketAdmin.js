@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 
 // Load CartItem model
-const Ticket = require("../../models/CartItem");
+//const Ticket = require("../../models/CartItem");
+const Ticket = require("../../models/Candidate");
+
 const Boat = require("../../models/Boat");
 const User = require("../../models/User");
 const SpotBall = require("../../models/SpotBall");
@@ -13,15 +15,9 @@ const constant = require("../../shared/constants");
 // @desc Get tickets
 // @access Public
 router.post("/ticketlist", (req, res) => {
+    
     Ticket.aggregate(
       [
-        {
-            $project: {
-                userId:{$toObjectId:"$userId"},
-                boatId:{$toObjectId:"$boatId"},
-                tickets: "$tickets",
-            }
-        },
         {
             $lookup: {
                 from : "users",
@@ -30,19 +26,29 @@ router.post("/ticketlist", (req, res) => {
                 as: 'user',
             },
         },
+        { "$unwind": "$items" },
         {
             $lookup: {
                 from : "boats",
-                localField : "boatId",
+                localField : "items.boatId",
                 foreignField : "_id",
-                as: 'boat',
+                as: 'items.boat',
             },
+        },
+        { "$unwind": "$items.tickets" },
+        {
+            $group: {
+                _id: {userId:"$userId", boatId:"$items.boatId"},
+                user: {"$first":"$user"},
+                boat: {"$first":"$items.boat"},
+                tickets: {"$push":"$items.tickets"},
+            },            
         },
         {
             $group: {
-                _id: "$userId",
+                _id: "$_id.userId",
                 user: {"$first":"$user"},
-                data: {"$push":{cartItemId:"$_id", boat:"$boat", tickets:"$tickets"}, },
+                data: {"$push":{boat:"$boat", tickets:"$tickets"}, },
             },            
         },
       ],
@@ -58,79 +64,16 @@ router.post("/ticketlist", (req, res) => {
         });
       }
     )
-
-    
-    // Ticket
-    // .find({})
-    // .populate('boatId userId')
-    // .then(tickets => {
-    //     //console.log(tickets);
-    //     if (!tickets) {
-    //         tickets = [];
-    //     }
-    //     return res.json({
-    //         success: true,
-    //         tickets: tickets
-    //     });
-    // })
-    // .catch(err => console.log(err));
 });
 
-// router.post("/ticketlist", (req, res) => {
-//     Ticket
-//     .find({
-//     })
-//     .populate('boatId userId')
-//     .then(tickets => {
-//         console.log(tickets);
-//         if (!tickets) {
-//             tickets = [];
-//         }
-//         return res.json({
-//             success: true,
-//             tickets: tickets
-//         });
-//     })
-//     .catch(err => console.log(err));
-// });
 
-// @route POST api/ticketadmin/ticket
-// @desc Update Ticket
-// @access Public
-router.put("/ticket/:ticketId", (req, res) => {
-    // Validate Request
-    if(!req.body.ticket) {
-        return res.status(400).send({
-            message: "Ticket detail can not be empty"
-        });
-    }
-    // Find ticket and update it with the request body
-    Ticket.findByIdAndUpdate(req.params.ticketId, req.body.ticket, {new: true})
-    .then(ticket => {
-        if(!ticket) {
-            return res.status(404).send({
-                message: "Ticket not found with id " + req.params.ticketId
-            });
-        }
-        res.send(ticket);
-    }).catch(err => {
-        if(err.kind === 'ObjectId') {
-            return res.status(404).send({
-                message: "ticket not found with id " + req.params.ticketId
-            });                
-        }
-        return res.status(500).send({
-            message: "Error updating ticket with id " + req.params.ticketId
-        });
-    });
-});
 
 // @route DELETE api/ticketadmin/ticket/:id
 // @desc Delete ticket
 // @access Public
 router.delete("/ticket/:ticketId", (req, res) => {
     
-    Ticket.findByIdAndRemove(req.params.ticketId)
+    Ticket.deleteMany({userId:req.params.ticketId})
     .then(ticket => {
         if(!ticket) {
             return res.status(404).send({
