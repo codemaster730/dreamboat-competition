@@ -49,10 +49,12 @@ router.post("/ticketlist", (req, res) => {
       function (err, tickets) {
         SpotBall.find({active:true})
         .then(spotBall=>{
-            return res.status(200).send({
-                tickets: tickets,
-                spotball: spotBall,
-            });
+            if(spotBall.length>0){
+                return res.status(200).send({
+                    tickets: tickets,
+                    spotball: spotBall,
+                });
+            }
         });
       }
     )

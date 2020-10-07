@@ -13,7 +13,7 @@ import {
   CardBody,
   Table,
   Button,
-  UncontrolledTooltip, Label
+  UncontrolledTooltip,
 } from "reactstrap";
 
 // core components
@@ -46,17 +46,13 @@ class TicketList extends Component {
     axios
       .post('/api/ticketadmin/ticketlist', {})
     .then((res) => {
-      console.log("TTTTT",res.data.tickets,"SSSS",res.data.spotball);
-      this.setState({tickets: res.data.tickets, spotball:res.data.spotball[0]});
-
       var maxPrize = 0;
       var winner= {};
       var tickets = res.data.tickets;
-      tickets.map((ticket, key)=>{
-        
+      this.setState({tickets: res.data.tickets, spotball:res.data.spotball[0]});
+      tickets.map((ticket)=>{
         var goals =0;
-        ticket.data.map((data,key)=>{
-          
+        ticket.data.map((data)=>{
           var gCnt = 0;
           var posX = this.state.spotball.goalCoordX;
           var posY = this.state.spotball.goalCoordY;
@@ -66,13 +62,17 @@ class TicketList extends Component {
               }
           }
           goals += gCnt* data.boat[0].prizePrice;
+          return data;
         })
         if(goals>maxPrize){
           winner = ticket;
           maxPrize = goals;
+          
         }
+        return ticket;
       })
       this.setState({winner: winner});
+      
     }).catch((err) => {
       console.log(err);
     });
@@ -117,8 +117,6 @@ class TicketList extends Component {
 
   renderTicketListTableData() {
     let number = 0;
-    var maxPrize = 0;
-    var winner = {};
     return this.state.tickets.map((ticket) => {
       number += 1;
       var total = 0;

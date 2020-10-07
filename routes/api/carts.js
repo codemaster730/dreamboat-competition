@@ -1,4 +1,5 @@
 const express = require("express");
+var mongoose = require('mongoose');
 const router = express.Router();
 
 const _ = require('lodash');
@@ -15,6 +16,8 @@ const { findIndex } = require("lodash");
 router.post("/addCartTickets", (req, res) => {
   
   let item = req.body;
+  item.boatId = mongoose.Types.ObjectId(item.boatId);
+  item.userId = mongoose.Types.ObjectId(item.userId);
   if (item.ticketsAdded === 0)
     return res.status(404).json({message: "No Items Found"});
   Boat.findById(item.boatId).then((boat) => {
@@ -40,7 +43,7 @@ router.post("/addCartTickets", (req, res) => {
           ticketPrice: boat.ticketPrice,
           ticketCount: item.ticketsAdded,
           boatId: item.boatId,
-          userId: item.userId,
+          userId: mongoose.Types.ObjectId(item.userId),
           tickets: newTickets
         };
         cartItem = new CartItem(itemData);
@@ -71,7 +74,8 @@ router.post("/addCartTickets", (req, res) => {
 // @access Public
 router.post("/getCartTickets", (req, res) => {
   if (req.body.userId) {
-    CartItem.find({userId: req.body.userId}).then(items => {
+    
+    CartItem.find({userId: mongoose.Types.ObjectId(req.body.userId) }).then(items => {
       if (items) {
         return res.status(200).json(items);
       } else {

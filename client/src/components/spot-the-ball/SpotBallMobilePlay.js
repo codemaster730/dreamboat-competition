@@ -18,7 +18,7 @@ class SpotBallMobilePlay extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          cartItems:[],
+          cartItems:props.cartItems,
           sightLines: [],
           selected_tid: 0,
         }
@@ -108,9 +108,9 @@ class SpotBallMobilePlay extends Component {
     }
 
     componentWillReceiveProps(nextprops) {
-        this.setState({cartItems: nextprops.cartItems},()=>{
-            this.selectBlankTicketItem();
-        });
+        // this.setState({cartItems: nextprops.cartItems},()=>{
+        //     this.selectBlankTicketItem();
+        // });
     }
 
     selectBlankTicketItem = () =>{
