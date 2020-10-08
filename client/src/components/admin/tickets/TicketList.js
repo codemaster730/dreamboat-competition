@@ -335,9 +335,10 @@ class TicketList extends Component {
                     <i className="now-ui-icons ui-1_simple-remove"></i>
                   </button>
                   <h4 className="title title-up">Tickets Position View</h4>
-                  <h6 className="title title-up">User: {this.state.selectedItem.user[0].email}</h6>
+                  
                 </div>
                 <div className="modal-body">
+                <h6 >User: {(this.state.selectedItem!==null)?this.state.selectedItem.user[0].email:""}</h6>
                   <Row >
                     <Col className="spotContainer">
                       <div className="spotBack1">
