@@ -67,7 +67,6 @@ router.post("/ticketlist", (req, res) => {
 });
 
 
-
 // @route DELETE api/ticketadmin/ticket/:id
 // @desc Delete ticket
 // @access Public

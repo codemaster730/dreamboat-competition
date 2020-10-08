@@ -549,3 +549,17 @@ div.cart-item.selected{
   text-align: center;
   font-size: large;
 }
+
+.spotball-image{
+  padding-top: 75%;
+  background-repeat: no-repeat;
+  background-size : cover;
+}
+.markSVG{
+  width: auto;
+  height: auto;
+}
+.markImg{
+  width: auto;
+  height: auto;
+}
