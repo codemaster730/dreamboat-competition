@@ -78,7 +78,7 @@ router.put("/spotball/:spotballId", (req, res) => {
 // @desc Add SpotBall
 // @access Public
 router.post("/spotball/create", (req, res) => {
-    console.log(req.body.spotball);
+    
     if (!req.body.spotball._id) {
       const spotball = new SpotBall({...req.body.spotball});
       spotball

@@ -274,7 +274,7 @@ uploadValidate = imageList =>{
               fill="none"
               style={{left: '50%'}}
           />
-          <circle className="circleMark" cx={cur_x} cy={cur_y} r={radius} fill="black" opacity="0.3" />
+          <circle className="circleMark" cx={cur_x} cy={cur_y} r={radius} fill="yellow" opacity="0.3" />
           </>
       );
 
@@ -449,7 +449,7 @@ uploadValidate = imageList =>{
                                   type="range"
                                   min="1"
                                   max={this.state.selectedSpotBall.width}
-                                  defaultValue={this.state.selectedSpotBall.goalRadius}
+                                  defaultValue={this.state.selectedSpotBall._id?this.state.selectedSpotBall.goalRadius:200}
                                   step="1"/>
                               </FormGroup>
                             </Col>

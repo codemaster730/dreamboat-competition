@@ -21,8 +21,6 @@ import {
 
 // core components
 import DropdownScrollNavbar from "../shared/DropdownScrollNavbar.js";
-
-const diameter = 10000;
 class TicketList extends Component {
 
   constructor (props) {
@@ -42,12 +40,13 @@ class TicketList extends Component {
 
   }
   componentDidMount() {
+    this.getTicketList();
     document.body.classList.add("ticket-pay-page");
     document.body.classList.add("sidebar-collapse");
     document.documentElement.classList.remove("nav-open");
     window.addEventListener('resize', this.updateWindowDimensions);
     this.updateWindowDimensions();
-    this.getTicketList();
+    
   }
 
   updateWindowDimensions = () =>{
@@ -76,6 +75,7 @@ class TicketList extends Component {
     axios
       .post('/api/ticketadmin/ticketlist', {})
     .then((res) => {
+      console.log("!!!!!!!!!",res.data);
       var maxPrize = 100000000;
       var winner= {};
       var tickets = res.data.tickets;
@@ -269,7 +269,7 @@ class TicketList extends Component {
               <Row>
                   <div className="mr-auto ml-auto col-md-8" style={{textAlign: 'center'}}>
                   <h5 className="title">Potential Winner:</h5>
-                    <span class="lr-1 badge badge-primary">{this.state.winner.user===undefined?"No Winner":this.state.winner.user[0].email}</span>
+                    <span class="lr-1 badge badge-primary">{this.state.winner.user===undefined?"Not Found":this.state.winner.user[0].email}</span>
                   </div>
               </Row>
               <Row>
@@ -362,7 +362,7 @@ class TicketList extends Component {
                             }
                             {
                               (this.state.selectedItem!==null)?(
-                                <circle cx={this.state.spotball.goalCoordX/this.state.zoomRatio} cy={this.state.spotball.goalCoordY/this.state.zoomRatio} r={this.state.spotball.goalRadius/this.state.zoomRatio} fill="black" opacity="0.3" />  
+                                <circle cx={this.state.spotball.goalCoordX/this.state.zoomRatio} cy={this.state.spotball.goalCoordY/this.state.zoomRatio} r={this.state.spotball.goalRadius/this.state.zoomRatio} fill="yellow" opacity="0.3" />  
                               ):""
                             }
                         </svg>
