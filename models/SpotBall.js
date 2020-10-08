@@ -24,6 +24,11 @@ const SpotBallSchema = new Schema({
       required: true,
       default: 0,
     },
+    goalRadius: {
+      type: Number,
+      required: true,
+      default: 10,
+    },
     description: {
       type: String,
       required: false

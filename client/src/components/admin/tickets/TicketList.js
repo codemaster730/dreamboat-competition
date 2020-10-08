@@ -49,12 +49,6 @@ class TicketList extends Component {
     this.updateWindowDimensions();
     this.getTicketList();
   }
-  componentDidUpdate(){
-    //this.updateWindowDimensions();
-  }
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.updateWindowDimensions);
-  }
 
   updateWindowDimensions = () =>{
     //alert("update");
@@ -65,20 +59,15 @@ class TicketList extends Component {
     var eleMark = document.getElementsByClassName("markSVG")[0];
     var eleImg = document.getElementsByClassName("markImg")[0];
     if(eleBack){
-      
       eleCont.style.height = (eleCont.clientWidth*3/4) + "px";
-
       eleBack.style.height = (eleBack.clientWidth*3/4) + "px";
-
       eleMark.style.width = (eleBack.clientWidth) + "px";
       eleMark.style.height = (eleBack.clientWidth*3/4) + "px";
       eleImg.style.width = (eleBack.clientWidth) + "px";
       eleImg.style.height = (eleBack.clientWidth*3/4) + "px";
       if(eleBack.clientWidth>0){
         this.setState({zoomRatio: this.state.spotball.width/eleBack.clientWidth});
-        console.log("WWWWW",this.state.zoomRatio);
       }
-      //alert(eleBack.style.width);
     }
   }
 
@@ -93,25 +82,27 @@ class TicketList extends Component {
       this.setState({tickets: res.data.tickets, spotball:res.data.spotball[0]});
       var goals =100000000;
       tickets.map((ticket)=>{
-        //var goals =0;
+        var marks =0;
         ticket.data.map((data)=>{
           var gCnt = 0;
           var posX = this.state.spotball.goalCoordX;
           var posY = this.state.spotball.goalCoordY;
           for (let i=0; i<data.tickets.length; i++){
-              // if((data.tickets[i].coordX - posX)*(data.tickets[i].coordX - posX)+ (data.tickets[i].coordY - posY)*(data.tickets[i].coordY - posY) <diameter){
-              //   gCnt++;
-              // }
+              if((data.tickets[i].coordX - posX)*(data.tickets[i].coordX - posX)+ (data.tickets[i].coordY - posY)*(data.tickets[i].coordY - posY) <this.state.spotball.goalRadius*this.state.spotball.goalRadius){
+                gCnt++;
+              }
               if((data.tickets[i].coordX - posX)*(data.tickets[i].coordX - posX)+ (data.tickets[i].coordY - posY)*(data.tickets[i].coordY - posY) <goals){
                 goals = (data.tickets[i].coordX - posX)*(data.tickets[i].coordX - posX)+ (data.tickets[i].coordY - posY)*(data.tickets[i].coordY - posY);
               }
           }
-          // goals += gCnt* data.boat[0].prizePrice;
+          marks += gCnt* data.boat[0].prizePrice;
           return data;
         })
-        if(goals<maxPrize){
-          winner = ticket;
-          maxPrize = goals;
+        if(marks>0){
+          if(goals<maxPrize){
+            winner = ticket;
+            maxPrize = goals;
+          }
         }
         return ticket;
       })
@@ -157,6 +148,7 @@ class TicketList extends Component {
   componentWillUnmount() {
     document.body.classList.remove("ticket-pay-page");
     document.body.classList.remove("sidebar-collapse");
+    window.removeEventListener('resize', this.updateWindowDimensions);
   }
 
   renderTicketListTableData() {
@@ -164,7 +156,7 @@ class TicketList extends Component {
     return this.state.tickets.map((ticket) => {
       number += 1;
       var total = 0;
-      var goals =0;
+      // var goals =0;
       return (
         <tr key="#">
           <td className="text-left">{number}</td>
@@ -277,7 +269,7 @@ class TicketList extends Component {
               <Row>
                   <div className="mr-auto ml-auto col-md-8" style={{textAlign: 'center'}}>
                   <h5 className="title">Potential Winner:</h5>
-                    <span class="lr-1 badge badge-primary">{this.state.winner.user===undefined?"":this.state.winner.user[0].email}</span>
+                    <span class="lr-1 badge badge-primary">{this.state.winner.user===undefined?"No Winner":this.state.winner.user[0].email}</span>
                   </div>
               </Row>
               <Row>
@@ -342,9 +334,6 @@ class TicketList extends Component {
                   <Row >
                     <Col className="spotContainer">
                       <div className="spotBack1">
-                        {/* <svg name="markSVG" version="1.1" style={{ position:'absolute', width:'64px', height:'64px', left:(this.state.selectedSpotBall.goalCoordX/this.state.selectedSpotBall.width*100)+'%', top: (this.state.selectedSpotBall.goalCoordY/this.state.selectedSpotBall.height*100)+'%', marginLeft:'-32px', marginTop:'-32px' }} >
-                          <path d="M22,32L42,32L32,32L32,22L32,42" id="spotMarkee" stroke="white" stroke-width="1" fill="none"></path>
-                        </svg> */}
                         <svg className="markSVG" version="1.1" style={{ position:'absolute'}}>                                    
                             {
                               (this.state.selectedItem!==null)?
@@ -373,7 +362,7 @@ class TicketList extends Component {
                             }
                             {
                               (this.state.selectedItem!==null)?(
-                                <circle cx={this.state.spotball.goalCoordX/this.state.zoomRatio} cy={this.state.spotball.goalCoordY/this.state.zoomRatio} r={100/this.state.zoomRatio} fill="black" opacity="0.3" />  
+                                <circle cx={this.state.spotball.goalCoordX/this.state.zoomRatio} cy={this.state.spotball.goalCoordY/this.state.zoomRatio} r={this.state.spotball.goalRadius/this.state.zoomRatio} fill="black" opacity="0.3" />  
                               ):""
                             }
                         </svg>

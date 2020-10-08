@@ -36,7 +36,8 @@ class SpotBallList extends Component {
       selectedSpotBall: {},
       acceptedFiles: [],
       errors: [],
-      total: 0
+      total: 0,
+      zoomRatio: 4,
     }
     this.fileInput = React.createRef();
   }
@@ -45,9 +46,26 @@ class SpotBallList extends Component {
     document.body.classList.add("spotball-admin-page");
     document.body.classList.add("sidebar-collapse");
     document.documentElement.classList.remove("nav-open");
-   
+    window.addEventListener('resize', this.updateWindowDimensions);
+    this.updateWindowDimensions();
     this.getSpotBallList();
+  }
 
+  updateWindowDimensions = () =>{
+    var eleBack = document.getElementsByClassName("spotBack")[0];
+    var eleImg = document.getElementsByClassName("spotImg")[0];
+    var eleSvg = document.getElementsByClassName("markSVG")[0];
+    if(eleBack){
+      eleBack.style.height = (eleBack.clientWidth*3/4) + "px";
+      eleImg.style.width = eleBack.clientWidth+ "px";
+      eleImg.style.height = eleBack.clientHeight+ "px";
+      eleSvg.style.width = eleBack.clientWidth+ "px";
+      eleSvg.style.height = eleBack.clientHeight+ "px";
+      if(eleBack.clientWidth>0){
+        console.log(this.state.selectedSpotBall);
+        this.setState({zoomRatio: this.state.selectedSpotBall.width/eleBack.clientWidth});
+      }
+    }
   }
 
   getSpotBallList() {
@@ -62,17 +80,12 @@ class SpotBallList extends Component {
 
   editSpotBall(spotball) {
     this.setState({modalView: true, selectedSpotBall: spotball},()=>{
-      
     });
-    
-    // spotball.active = true;
-    // axios
-    //   .put(`/api/spotballadmin/spotball/${spotball._id}`, {spotball: spotball})
-    //   .then((res) => {
-    //     this.getUserList();
-    //   }).catch((err) => {
-    //     console.log(err);
-    //   });
+    var _this = this;
+    setTimeout(
+      function(){
+        _this.updateWindowDimensions();
+      }, 1000);
   }
 
   removeSpotBall(spotball) {
@@ -127,10 +140,16 @@ class SpotBallList extends Component {
   }
 
   modalImageClick = (e) =>{
-    document.getElementsByName("goalCoordX")[0].value = Math.floor(this.state.selectedSpotBall.width * e.nativeEvent.offsetX /document.getElementsByClassName("spotBack")[0].clientWidth);
-    document.getElementsByName("goalCoordY")[0].value = Math.floor(this.state.selectedSpotBall.height * e.nativeEvent.offsetY /document.getElementsByClassName("spotBack")[0].clientHeight);
-    document.getElementsByName("markSVG")[0].style.left = (e.nativeEvent.offsetX+16) +"px";
-    document.getElementsByName("markSVG")[0].style.top = (e.nativeEvent.offsetY) +"px";
+    let eleCircle = document.getElementsByClassName("circleMark")[0];
+    eleCircle.setAttribute("cx", e.nativeEvent.offsetX);
+    eleCircle.setAttribute("cy", e.nativeEvent.offsetY);
+    document.getElementsByName("goalCoordX")[0].value = Math.floor(e.nativeEvent.offsetX * this.state.zoomRatio);
+    document.getElementsByName("goalCoordY")[0].value = Math.floor(e.nativeEvent.offsetY * this.state.zoomRatio);
+    let plus_size = 5;
+    let cur_x = e.nativeEvent.offsetX;
+    let cur_y = e.nativeEvent.offsetY;
+    let elePlus = document.getElementsByClassName("plusMark")[0];
+    elePlus.setAttribute("d", ("M"+(cur_x-plus_size)+","+(cur_y)+"L"+(cur_x+plus_size)+","+(cur_y)+"L"+(cur_x)+","+(cur_y)+"L"+(cur_x)+","+(cur_y+plus_size)+"L"+(cur_x)+","+(cur_y-plus_size)));
   }
 
 //-------------------------------upload---------------------------------------------
@@ -190,6 +209,11 @@ uploadValidate = imageList =>{
   componentWillUnmount() {
     document.body.classList.remove("spotball-admin-page");
     document.body.classList.remove("sidebar-collapse");
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
+  handleInputChange = (e) =>{
+    let eleCircle = document.getElementsByClassName("circleMark")[0];
+    eleCircle.setAttribute("r", e.currentTarget.value/this.state.zoomRatio);
   }
 
   renderSpotBallListTableData() {
@@ -235,7 +259,26 @@ uploadValidate = imageList =>{
       );
     });
   }
+  renderSvg(){
+      let plus_size = 5;
+      let cur_x = this.state.selectedSpotBall.goalCoordX/this.state.zoomRatio;
+      let cur_y = this.state.selectedSpotBall.goalCoordY/this.state.zoomRatio;
+      let radius = this.state.selectedSpotBall.goalRadius/this.state.zoomRatio;
+      return (
+        <>
+          <path
+              d={"M"+(cur_x-plus_size)+","+(cur_y)+"L"+(cur_x+plus_size)+","+(cur_y)+"L"+(cur_x)+","+(cur_y)+"L"+(cur_x)+","+(cur_y+plus_size)+"L"+(cur_x)+","+(cur_y-plus_size)}
+              stroke="white"
+              strokeWidth={2}
+              className="plusMark"
+              fill="none"
+              style={{left: '50%'}}
+          />
+          <circle className="circleMark" cx={cur_x} cy={cur_y} r={radius} fill="black" opacity="0.3" />
+          </>
+      );
 
+  }
   render() {
     return (
       <>
@@ -253,8 +296,6 @@ uploadValidate = imageList =>{
               </Row>
               <Row>
                 <div className="mr-auto ml-auto col-md-8">
-                  
-                  
                   <Card className="card-plain mt-2 table-card">
                     <CardBody>
                       <Button className="btn-cpp" type="button" onClick={()=>{
@@ -318,10 +359,12 @@ uploadValidate = imageList =>{
                           this.state.selectedSpotBall.image?(
                             <Col xs="12" >
                               <div className="spotBack"  onMouseDown={this.modalImageClick}>
-                                <svg name="markSVG" version="1.1" style={{ position:'absolute', width:'64px', height:'64px', left:(this.state.selectedSpotBall.goalCoordX/this.state.selectedSpotBall.width*100)+'%', top: (this.state.selectedSpotBall.goalCoordY/this.state.selectedSpotBall.height*100)+'%', marginLeft:'-32px', marginTop:'-32px' }} >
-                                  <path d="M22,32L42,32L32,32L32,22L32,42" id="spotMarkee" stroke="white" stroke-width="1" fill="none"></path>
+                                <svg className="markSVG" version="1.1" style={{ position:'absolute' }} >
+                                {
+                                  this.renderSvg()
+                                }
                                 </svg>
-                                <img src={this.state.selectedSpotBall.image} alt={this.state.selectedSpotBall.title}></img>
+                                <img className="spotImg" src={this.state.selectedSpotBall.image} alt={this.state.selectedSpotBall.title}></img>
                               </div>
                             </Col>
                           ):"Image file not exists."
@@ -392,6 +435,22 @@ uploadValidate = imageList =>{
                                   type="text"
                                   defaultValue={this.state.selectedSpotBall.goalCoordY}
                                 ></Input>
+                              </FormGroup>
+                            </Col>
+                            <Col lg="2" sm="6">
+                              <FormGroup>
+                                <Label>
+                                  Goal Area Radius:
+                                </Label>
+                                <input
+                                  onInput={this.handleInputChange}
+                                  className = "spotball-input"
+                                  name = "goalRadius"
+                                  type="range"
+                                  min="1"
+                                  max={this.state.selectedSpotBall.width}
+                                  defaultValue={this.state.selectedSpotBall.goalRadius}
+                                  step="1"/>
                               </FormGroup>
                             </Col>
                             <hr style={{width:'100%', align:'left'}}/>
