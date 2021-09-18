@@ -1,6 +1,10 @@
-# dream-boat
+BOTB CLONE
 
-Full-stack MERN app with authentication using passport and JWTs.
+Demo application [Here](https://botb-clone.herokuapp.com/)
+
+## Description
+
+- Full-stack MERN app with authentication using passport and JWTs.
 
 This project uses the following technologies:
 
