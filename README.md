@@ -1,6 +1,8 @@
-BOTB CLONE
+### BOTB CLONE
 
-Demo application [Here](https://botb-clone.herokuapp.com/)
+# Demo application [Here](https://botb-clone.herokuapp.com/)
+
+![alt text](https://github.com/CodeChef7/dreamboat-competition/blob/master/client/src/assets/img/Screenshot_4.png)
 
 ## Description
 
